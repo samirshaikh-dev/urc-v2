@@ -1,11 +1,15 @@
 import { cn } from "@/lib/utils";
 
+/**
+ * Elevated content surface. Use only where a surface genuinely needs to be
+ * separated from the page — not as a wrapper around every section.
+ */
 export function Card({ children, className = "", hover = false, ...props }) {
   return (
     <div
       className={cn(
-        "bg-[var(--color-pure-white)] border border-[var(--color-soft-border)] rounded-xl p-6 transition-all duration-200",
-        hover && "hover:border-[var(--color-maroon)]/40 hover:shadow-sm",
+        "rounded-panel border border-line bg-white p-6",
+        hover && "transition-colors duration-150 hover:border-maroon/30",
         className
       )}
       {...props}

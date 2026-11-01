@@ -17,7 +17,7 @@ export const FOOTER_NAV = {
     { label: "About Us", href: "/about" },
     { label: "Manufacturing & Quality", href: "/capabilities" },
     { label: "Contact & Location", href: "/contact" },
-    { label: "Request a Quote", href: "/contact#quote" },
+    { label: "Request a Quote", href: "/#quote" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },

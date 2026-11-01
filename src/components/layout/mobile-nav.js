@@ -1,72 +1,121 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { X } from "lucide-react";
 import { MAIN_NAV } from "@/data/navigation";
 import { SITE_CONFIG } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+
+const FOCUSABLE =
+  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 export function MobileNav({ isOpen, onClose }) {
   const pathname = usePathname();
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
+    if (!isOpen) return;
+
+    const previouslyFocused = document.activeElement;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !dialogRef.current) return;
+
+      // Keep focus inside the modal dialog.
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll(FOCUSABLE)
+      );
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
-  }, [isOpen]);
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+      if (previouslyFocused instanceof HTMLElement) {
+        previouslyFocused.focus();
+      }
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 md:hidden flex flex-col bg-[#F5F5F5]">
-      <div className="flex items-center justify-between px-6 h-18 border-b border-[#E5E7EB]">
-        <span className="font-bold text-lg text-[#650510]">
+    <div
+      id="mobile-menu"
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Site menu"
+      className="fixed inset-0 z-50 flex flex-col bg-page md:hidden"
+    >
+      <div className="flex h-16 items-center justify-between border-b border-line px-6">
+        <span className="text-base font-semibold tracking-tight text-maroon">
           {SITE_CONFIG.name}
         </span>
         <button
+          ref={closeButtonRef}
           type="button"
           onClick={onClose}
-          className="p-2 rounded-md text-[#650510] hover:bg-[#F1F2F3] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#650510]"
+          className="-mr-2 rounded-control p-2.5 text-maroon transition-colors duration-150 hover:bg-field"
           aria-label="Close menu"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X className="size-6" aria-hidden="true" />
         </button>
       </div>
 
-      <nav className="flex-1 px-6 py-8 flex flex-col gap-5">
-        {MAIN_NAV.map((item) => {
-          const isActive = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href));
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onClose}
-              className={`text-lg font-medium transition-colors flex items-center justify-between ${
-                isActive
-                  ? "text-[#650510] font-semibold"
-                  : "text-[#1A1A1A] hover:text-[#650510]"
-              }`}
-            >
-              <span>{item.label}</span>
-              {isActive && (
-                <span className="w-2 h-2 rounded-full bg-[#F58634]" />
-              )}
-            </Link>
-          );
-        })}
+      <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-6">
+        <ul className="divide-y divide-line">
+          {MAIN_NAV.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/" && pathname?.startsWith(item.href));
+
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={onClose}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "block py-4 text-base font-medium transition-colors duration-150",
+                    isActive ? "text-maroon" : "text-ink hover:text-maroon"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
 
-      <div className="p-6 border-t border-[#E5E7EB] bg-[#F1F2F3]">
-        <Button href="#quote" variant="primary" size="lg" className="w-full" onClick={onClose}>
-          Request a Quote
+      <div className="border-t border-line bg-white p-6">
+        <Button href="#quote" className="w-full" onClick={onClose}>
+          Request a quote
         </Button>
       </div>
     </div>

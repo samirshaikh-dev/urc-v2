@@ -1,50 +1,61 @@
 import Link from "next/link";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { ArrowRight } from "lucide-react";
+import { PRODUCT_CATEGORIES } from "@/data/products";
+import { TextLink } from "@/components/ui/text-link";
 
+/**
+ * Product shown as an editorial row rather than a card.
+ * The product name is the only link; its overlay makes the whole row clickable
+ * without introducing nested interactive elements.
+ */
 export function ProductCard({ product }) {
+  const category = PRODUCT_CATEGORIES.find((item) => item.id === product.category);
+  const specifications = (product.specifications ?? []).slice(0, 3);
+
   return (
-    <Card hover className="flex flex-col justify-between h-full bg-white border-[#E5E7EB]">
-      <div>
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <Badge variant="orange">{product.category}</Badge>
-          <span className="text-[11px] text-[#5A5D63] font-medium">Industrial Grade</span>
+    <li className="group relative">
+      <div className="grid gap-5 py-8 sm:py-10 lg:grid-cols-12 lg:gap-8">
+        <div className="lg:col-span-4">
+          {category && <p className="text-xs text-muted">{category.name}</p>}
+          <h3 className="mt-1.5 text-xl font-semibold tracking-tight text-ink sm:text-2xl">
+            <Link
+              href={`/products/${product.slug}`}
+              className="transition-colors duration-150 after:absolute after:inset-0 after:content-[''] group-hover:text-maroon"
+            >
+              {product.name}
+            </Link>
+          </h3>
+          <span
+            aria-hidden="true"
+            className="mt-3 hidden items-center gap-1.5 text-sm font-medium text-maroon sm:inline-flex"
+          >
+            View details
+            <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:translate-x-0" />
+          </span>
         </div>
-        <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2 group-hover:text-[#650510] transition-colors">
-          {product.name}
-        </h3>
-        <p className="text-sm text-[#5A5D63] leading-relaxed mb-6">
+
+        <p className="max-w-md text-sm leading-relaxed text-muted lg:col-span-4">
           {product.shortDescription}
         </p>
 
-        {product.features && (
-          <ul className="space-y-2 text-xs text-[#1A1A1A] mb-6">
-            {product.features.map((feature, i) => (
-              <li key={i} className="flex items-start gap-2.5">
-                {/* Small orange detail highlight */}
-                <span className="w-1.5 h-1.5 rounded-full bg-[#F58634] mt-1.5 shrink-0" />
-                <span className="leading-snug">{feature}</span>
-              </li>
+        {specifications.length > 0 && (
+          <dl className="grid gap-3 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
+            {specifications.map((spec) => (
+              <div key={spec.property}>
+                <dt className="text-xs text-muted">{spec.property}</dt>
+                <dd className="mt-0.5 text-sm text-ink">{spec.value}</dd>
+              </div>
             ))}
-          </ul>
+          </dl>
         )}
-      </div>
 
-      <div className="pt-4 border-t border-[#E5E7EB] flex items-center justify-between">
-        <Link
-          href={`/products/${product.slug}`}
-          className="text-xs font-semibold text-[#650510] hover:text-[#F58634] transition-colors inline-flex items-center gap-1 group"
-        >
-          View Specifications
-          <span aria-hidden="true" className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
-        </Link>
-        <Link
-          href="#quote"
-          className="text-xs text-[#5A5D63] hover:text-[#650510] transition-colors"
-        >
-          Inquire
-        </Link>
+        {/* Sits above the row-wide link so the enquiry path stays clickable. */}
+        <div className="lg:col-span-12 lg:flex lg:justify-end">
+          <TextLink href="#quote" className="relative z-10 mt-1">
+            Request a quote
+          </TextLink>
+        </div>
       </div>
-    </Card>
+    </li>
   );
 }

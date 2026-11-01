@@ -1,16 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const fieldClasses =
+  "w-full rounded-control border border-line-strong bg-field px-3.5 py-2.5 text-sm text-ink placeholder:text-muted transition-colors duration-150 focus:border-maroon";
+
+const labelClasses = "block text-sm font-medium text-ink";
+
+function RequiredMark() {
+  return (
+    <span aria-hidden="true" className="text-orange-ink">
+      {" "}
+      *
+    </span>
+  );
+}
 
 export function QuoteForm() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const successRef = useRef(null);
+
+  useEffect(() => {
+    if (submitted) successRef.current?.focus();
+  }, [submitted]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
-    // Simulate submission handler or API dispatch
+    // Submission handler is not connected yet — see project notes.
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
@@ -19,93 +41,113 @@ export function QuoteForm() {
 
   if (submitted) {
     return (
-      <div className="p-8 text-center bg-[#F1F2F3] border border-[#E5E7EB] rounded-xl">
-        <div className="w-10 h-10 rounded-full bg-[#650510]/10 text-[#650510] flex items-center justify-center mx-auto mb-3">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h3 className="text-xl font-semibold text-[#650510] mb-2">
-          Enquiry Received
-        </h3>
-        <p className="text-sm text-[#5A5D63] max-w-md mx-auto">
-          Thank you for reaching out to New United Rubber Cork. Our technical team will review your specifications and contact you shortly.
+      <div ref={successRef} tabIndex={-1} className="py-6 text-center focus:outline-none">
+        <span className="mx-auto flex size-10 items-center justify-center rounded-full bg-maroon/5 text-maroon">
+          <Check className="size-5" aria-hidden="true" />
+        </span>
+        <h3 className="mt-4 text-xl font-semibold text-maroon">Enquiry received</h3>
+        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted">
+          Thank you for contacting New United Rubber Cork. Our technical team will
+          review your specifications and respond.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <form
+      onSubmit={handleSubmit}
+      aria-labelledby="quote-title"
+      aria-busy={isSubmitting}
+      className="space-y-5"
+    >
+      <p className="text-xs text-muted">Fields marked * are required.</p>
+
+      <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-[#1A1A1A] mb-1">
-            Your Name *
+          <label htmlFor="quote-name" className={labelClasses}>
+            Your name
+            <RequiredMark />
           </label>
           <input
+            id="quote-name"
+            name="name"
             type="text"
             required
+            autoComplete="name"
             placeholder="e.g. Rahul Sharma"
-            className="w-full px-4 py-2.5 rounded-lg border border-[#E5E7EB] bg-[#F1F2F3] text-sm text-[#1A1A1A] placeholder:text-[#5A5D63]/60 focus:outline-none focus:ring-2 focus:ring-[#650510] focus:border-transparent transition-all"
+            className={`mt-1.5 ${fieldClasses}`}
           />
         </div>
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-[#1A1A1A] mb-1">
-            Company Name
-          </label>
-          <input
-            type="text"
-            placeholder="e.g. Apex Transformers Ltd."
-            className="w-full px-4 py-2.5 rounded-lg border border-[#E5E7EB] bg-[#F1F2F3] text-sm text-[#1A1A1A] placeholder:text-[#5A5D63]/60 focus:outline-none focus:ring-2 focus:ring-[#650510] focus:border-transparent transition-all"
-          />
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-[#1A1A1A] mb-1">
-            Work Email *
+          <label htmlFor="quote-company" className={labelClasses}>
+            Company name
           </label>
           <input
+            id="quote-company"
+            name="company"
+            type="text"
+            autoComplete="organization"
+            placeholder="e.g. Apex Transformers Ltd."
+            className={`mt-1.5 ${fieldClasses}`}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="quote-email" className={labelClasses}>
+            Work email
+            <RequiredMark />
+          </label>
+          <input
+            id="quote-email"
+            name="email"
             type="email"
             required
+            autoComplete="email"
             placeholder="name@company.com"
-            className="w-full px-4 py-2.5 rounded-lg border border-[#E5E7EB] bg-[#F1F2F3] text-sm text-[#1A1A1A] placeholder:text-[#5A5D63]/60 focus:outline-none focus:ring-2 focus:ring-[#650510] focus:border-transparent transition-all"
+            className={`mt-1.5 ${fieldClasses}`}
           />
         </div>
+
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-[#1A1A1A] mb-1">
-            Phone / WhatsApp *
+          <label htmlFor="quote-phone" className={labelClasses}>
+            Phone or WhatsApp
+            <RequiredMark />
           </label>
           <input
+            id="quote-phone"
+            name="phone"
             type="tel"
             required
+            autoComplete="tel"
             placeholder="+91-XXXXXXXXXX"
-            className="w-full px-4 py-2.5 rounded-lg border border-[#E5E7EB] bg-[#F1F2F3] text-sm text-[#1A1A1A] placeholder:text-[#5A5D63]/60 focus:outline-none focus:ring-2 focus:ring-[#650510] focus:border-transparent transition-all"
+            className={`mt-1.5 ${fieldClasses}`}
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-wider text-[#1A1A1A] mb-1">
-          Product or Specification Details *
+        <label htmlFor="quote-details" className={labelClasses}>
+          Product or specification details
+          <RequiredMark />
         </label>
         <textarea
+          id="quote-details"
+          name="details"
           rows={4}
           required
-          placeholder="Please describe material requirement, thickness, dimensions, or application..."
-          className="w-full px-4 py-2.5 rounded-lg border border-[#E5E7EB] bg-[#F1F2F3] text-sm text-[#1A1A1A] placeholder:text-[#5A5D63]/60 focus:outline-none focus:ring-2 focus:ring-[#650510] focus:border-transparent transition-all"
+          placeholder="Material, thickness, dimensions, quantity or application."
+          className={`mt-1.5 ${fieldClasses}`}
         />
       </div>
 
       <Button
         type="submit"
-        variant="primary"
-        size="lg"
         className="w-full"
-        disabled={isSubmitting}
+        aria-disabled={isSubmitting}
       >
-        {isSubmitting ? "Submitting..." : "Submit Quotation Request"}
+        {isSubmitting ? "Submitting…" : "Submit quotation request"}
       </Button>
     </form>
   );
