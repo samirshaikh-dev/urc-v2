@@ -67,9 +67,7 @@ export function LeadsListView({ initialLeads = [] }) {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
             Leads &amp; Quotation Enquiries
           </h1>
-          <p className="mt-1 text-xs text-[#687080]">
-            Review inbound material RFQs, specification requests, and corporate customer inquiries.
-          </p>
+
         </div>
       </div>
 

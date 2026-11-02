@@ -108,7 +108,7 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
   };
 
   return (
-    <div className="mx-auto max-w-[1100px] pb-32">
+    <div className="mx-auto max-w-[1100px] pb-12">
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#687080] mb-2">
         <Link

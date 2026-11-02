@@ -136,7 +136,7 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
   };
 
   return (
-    <div className="mx-auto max-w-[1100px] pb-32">
+    <div className="mx-auto max-w-[1100px] pb-12">
       {/* Page Header */}
       <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#687080] mb-2">
         <Link
@@ -153,11 +153,11 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
             {isEdit ? "Edit Product" : "New Product"}
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-[#687080]">
+          {/* <p className="mt-1 text-xs sm:text-sm text-[#687080]">
             {isEdit
               ? "Update product specifications, media, or FAQs. Changes take effect across public catalog routes instantly."
               : "Fill in the details below. When published, it will go live immediately on the customer-facing website."}
-          </p>
+          </p> */}
         </div>
       </div>
 
@@ -327,28 +327,28 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
         {/* Sticky Action Bar */}
         <aside
           aria-label="Publishing Controls"
-          className="fixed bottom-0 left-0 right-0 z-30 border-t border-[#D9DCD1] bg-white/95 backdrop-blur-md py-3 px-4 sm:px-8 shadow-xs"
+          className="sticky bottom-0 z-30 mt-10 -mx-4 sm:-mx-8 lg:-mx-10 px-4 sm:px-8 lg:px-10 py-3.5 bg-white/95 backdrop-blur-md border-t border-[#D9DCD1] shadow-2xs"
         >
           <div className="max-w-[1100px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             {/* Left Info */}
-            <div className="flex items-center gap-2.5 text-xs text-[#687080]">
+            <div className="flex items-center gap-2.5 text-xs text-[#687080] min-w-0 w-full sm:w-auto">
               <span className="size-2 rounded-full bg-[#00A85A] shrink-0" aria-hidden="true" />
-              <span className="font-medium text-[#111111]">
+              <span className="font-semibold text-[#111111] truncate">
                 {isEdit ? `Editing: ${name || initialData?.name}` : "Ready to Publish"}
               </span>
               <span className="hidden md:inline text-[#D9DCD1]" aria-hidden="true">
                 •
               </span>
-              <span className="hidden md:inline">
+              <span className="hidden md:inline truncate">
                 Changes apply instantly across public catalog routes.
               </span>
             </div>
 
             {/* Right Buttons */}
-            <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+            <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end shrink-0">
               <Link
                 href="/admin/products"
-                className="h-[42px] px-4 rounded-xl border border-[#D9DCD1] bg-white text-xs font-medium text-[#687080] hover:text-[#111111] hover:bg-[#F1F2EA] flex items-center justify-center transition-colors shadow-2xs"
+                className="h-[40px] px-4 rounded-xl border border-[#D9DCD1] bg-white text-xs font-medium text-[#687080] hover:text-[#111111] hover:bg-[#F1F2EA] flex items-center justify-center transition-colors shadow-2xs"
               >
                 Cancel
               </Link>
@@ -356,7 +356,7 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-[42px] px-6 rounded-xl bg-[#650510] hover:bg-[#4f040c] text-white text-xs sm:text-sm font-semibold shadow-2xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="h-[40px] px-5 rounded-xl bg-[#650510] hover:bg-[#4f040c] text-white text-xs sm:text-sm font-semibold shadow-2xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 <Sparkles className="size-4" />
                 <span>

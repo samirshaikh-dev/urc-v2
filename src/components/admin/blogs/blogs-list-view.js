@@ -89,9 +89,7 @@ export function BlogsListView({ initialBlogs = [] }) {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
             Blogs &amp; Technical Articles
           </h1>
-          <p className="mt-1 text-xs text-[#687080]">
-            Manage technical papers, application notes, material guides, and industry news.
-          </p>
+
         </div>
 
         {/* '+' Add Button */}
