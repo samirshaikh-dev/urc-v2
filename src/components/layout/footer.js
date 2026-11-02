@@ -209,9 +209,23 @@ export async function Footer() {
 
         {/* 3. LEGAL & BOTTOM BAR */}
         <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <p>
               &copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.
+            </p>
+            <span className="hidden sm:inline text-white/30" aria-hidden="true">
+              •
+            </span>
+            <p>
+              Design and developed by{" "}
+              <a
+                href="https://samir-portfolio-dev.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-white/80 hover:text-white underline-offset-2 hover:underline transition-colors duration-150"
+              >
+                Samir Shaikh
+              </a>
             </p>
           </div>
 
