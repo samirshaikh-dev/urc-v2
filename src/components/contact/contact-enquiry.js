@@ -72,7 +72,7 @@ export function ContactEnquiry() {
             <SectionHeading
               kicker="What happens next"
               title="A clear path from requirement to response"
-              description="Send what you know. If a detail is missing, it can be clarified before a response is prepared."
+              // description="Send what you know. If a detail is missing, it can be clarified before a response is prepared."
             />
 
             <ol className="mt-8 divide-y divide-line border-y border-line">
