@@ -5,7 +5,7 @@ import { COMPANY_INFO } from "@/data/company";
 
 export function ContactMain() {
   return (
-    <section className="border-b border-line bg-page py-12 sm:py-16 lg:py-20">
+    <section id="enquiry-form" className="scroll-mt-24 border-b border-line bg-page py-12 sm:py-16 lg:py-20">
       <Container>
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
           {/* Left Column: Enquiry Form */}

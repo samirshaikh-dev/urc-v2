@@ -9,7 +9,7 @@ export function ContactMap() {
   const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
 
   return (
-    <section className="border-b border-line bg-white py-12 sm:py-16">
+    <section id="locations" className="scroll-mt-24 border-b border-line bg-white py-12 sm:py-16">
       <Container>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 items-center">
           {/* Left Details */}

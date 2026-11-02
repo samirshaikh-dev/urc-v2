@@ -38,7 +38,7 @@ const PRODUCT_CAPABILITIES = [
 
 export function AboutWhatWeDo() {
   return (
-    <section className="border-t border-line bg-white py-16 sm:py-24">
+    <section id="what-we-do" className="scroll-mt-24 border-t border-line bg-white py-16 sm:py-24">
       <Container>
         {/* Section Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">

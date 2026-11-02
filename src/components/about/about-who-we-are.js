@@ -10,7 +10,7 @@ const HIGHLIGHTS = [
 
 export function AboutWhoWeAre() {
   return (
-    <section className="border-t border-line bg-page py-16 sm:py-24">
+    <section id="who-we-are" className="scroll-mt-24 border-t border-line bg-page py-16 sm:py-24">
       <Container>
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Left Column: Editorial Company Introduction */}

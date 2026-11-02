@@ -24,7 +24,7 @@ const PRINCIPLES = [
 
 export function AboutApproach() {
   return (
-    <section className="border-t border-line bg-page py-16 sm:py-24">
+    <section id="approach" className="scroll-mt-24 border-t border-line bg-page py-16 sm:py-24">
       <Container>
         {/* Section Header */}
         <div className="max-w-2xl">
