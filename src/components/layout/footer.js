@@ -21,7 +21,7 @@ export async function Footer() {
       <Container className="py-14 sm:py-16">
         <div className="grid gap-10 md:grid-cols-12 lg:gap-12">
           {/* Brand & Purpose */}
-          <div className="md:col-span-5">
+          <div className="md:col-span-12 lg:col-span-3">
             <span aria-hidden="true" className="mb-4 block h-0.5 w-8 bg-yellow" />
             <p className="text-xl font-semibold tracking-tight text-white">
               {SITE_CONFIG.name}
@@ -36,7 +36,7 @@ export async function Footer() {
           </div>
 
           {/* Product Links */}
-          <nav aria-label="Products" className="md:col-span-2">
+          <nav aria-label="Products" className="sm:col-span-6 md:col-span-3 lg:col-span-2">
             <h2 className="text-xs font-semibold text-white uppercase tracking-wider">Products</h2>
             <ul className="mt-4 space-y-2.5">
               {FOOTER_NAV.products.map((item) => (
@@ -49,8 +49,22 @@ export async function Footer() {
             </ul>
           </nav>
 
+          {/* Industries Links */}
+          <nav aria-label="Industries" className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+            <h2 className="text-xs font-semibold text-white uppercase tracking-wider">Industries</h2>
+            <ul className="mt-4 space-y-2.5">
+              {FOOTER_NAV.industries.map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className={linkClasses}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
           {/* Company Links */}
-          <nav aria-label="Company" className="md:col-span-2">
+          <nav aria-label="Company" className="sm:col-span-6 md:col-span-3 lg:col-span-2">
             <h2 className="text-xs font-semibold text-white uppercase tracking-wider">Company</h2>
             <ul className="mt-4 space-y-2.5">
               {FOOTER_NAV.company.map((item) => (
@@ -64,7 +78,7 @@ export async function Footer() {
           </nav>
 
           {/* Contact & Facility */}
-          <div className="md:col-span-3">
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-3">
             <h2 className="text-xs font-semibold text-white uppercase tracking-wider">Manufacturing & Supply</h2>
             <ul className="mt-4 space-y-3 text-xs text-white/75 sm:text-sm">
               <li className="flex items-start gap-2">

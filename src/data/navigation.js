@@ -1,7 +1,7 @@
 export const MAIN_NAV = [
   { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
-  { label: "Capabilities", href: "/capabilities" },
+  { label: "Industries", href: "/industries" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -13,9 +13,16 @@ export const FOOTER_NAV = {
     { label: "Plain Cork Sheets & Rolls", href: "/products/plain-cork" },
     { label: "Transformer Gaskets", href: "/products/transformer-gaskets" },
   ],
+  industries: [
+    { label: "Transformers & Power", href: "/industries#electrical" },
+    { label: "Automotive & Engines", href: "/industries#automotive" },
+    { label: "Railways & Transit", href: "/industries#railway" },
+    { label: "Aerospace & Defense", href: "/industries#aerospace" },
+    { label: "Marine & Construction", href: "/industries#marine" },
+  ],
   company: [
     { label: "About Us", href: "/about" },
-    { label: "Manufacturing & Quality", href: "/capabilities" },
+    { label: "Industries Overview", href: "/industries" },
     { label: "Contact & Location", href: "/contact" },
     { label: "Request a Quote", href: "/#quote" },
   ],
