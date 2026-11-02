@@ -1,0 +1,243 @@
+# United Rubber Cork (URC) - Simple Product Management Architecture Plan
+
+## 1. System Understanding & Objective
+
+The public frontend is built with **Next.js 16 (App Router)** and **Tailwind CSS**, featuring a clean 3-level catalog architecture:
+- `/products` (Main Catalog Overview)
+- `/products/[category]` (Dedicated Category Listing for 4 fixed categories)
+- `/products/[category]/[slug]` (Product Detail Page)
+
+### Core Mandate:
+The client is **non-technical**. The admin portal must be radically simple, foolproof, and completely free of developer jargon.
+
+---
+
+## 2. Strict Rules & Guardrails
+
+1. **No Draft Mode or Statuses**: When the client clicks "Publish", the product is immediately live. No drafts, scheduled releases, or archived states.
+2. **Fixed 4 Categories Only**: The 4 industrial categories are permanently fixed. Do not allow creating, renaming, or deleting categories:
+   - **Cork Products** (`cork-products`)
+   - **Rubberised Cork** (`rubberised-cork`)
+   - **Decorative Cork** (`decorative-cork`)
+   - **Cork Gifts** (`cork-gifts`)
+3. **Zero Complexity Form**: Only ask for the 5 essential fields:
+   - Product Image (Cloudinary)
+   - Product Name
+   - Product Description
+   - Category Selection (Dropdown of 4 fixed categories)
+   - Product FAQs (Dynamic Q&A list)
+4. **Instant Live Updates**: Trigger Next.js `revalidatePath` immediately on submission so the product appears on the live public pages without manual cache purges or server restarts.
+
+---
+
+## 3. Simplified Database Schema (Supabase PostgreSQL + Prisma)
+
+The database schema is stripped of complex configuration flags while maintaining high data integrity:
+
+```prisma
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -------------------------------------------------------------
+// PRODUCT MODEL (Radically Simple)
+// -------------------------------------------------------------
+model Product {
+  id             String       @id @default(cuid())
+  slug           String       @unique // Auto-generated from product name
+  name           String
+  description    String       @db.Text
+  categorySlug   String       // Strictly one of: "cork-products", "rubberised-cork", "decorative-cork", "cork-gifts"
+  
+  // Cloudinary Image
+  imageUrl       String
+  imagePublicId  String?
+  
+  // Timestamps
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // FAQs
+  faqs           ProductFaq[]
+
+  // Indexes for instant frontend retrieval
+  @@index([categorySlug])
+  @@map("products")
+}
+
+// -------------------------------------------------------------
+// PRODUCT FAQS
+// -------------------------------------------------------------
+model ProductFaq {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  question   String
+  answer     String   @db.Text
+  sortOrder  Int      @default(0)
+
+  @@index([productId, sortOrder])
+  @@map("product_faqs")
+}
+```
+
+---
+
+## 4. Admin Portal Flow & UX Design
+
+### Flow 1: Authentication (`/admin/login`)
+- Clean, minimal login screen with United Rubber Cork branding.
+- **Environment-based credentials** (`ADMIN_EMAIL` and `ADMIN_PASSWORD` stored in `.env`).
+- Secure HTTP-only signed session cookie created on successful login.
+- Protected `/admin` routes with Next.js middleware redirecting unauthenticated visits to `/admin/login`.
+- Friendly error messages (e.g., *"Incorrect email or password"*).
+- Simple **"Log Out"** button in the admin header.
+
+### Flow 2: Products Overview (`/admin/products`)
+- **Header**: Clear title *"Product Catalog"* with a prominent maroon **"+ Add New Product"** button.
+- **Category Tabs**: 4 clear tabs corresponding to the 4 categories:
+  - `Cork Products` | `Rubberised Cork` | `Decorative Cork` | `Cork Gifts`
+- **Product List**:
+  - Clean card or table rows showing:
+    - Thumbnail image (80x80 preview)
+    - Product Name
+    - Brief description snippet
+    - Number of FAQs attached
+    - Action buttons: Simple **Edit** and **Delete** (with a confirmation modal: *"Are you sure you want to remove this product?"*).
+
+### Flow 3: Create Product (`/admin/products/new`)
+Single-page, uncluttered form designed for non-technical users:
+
+1. **Category Dropdown**:
+   - Single selector with the 4 human-friendly names:
+     - `Cork Products`
+     - `Rubberised Cork`
+     - `Decorative Cork`
+     - `Cork Gifts`
+2. **Product Name**:
+   - Text input (e.g., *"Natural Cork Gasket Sheet"*).
+   - Slug is automatically generated in the background (`natural-cork-gasket-sheet`).
+3. **Product Image**:
+   - Drag-and-drop or single-click upload box.
+   - Shows instant preview of the uploaded picture with a *"Replace Image"* option.
+   - Uploads securely to Cloudinary with automatic optimization.
+4. **Product Description (Rich-Text Editor)**:
+   - Intuitive WYSIWYG editor (TipTap) designed for non-technical users.
+   - Simple visual toolbar:
+     - **B** (Bold), *I* (Italic)
+     - Bulleted list & Numbered list (for technical properties and specifications)
+     - Subheadings (H2, H3)
+     - Undo / Redo
+   - Client can paste formatted text or format bullets directly.
+   - Outputs clean, safe HTML stored in `Product.description`.
+   - Rendered on the public product page with clean Tailwind typography styling (`prose`).
+
+5. **Product FAQs (Unlimited Questions & Answers)**:
+   - Dynamic, expandable FAQ builder with **no limit** on how many FAQs can be added.
+   - **"+ Add Another FAQ"** button to append new questions at any time.
+   - Each FAQ item includes:
+     - **Question field**: Text input (e.g. *"What is the standard thickness range for this sheet?"*)
+     - **Answer field**: Multi-line answer box
+     - **Reorder controls**: Up / Down arrows to adjust ordering
+     - **Delete button**: Remove an individual FAQ with one click
+   - Displayed on the public product detail page as an interactive, accessible FAQ accordion.
+
+6. **Publish Button**:
+   - Large, prominent primary CTA: **"Publish Product"**.
+   - On click: shows a loading spinner (*"Publishing..."*), uploads image, writes to Supabase, triggers revalidation, and redirects to `/admin/products` with a green toast notification: *"Product published successfully! It is now live on the website."*
+
+---
+
+## 5. Category & Product Page Restructuring
+
+### A. Changes to Category Page (`src/app/products/[category]/page.js`)
+Per instructions, clean up the category page to focus entirely on dynamic products:
+- **Remove:**
+  1. The existing static `#products-list` section (Lines 56–79) containing hardcoded specs snapshot.
+  2. The static `<CategoryBenefits />` section (Lines 81–83).
+- **Replace With:**
+  - A clean, modern **Dynamic Product Listing Grid** fetching directly from the database for the active category:
+    - **Product Image**: Cloudinary CDN image with smooth hover zoom.
+    - **Product Name**: Clear, prominent title.
+    - **One-line Description**: Brief text snippet from the product description.
+    - **"View Details →" CTA**: Direct link navigating to the product's dedicated page.
+
+### B. Dedicated Product Page for Each & Every Product (`src/app/products/[category]/[slug]/page.js`)
+Every single product published by the client gets its own dedicated, SEO-optimized page:
+1. **Breadcrumbs**: `Home` → `Products` → `[Category Name]` → `[Product Name]`.
+2. **Product Overview Hero**:
+   - High-resolution product photo (Cloudinary).
+   - Category badge & Product Name.
+   - Prominent **"Request a Quote"** primary CTA button (prefills `/contact?product=[ProductName]`).
+3. **Rich-Text Description Section**:
+   - Displays the client's full formatted description (bullet points, bold highlights, subheadings) styled via Tailwind typography (`prose`).
+4. **Unlimited Product FAQs Section**:
+   - Dynamic, accessible accordion component rendering all Q&As created by the client for that specific product.
+5. **Final Enquiry Banner**:
+   - Streamlined quotation callout guiding technical buyers to submit drawings or thickness requirements.
+
+---
+
+## 6. Live Frontend Synchronization
+
+When "Publish" is clicked:
+1. Server action executes `prisma.product.create(...)`.
+2. Next.js cache revalidation triggers:
+   ```js
+   revalidatePath('/products');
+   revalidatePath(`/products/${categorySlug}`);
+   revalidatePath(`/products/${categorySlug}/${slug}`);
+   ```
+3. The visitor immediately sees the new product under `/products/[category]` and on the main catalog page without rebuilding the site.
+4. On `/products/[category]/[slug]`, a dedicated **Frequently Asked Questions** accordion renders all FAQs configured by the client.
+
+---
+
+## 7. Required Environment Variables (.env)
+
+```env
+# Database (Supabase PostgreSQL)
+DATABASE_URL="postgresql://postgres:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true"
+
+# Media Storage (Cloudinary URL format)
+CLOUDINARY_URL="cloudinary://api_key:api_secret@cloud_name"
+
+# Admin Authentication (.env based)
+ADMIN_EMAIL="admin@unitedrubbercork.com"
+ADMIN_PASSWORD="a-strong-secure-password"
+ADMIN_SESSION_SECRET="a-random-32-character-secret-key"
+```
+
+---
+
+## 8. Implementation Checklist & Order of Execution
+
+1. **Step 1: Install Required Dependencies**
+   - Runtime: `npm install @prisma/client cloudinary jose @tiptap/react @tiptap/starter-kit`
+   - Development: `npm install -D prisma`
+2. **Step 2: Database Initialization & Seeding**
+   - Apply `prisma/schema.prisma` to Supabase.
+   - Run seed script from existing `src/data/products.js` so verified data is preserved.
+3. **Step 3: Restructure Category Page (`/products/[category]`)**
+   - Remove lines 56–79 (`#products-list` grid) and lines 81–83 (`CategoryBenefits`).
+   - Replace with the clean dynamic Product Listing connected to the database.
+4. **Step 4: Build Dedicated Product Detail Page (`/products/[category]/[slug]`)**
+   - Implement standalone template for every single product:
+     - Hero image + Name + Quote button
+     - Rich-text formatted description
+     - Unlimited dynamic FAQs accordion
+5. **Step 5: Cloudinary Media Upload Handler**
+   - Secure Server Action for signed image uploads.
+6. **Step 6: Admin Portal Pages**
+   - `/admin/login`: Clean authentication screen (.env credentials).
+   - `/admin/products`: 4-tab category listing.
+   - `/admin/products/new`: 5-field non-technical form with "Publish" action.
+   - `/admin/products/[id]/edit`: Simple edit page.
+7. **Step 7: End-to-End Verification**
+   - Log in as admin → Add product under "Rubberised Cork" with image, rich description, and 3 FAQs → Click Publish → Verify instant appearance on `/products/rubberised-cork` and dedicated page `/products/rubberised-cork/[slug]`.

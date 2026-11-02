@@ -1,0 +1,127 @@
+This is a great direction for your admin dashboard. I would follow the same minimal, editorial, clean SaaS admin design rather than using a typical dashboard template with lots of cards, gradients, and unnecessary visual elements.
+
+The reference follows a restrained design system that would work particularly well for your CMS.
+
+## 1. Design direction
+
+[CRM dashboard — Untitled UI by Jordan Hughes® on Dribbble](https://images.openai.com/static-rsc-4/4EqR61Fx-E-CRdmM2o0mMRrc5yqIPIJQ41fA31GB_4can2DG6oAYNoiY0nzUWWPAeNaLevQ-Xf1Shlvh8BGGb_8sgMJ5HRkipJiJDzoJVkNooBpk4Q1G4sxLqRoDAtBqlJfbhleRnuy3-30BMr6TXLS1kPCDSf3mKiQcqw7tmTE?purpose=inline)
+
+[dribbble.com](https://dribbble.com/shots/18567097-CRM-dashboard-Untitled-UI?utm_source=chatgpt.com)
+
+### Overall layout
+
+- Fixed sidebar: Approximately 230px wide.
+- Main content: Flexible width with 32–40px padding.
+- Background: Warm off-white.
+- Sidebar: Same background, separated by a subtle vertical border.
+- Content: Minimal tables, clear typography, subtle borders.
+- Actions: Small square icon buttons.
+
+## 2. Design system
+
+| Element           | Design    |
+| ----------------- | --------- |
+| Background        | `#F7F8F2` |
+| Surface           | `#F1F2EA` |
+| Borders           | `#D9DCD1` |
+| Primary text      | `#111111` |
+| Secondary text    | `#687080` |
+| Active navigation | `#E9EAE1` |
+| Success           | `#00A85A` |
+| Border radius     | 8–10px    |
+| Typography        | Inter     |
+
+## 3. Sidebar structure
+
+[Dashboard designs, themes, templates and downloadable graphic elements on Dribbble](https://images.openai.com/static-rsc-4/sSq4paUCzWa6WesGM13GLz4R359a-QFGPkVrMq7ZXiDO2juwTEC0nDuPUXtVNTb1slmWN0KhCuHdLBbAVMXnYuunw4QqmTSfeOSz7dUBPHo-bq_gcWxaYkPa3odeYFkq1tw0fN0Gi5dUjTnaHD-jUhWXU3G7qt-un9cK9idEnB4?purpose=inline)
+
+[dribbble.com](https://dribbble.com/tags/dashboard?utm_source=chatgpt.com)
+
+Keep navigation simple:
+
+- Logo / MENU
+- Projects
+- Blogs
+- Experience
+- About
+- Resume
+- Contact
+- Socials
+- Testimonials
+- Certificates
+- Notifications
+- Media
+
+Important interactions:
+
+- Collapsible sidebar.
+- Active item with subtle background.
+- Thin active indicator.
+- Consistent Lucide icons.
+- Smooth hover transitions.
+
+## 4. Main content area
+
+The reference uses a very simple content structure:
+
+Page header
+
+- Page title on the left.
+- Add new button on the right.
+
+Data table
+
+- Title
+- Slug
+- Status
+- Actions
+
+Recommended improvements:
+
+- Row hover background.
+- Truncated titles with full title on hover.
+- Published / Draft status indicators.
+- Edit and delete icon buttons.
+- Responsive horizontal scrolling on smaller screens.
+- Consistent row heights.
+
+## 5. Component architecture
+
+If you're using Next.js, I'd structure it like this:
+
+```
+src/
+├── app/
+│   └── admin/
+│       ├── layout.jsx
+│       ├── page.jsx
+│       ├── blogs/
+│       ├── projects/
+│       └── ...
+│
+├── components/
+│   └── admin/
+│       ├── AdminSidebar.jsx
+│       ├── AdminHeader.jsx
+│       ├── AdminLayout.jsx
+│       ├── PageHeader.jsx
+│       ├── DataTable.jsx
+│       ├── StatusBadge.jsx
+│       └── ActionButtons.jsx
+│
+└── styles/
+    └── admin.css
+```
+
+## 6. My recommendation
+
+Don't just copy the screenshot. Use its design language consistently across every admin page.
+
+- Blogs → Table layout.
+- Products → Table layout.
+- Media → Grid layout.
+-  Contact  → Clean form layouts.
+
+The goal: One consistent admin design system, not separate-looking pages.
+
+Next step: Share a screenshot of your current admin dashboard. I'll help map your existing layout into this design, preserving your existing functionality and components rather than rebuilding everything unnecessarily.

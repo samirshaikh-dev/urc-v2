@@ -1,0 +1,42 @@
+Checked task Build Next.js project
+
+To run the seed file and populate your Supabase database with initial products, specifications, and FAQs, follow these two quick steps:
+
+---
+
+### Step 1: Push Schema to Supabase
+First, make sure your tables (`products`, `product_faqs`, `product_specifications`) exist in your database:
+
+```bash
+npx prisma db push
+```
+*(This reads your `DATABASE_URL` from `.env`, creates the tables in Supabase, and generates the Prisma client).*
+
+---
+
+### Step 2: Run the Seed Script
+Once the tables are created, run:
+
+```bash
+npx prisma db seed
+```
+
+Or run the script directly using Node:
+```bash
+node prisma/seed.js
+```
+
+---
+
+### What to Expect:
+You will see output in your terminal confirming the initial products were inserted:
+```text
+Starting database seeding...
+Seeded product: Plain Natural Cork Sheets & Rolls (plain-cork-sheets)
+Seeded product: Rubberised Cork Sheets (RC Sheets) (rubber-cork-sheets)
+Seeded product: Acoustic Decorative Cork Wall Tiles (decorative-cork-tiles)
+Seeded product: Custom Cork Desk Mats & Office Accessories (cork-desk-accessories)
+Database seeding completed successfully!
+```
+
+Once complete, these products and their FAQs will immediately appear in your Admin Portal (`/admin/products`) and across the live category pages (`/products/cork-products`, `/products/rubberised-cork`, etc.).

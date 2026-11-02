@@ -7,20 +7,19 @@ import {
   ShieldCheck,
   Check,
   FileCheck2,
-  HelpCircle,
   Layers,
   Ruler,
 } from "lucide-react";
 import {
   PRODUCTS,
   CATEGORY_DETAILS,
-  getProductBySlug,
   getCategoryBySlug,
-  getProductByCategory,
 } from "@/data/products";
+import { getProductBySlug, getProductsByCategory } from "@/lib/products-db";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { ProductSpecTable } from "@/components/products/product-spec-table";
+import { ProductFaqAccordion } from "@/components/products/product-faq-accordion";
 import { ProductsEnquiryCTA } from "@/components/products/products-enquiry-cta";
 import { constructMetadata } from "@/lib/seo";
 
@@ -33,35 +32,40 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { category: categorySlug, slug: productSlug } = await params;
-  const product = getProductBySlug(productSlug);
+  const product = await getProductBySlug(productSlug, categorySlug);
 
-  if (!product || product.category !== categorySlug) {
+  if (!product) {
     return constructMetadata({
       title: "Product Not Found",
       path: `/products/${categorySlug}/${productSlug}`,
     });
   }
 
+  const cleanDescription = (product.shortDescription || product.fullDescription || "")
+    .replace(/<[^>]*>/g, " ")
+    .slice(0, 160);
+
   return constructMetadata({
     title: `${product.name} | United Rubber Cork`,
-    description: product.shortDescription,
+    description: cleanDescription,
     path: `/products/${product.category}/${product.slug}`,
   });
 }
 
 export default async function ProductDetailPage({ params }) {
   const { category: categorySlug, slug: productSlug } = await params;
-  const product = getProductBySlug(productSlug);
+  const product = await getProductBySlug(productSlug, categorySlug);
   const category = getCategoryBySlug(categorySlug);
 
-  if (!product || product.category !== categorySlug || !category) {
+  if (!product || !category) {
     notFound();
   }
 
   const quoteUrl = `/contact?product=${encodeURIComponent(product.name)}`;
-  const relatedProducts = getProductByCategory(product.category).filter(
-    (p) => p.id !== product.id
-  );
+  const categoryProducts = await getProductsByCategory(product.category);
+  const relatedProducts = categoryProducts.filter((p) => p.slug !== product.slug);
+
+  const hasHtml = typeof product.fullDescription === "string" && /<[a-z][\s\S]*>/i.test(product.fullDescription);
 
   return (
     <>
@@ -90,9 +94,9 @@ export default async function ProductDetailPage({ params }) {
           <div className="overflow-hidden rounded-3xl border border-line bg-white shadow-xs">
             <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
               {/* Product Imagery */}
-              <div className="relative min-h-[320px] w-full bg-field lg:col-span-6 lg:min-h-full">
+              <div className="relative min-h-[340px] w-full bg-field lg:col-span-6 lg:min-h-full">
                 <Image
-                  src={product.image}
+                  src={product.image || "/images/placeholder-product.jpg"}
                   alt={product.name}
                   fill
                   priority
@@ -120,24 +124,36 @@ export default async function ProductDetailPage({ params }) {
                     {product.name}
                   </h1>
 
-                  <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-                    {product.fullDescription || product.shortDescription}
-                  </p>
-
-                  {/* Key Features List */}
-                  <div className="mt-6 border-t border-line/70 pt-4">
-                    <h2 className="text-xs font-semibold uppercase tracking-wider text-orange-ink mb-3">
-                      Key Engineering Capabilities
-                    </h2>
-                    <ul className="space-y-2 text-xs sm:text-sm text-ink/90">
-                      {product.features.map((feat, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <Check className="size-4 shrink-0 text-orange-ink mt-0.5" aria-hidden="true" />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  {/* Description: Rich-Text or Plain */}
+                  <div className="mt-4">
+                    {hasHtml ? (
+                      <div
+                        className="text-sm leading-relaxed text-muted sm:text-base [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_strong]:font-semibold [&_strong]:text-ink"
+                        dangerouslySetInnerHTML={{ __html: product.fullDescription }}
+                      />
+                    ) : (
+                      <p className="text-sm leading-relaxed text-muted sm:text-base whitespace-pre-line">
+                        {product.fullDescription || product.shortDescription}
+                      </p>
+                    )}
                   </div>
+
+                  {/* Key Features List (if available) */}
+                  {Array.isArray(product.features) && product.features.length > 0 && (
+                    <div className="mt-6 border-t border-line/70 pt-4">
+                      <h2 className="text-xs font-semibold uppercase tracking-wider text-orange-ink mb-3">
+                        Key Features &amp; Capabilities
+                      </h2>
+                      <ul className="space-y-2 text-xs sm:text-sm text-ink/90">
+                        {product.features.map((feat, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <Check className="size-4 shrink-0 text-orange-ink mt-0.5" aria-hidden="true" />
+                            <span>{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 {/* Primary Action Buttons */}
@@ -156,85 +172,68 @@ export default async function ProductDetailPage({ params }) {
         </Container>
       </section>
 
-      {/* 02. TECHNICAL SPECIFICATIONS & APPLICATIONS */}
-      <section className="border-t border-line bg-page/40 py-16 sm:py-20">
-        <Container>
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
-            {/* Left Column: Specifications Table */}
-            <div className="lg:col-span-7 space-y-6">
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
-                  Standard Conformance
-                </span>
-                <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                  Technical Specifications
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Parameters adhere to verified industrial standards (IS: 4253 / ASTM F104 / BS Specifications).
-                </p>
+      {/* 02. TECHNICAL SPECIFICATIONS & APPLICATIONS (if specifications exist) */}
+      {Array.isArray(product.specifications) && product.specifications.length > 0 && (
+        <section className="border-t border-line bg-page/40 py-16 sm:py-20">
+          <Container>
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
+              {/* Left Column: Specifications Table */}
+              <div className="lg:col-span-7 space-y-6">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
+                    Technical Data
+                  </span>
+                  <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+                    Specifications &amp; Standards
+                  </h2>
+                </div>
+
+                <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-2xs">
+                  <ProductSpecTable specifications={product.specifications} />
+                </div>
               </div>
 
-              <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-2xs">
-                <ProductSpecTable specifications={product.specifications} />
+              {/* Right Column: Applications */}
+              <div className="lg:col-span-5 space-y-8">
+                {Array.isArray(product.applications) && product.applications.length > 0 && (
+                  <div className="rounded-2xl border border-line bg-white p-6 sm:p-7 shadow-2xs space-y-4">
+                    <h3 className="text-base font-semibold text-ink flex items-center gap-2">
+                      <Ruler className="size-4 text-maroon" />
+                      <span>Industrial Applications</span>
+                    </h3>
+                    <ul className="space-y-2 text-xs sm:text-sm text-ink/80">
+                      {product.applications.map((app, idx) => (
+                        <li key={idx} className="flex items-center gap-2">
+                          <span className="size-1.5 rounded-full bg-orange shrink-0" aria-hidden="true" />
+                          <span>{app}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Trust Signal Box */}
+                <div className="rounded-2xl border border-maroon/20 bg-maroon/5 p-5 text-xs text-ink/80 space-y-2">
+                  <div className="flex items-center gap-2 font-semibold text-maroon">
+                    <ShieldCheck className="size-4" />
+                    <span>Direct Works Guarantee</span>
+                  </div>
+                  <p className="leading-relaxed text-muted">
+                    Manufactured and inspected at our Vapi facility. Material test certificates (MTC) and pre-production samples provided upon request.
+                  </p>
+                </div>
               </div>
             </div>
+          </Container>
+        </section>
+      )}
 
-            {/* Right Column: Applications & What to Share */}
-            <div className="lg:col-span-5 space-y-8">
-              {/* Target Applications */}
-              <div className="rounded-2xl border border-line bg-white p-6 sm:p-7 shadow-2xs space-y-4">
-                <h3 className="text-base font-semibold text-ink flex items-center gap-2">
-                  <Ruler className="size-4 text-maroon" />
-                  <span>Industrial Applications</span>
-                </h3>
-                <ul className="space-y-2 text-xs sm:text-sm text-ink/80">
-                  {product.applications.map((app, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                      <span className="size-1.5 rounded-full bg-orange shrink-0" aria-hidden="true" />
-                      <span>{app}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+      {/* 03. UNLIMITED PRODUCT FAQS ACCORDION */}
+      {Array.isArray(product.faqs) && product.faqs.length > 0 && (
+        <ProductFaqAccordion faqs={product.faqs} productName={product.name} />
+      )}
 
-              {/* What to share when requesting a quote (Psychology.md) */}
-              <div className="rounded-2xl border border-line bg-white p-6 sm:p-7 shadow-2xs space-y-3">
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-orange-ink">
-                  <FileCheck2 className="size-4 text-maroon" />
-                  <span>RFQ Guidance</span>
-                </div>
-                <h3 className="text-base font-semibold text-ink">
-                  What information helps us quote faster?
-                </h3>
-                <p className="text-xs leading-relaxed text-muted">
-                  {product.howToSpecify}
-                </p>
-                <div className="pt-2">
-                  <Link
-                    href={quoteUrl}
-                    className="inline-flex text-xs font-semibold text-maroon hover:underline"
-                  >
-                    Open quotation form with prefilled product →
-                  </Link>
-                </div>
-              </div>
-
-              {/* Trust Signal Box */}
-              <div className="rounded-2xl border border-maroon/20 bg-maroon/5 p-5 text-xs text-ink/80 space-y-2">
-                <div className="flex items-center gap-2 font-semibold text-maroon">
-                  <ShieldCheck className="size-4" />
-                  <span>Direct Works Guarantee</span>
-                </div>
-                <p className="leading-relaxed text-muted">
-                  Manufactured and inspected at our Vapi facility. Physical material test certificates (MTC) and pre-production samples provided upon request.
-                </p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* 03. RELATED PRODUCTS IN THIS CATEGORY */}
+      {/* 04. RELATED PRODUCTS IN THIS CATEGORY */}
       {relatedProducts.length > 0 && (
         <section className="border-t border-line bg-white py-14 sm:py-16">
           <Container>
@@ -259,12 +258,12 @@ export default async function ProductDetailPage({ params }) {
             <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
               {relatedProducts.slice(0, 2).map((rel) => (
                 <div
-                  key={rel.id}
+                  key={rel.id || rel.slug}
                   className="group flex flex-col sm:flex-row overflow-hidden rounded-2xl border border-line bg-page/30 hover:border-maroon/30 transition-colors"
                 >
                   <div className="relative aspect-[16/10] sm:aspect-square w-full sm:w-40 shrink-0 bg-field">
                     <Image
-                      src={rel.image}
+                      src={rel.image || "/images/placeholder-product.jpg"}
                       alt={rel.name}
                       fill
                       sizes="160px"
@@ -279,7 +278,7 @@ export default async function ProductDetailPage({ params }) {
                         </Link>
                       </h3>
                       <p className="mt-1.5 text-xs text-muted line-clamp-2">
-                        {rel.shortDescription}
+                        {rel.shortDescription || rel.description}
                       </p>
                     </div>
                     <div className="mt-3">
@@ -287,7 +286,7 @@ export default async function ProductDetailPage({ params }) {
                         href={`/products/${rel.category}/${rel.slug}`}
                         className="inline-flex items-center gap-1 text-xs font-semibold text-maroon"
                       >
-                        <span>Specifications</span>
+                        <span>View details</span>
                         <ArrowRight className="size-3" />
                       </Link>
                     </div>
@@ -299,7 +298,7 @@ export default async function ProductDetailPage({ params }) {
         </section>
       )}
 
-      {/* 04. PRODUCT FINAL ENQUIRY CTA */}
+      {/* 05. PRODUCT FINAL ENQUIRY CTA */}
       <ProductsEnquiryCTA
         headline={`Request a custom quotation for ${product.name}`}
         description="Submit your thickness, dimensional requirements, or drawing file. Our sales and engineering team will provide comprehensive pricing and lead times."
@@ -309,4 +308,3 @@ export default async function ProductDetailPage({ params }) {
     </>
   );
 }
-

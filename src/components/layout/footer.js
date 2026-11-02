@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FOOTER_NAV } from "@/data/navigation";
 import { SITE_CONFIG } from "@/lib/constants";
 import { COMPANY_INFO } from "@/data/company";
@@ -63,13 +66,14 @@ const SOCIAL_LINKS = [
   },
 ];
 
-async function getCopyrightYear() {
-  "use cache";
-  return new Date().getFullYear();
-}
+export function Footer({ currentYear }) {
+  const pathname = usePathname();
 
-export async function Footer() {
-  const currentYear = await getCopyrightYear();
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
+  const year = currentYear ?? 2026;
 
   return (
     <footer className="relative overflow-hidden bg-maroon text-white border-t border-maroon-deep">
@@ -211,7 +215,7 @@ export async function Footer() {
         <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <p>
-              &copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.
+              &copy; {year} {SITE_CONFIG.name}. All rights reserved.
             </p>
             <span className="hidden sm:inline text-white/30" aria-hidden="true">
               •

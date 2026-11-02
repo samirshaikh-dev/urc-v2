@@ -2,12 +2,11 @@ import { notFound } from "next/navigation";
 import {
   PRODUCT_CATEGORIES,
   CATEGORY_DETAILS,
-  getProductByCategory,
   getCategoryBySlug,
 } from "@/data/products";
+import { getProductsByCategory } from "@/lib/products-db";
 import { CategoryHero } from "@/components/products/category-hero";
 import { CategoryProductCard } from "@/components/products/category-product-card";
-import { CategoryBenefits } from "@/components/products/category-benefits";
 import { CategorySelectionGuide } from "@/components/products/category-selection-guide";
 import { ProductsCustomTooling } from "@/components/products/products-custom-tooling";
 import { ProductsEnquiryCTA } from "@/components/products/products-enquiry-cta";
@@ -46,48 +45,54 @@ export default async function CategoryPage({ params }) {
     notFound();
   }
 
-  const products = getProductByCategory(category.id);
+  const products = await getProductsByCategory(category.id);
 
   return (
     <>
       {/* 01. CATEGORY HERO */}
       <CategoryHero category={category} />
 
-      {/* 02. PRODUCT LISTING GRID */}
+      {/* 02. DYNAMIC PRODUCT LISTING (Replaces old static sections) */}
       <section id="products-list" className="scroll-mt-24 py-12 sm:py-16">
         <Container>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between border-b border-line pb-4">
             <div>
               <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
-                Product Range
+                Products in {category.name}
               </span>
               <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                {category.name} Range &amp; Profiles
+                {category.name} Range
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-muted">
-              Showing {products.length} standard configurations &amp; custom fabrication grades
+              {products.length} {products.length === 1 ? "product" : "products"} available
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
-              <CategoryProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {products.length === 0 ? (
+            <div className="mt-12 rounded-2xl border border-dashed border-line bg-white p-12 text-center">
+              <p className="text-sm font-medium text-ink">No products currently listed in this category.</p>
+              <p className="mt-1 text-xs text-muted">New products added in the Admin Portal will appear here instantly.</p>
+            </div>
+          ) : (
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {products.map((product) => (
+                <CategoryProductCard key={product.id || product.slug} product={product} />
+              ))}
+            </div>
+          )}
         </Container>
       </section>
 
-      {/* 03. APPLICATIONS & ENGINEERING BENEFITS */}
-      <CategoryBenefits category={category} />
+      {/* 03. TECHNICAL SELECTION GUIDE */}
+      {category.selectionGuide && (
+        <CategorySelectionGuide selectionGuide={category.selectionGuide} />
+      )}
 
-      {/* 04. TECHNICAL SELECTION GUIDE */}
-      <CategorySelectionGuide selectionGuide={category.selectionGuide} />
-
-      {/* 05. CUSTOM FABRICATION & TOOLING CALLOUT */}
+      {/* 04. CUSTOM FABRICATION & TOOLING CALLOUT */}
       <ProductsCustomTooling />
 
-      {/* 06. ENQUIRY CTA */}
+      {/* 05. ENQUIRY CTA */}
       <ProductsEnquiryCTA
         headline={`Need custom ${category.name} specifications?`}
         description="Contact our team for technical consultations, custom tolerances, and volume quotations."
@@ -97,4 +102,3 @@ export default async function CategoryPage({ params }) {
     </>
   );
 }
-
