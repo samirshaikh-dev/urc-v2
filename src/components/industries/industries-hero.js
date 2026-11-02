@@ -2,13 +2,6 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 
-const SECTOR_METRICS = [
-  { label: "Transformer Oil Seepage", value: "Zero Permeability" },
-  { label: "Thermal Cycling Limit", value: "-30°C to +120°C" },
-  { label: "Standards Conformance", value: "IS: 4253 / ASTM / BS" },
-  { label: "Tooling Capabilities", value: "CNC & Die Profile Cut" },
-];
-
 export function IndustriesHero() {
   return (
     <section className="relative overflow-hidden pt-4 pb-12 sm:pt-8 sm:pb-16 lg:pb-20">
@@ -37,18 +30,6 @@ export function IndustriesHero() {
                 Browse industry sectors
               </Button>
             </div>
-          </div>
-
-          {/* Quick Sector Ticker */}
-          <div className="mt-12 grid grid-cols-2 gap-4 border-t border-line pt-8 sm:grid-cols-4 lg:gap-6">
-            {SECTOR_METRICS.map((metric) => (
-              <div key={metric.label} className="flex flex-col text-center sm:text-left">
-                <span className="text-xs text-muted font-normal">{metric.label}</span>
-                <span className="mt-1 text-sm font-semibold text-ink sm:text-base">
-                  {metric.value}
-                </span>
-              </div>
-            ))}
           </div>
         </div>
       </Container>

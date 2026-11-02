@@ -2,13 +2,6 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 
-const PRODUCT_METRICS = [
-  { label: "Standard Sheet Formats", value: "915 × 610 / 915 × 915 mm" },
-  { label: "Thickness Availability", value: "1.0 mm to 25.0 mm" },
-  { label: "Elastomer Polymers", value: "NBR / Neoprene / SBR" },
-  { label: "Testing Standard", value: "IS: 4253 / ASTM F104" },
-];
-
 export function ProductsHero() {
   return (
     <section className="relative overflow-hidden pt-4 pb-12 sm:pt-8 sm:pb-16 lg:pb-20">
@@ -38,18 +31,6 @@ export function ProductsHero() {
                 Browse product catalogue
               </Button>
             </div>
-          </div>
-
-          {/* Quick Specs Ticker */}
-          <div className="mt-12 grid grid-cols-2 gap-4 border-t border-line pt-8 sm:grid-cols-4 lg:gap-6">
-            {PRODUCT_METRICS.map((metric) => (
-              <div key={metric.label} className="flex flex-col text-center sm:text-left">
-                <span className="text-xs text-muted font-normal">{metric.label}</span>
-                <span className="mt-1 text-sm font-semibold text-ink sm:text-base">
-                  {metric.value}
-                </span>
-              </div>
-            ))}
           </div>
         </div>
       </Container>
