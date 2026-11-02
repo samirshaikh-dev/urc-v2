@@ -1,21 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ChevronDown } from "lucide-react";
+import { Menu } from "lucide-react";
 import { MAIN_NAV } from "@/data/navigation";
 import { SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "./mobile-nav";
+import { ProductsMegaMenu } from "./products-mega-menu";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [productsOpen, setProductsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const dropdownRef = useRef(null);
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
   useEffect(() => {
@@ -24,17 +23,6 @@ export function Navbar() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close dropdown on click outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setProductsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Close mobile drawer when resizing beyond md breakpoint
@@ -81,60 +69,11 @@ export function Navbar() {
 
               if (hasChildren) {
                 return (
-                  <div
+                  <ProductsMegaMenu
                     key={item.href}
-                    ref={dropdownRef}
-                    className="relative"
-                    onMouseEnter={() => setProductsOpen(true)}
-                    onMouseLeave={() => setProductsOpen(false)}
-                  >
-                    <Link
-                      href={item.href}
-                      aria-expanded={productsOpen}
-                      aria-haspopup="true"
-                      className={cn(
-                        "flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-medium tracking-wide transition-all duration-150 sm:text-sm",
-                        isActive
-                          ? "bg-maroon/5 text-maroon font-semibold"
-                          : "text-ink/80 hover:bg-field hover:text-maroon"
-                      )}
-                    >
-                      <span>{item.label}</span>
-                      <ChevronDown
-                        className={cn(
-                          "size-3.5 transition-transform duration-200",
-                          productsOpen ? "rotate-180 text-maroon" : "text-muted"
-                        )}
-                        aria-hidden="true"
-                      />
-                    </Link>
-
-                    {/* Popover Dropdown Menu matching brand styling */}
-                    {productsOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-64 overflow-hidden rounded-xl border border-line border-t-[3px] border-t-yellow bg-white shadow-xl backdrop-blur-md animate-in fade-in-50 slide-in-from-top-1 duration-150 z-50">
-                        <ul className="py-1.5 divide-y divide-line/40">
-                          {item.children.map((child) => (
-                            <li key={child.label}>
-                              <Link
-                                href={child.href}
-                                onClick={() => setProductsOpen(false)}
-                                className="group flex flex-col px-4 py-2.5 transition-colors hover:bg-field"
-                              >
-                                <span className="text-sm font-medium text-ink transition-colors group-hover:text-maroon">
-                                  {child.label}
-                                </span>
-                                {child.description && (
-                                  <span className="mt-0.5 text-[11px] leading-snug text-muted">
-                                    {child.description}
-                                  </span>
-                                )}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
+                    item={item}
+                    isActive={isActive}
+                  />
                 );
               }
 
