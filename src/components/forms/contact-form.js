@@ -1,17 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, Check, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COMPANY_INFO } from "@/data/company";
 
-const PRODUCT_OPTIONS = [
+const BASE_PRODUCT_OPTIONS = [
   "Select product or material...",
-  "Transformer & Switchgear Cork Gaskets & Frames",
-  "Automotive Gaskets & Clutch Plates",
-  "Heavy Generator Foundation Cork Slabs",
-  "PP Cap Wads & Bottle Closures",
-  "Standard Rubberised Cork Sheets",
+  "Rubberised Cork Sheets (RC Sheets)",
+  "Transformer Gaskets, Strips & Endless Rings",
+  "Continuous Rubber Cork Rolls",
+  "Plain Natural Cork Sheets & Rolls",
+  "Industrial Cork Granules & Graded Cork",
+  "Cork Expansion Joint Filler Boards",
+  "Acoustic Cork Wall Tiles",
+  "Architectural Decorative Cork Panels",
+  "Bulletin Board & Pinning Cork Sheets",
+  "Cork Desk Organizers & Office Accessories",
+  "Eco-Friendly Lifestyle Cork Gifts",
+  "Custom OEM Corporate Cork Merchandise",
   "Custom CNC Drawing-Based Gaskets & Dovetails",
   "General Inquiry / Other",
 ];
@@ -83,14 +91,14 @@ function validate(values) {
 }
 
 function buildMailto(values) {
-  const subject = `B2B Enquiry — ${values.product && values.product !== PRODUCT_OPTIONS[0] ? values.product : "Industrial Cork Solution"}`;
+  const subject = `B2B Enquiry — ${values.product && values.product !== BASE_PRODUCT_OPTIONS[0] ? values.product : "Industrial Cork Solution"}`;
 
   const lines = [
     `Full Name: ${values.name.trim()}`,
     `Company Name: ${values.company.trim()}`,
     `Business Email: ${values.email.trim()}`,
     values.phone.trim() ? `Phone: ${values.phone.trim()}` : null,
-    values.product && values.product !== PRODUCT_OPTIONS[0]
+    values.product && values.product !== BASE_PRODUCT_OPTIONS[0]
       ? `Product / Material: ${values.product}`
       : null,
     "",
@@ -103,11 +111,28 @@ function buildMailto(values) {
   )}`;
 }
 
-export function ContactForm() {
-  const [values, setValues] = useState(INITIAL_VALUES);
+function ContactFormInner() {
+  const searchParams = useSearchParams();
+  const queryProduct = searchParams ? searchParams.get("product") : null;
+
+  const [values, setValues] = useState(() => ({
+    ...INITIAL_VALUES,
+    product: queryProduct || "",
+  }));
+  const [productOptions, setProductOptions] = useState(BASE_PRODUCT_OPTIONS);
   const [errors, setErrors] = useState({});
   const [preparedHref, setPreparedHref] = useState("");
   const preparedHeadingRef = useRef(null);
+
+  // Sync query parameter with selected material if passed
+  useEffect(() => {
+    if (queryProduct) {
+      if (!productOptions.includes(queryProduct)) {
+        setProductOptions([BASE_PRODUCT_OPTIONS[0], queryProduct, ...BASE_PRODUCT_OPTIONS.slice(1)]);
+      }
+      setValues((prev) => ({ ...prev, product: queryProduct }));
+    }
+  }, [queryProduct]);
 
   useEffect(() => {
     if (preparedHref) {
@@ -221,6 +246,20 @@ export function ContactForm() {
       {Object.keys(errors).length > 0 && (
         <div className="rounded-xl border border-maroon/20 bg-maroon/5 p-3.5 text-xs text-maroon">
           Please correct the highlighted fields below before submitting.
+        </div>
+      )}
+
+      {/* Product Highlight Banner if preselected */}
+      {values.product && values.product !== BASE_PRODUCT_OPTIONS[0] && (
+        <div className="rounded-xl border border-line bg-page px-3.5 py-2 text-xs text-ink/80 flex items-center justify-between">
+          <span>Inquiring about: <strong className="text-maroon">{values.product}</strong></span>
+          <button
+            type="button"
+            onClick={() => setValues((prev) => ({ ...prev, product: "" }))}
+            className="text-[11px] text-muted hover:text-maroon underline cursor-pointer"
+          >
+            Clear selection
+          </button>
         </div>
       )}
 
@@ -342,8 +381,8 @@ export function ContactForm() {
           onChange={handleChange}
           className={`${fieldClasses} border-line bg-field cursor-pointer`}
         >
-          {PRODUCT_OPTIONS.map((opt, i) => (
-            <option key={opt} value={i === 0 ? "" : opt}>
+          {productOptions.map((opt, i) => (
+            <option key={opt} value={i === 0 && !queryProduct ? "" : opt}>
               {opt}
             </option>
           ))}
@@ -388,5 +427,13 @@ export function ContactForm() {
         </Button>
       </div>
     </form>
+  );
+}
+
+export function ContactForm() {
+  return (
+    <Suspense fallback={<div className="p-6 text-center text-xs text-muted">Loading enquiry form...</div>}>
+      <ContactFormInner />
+    </Suspense>
   );
 }

@@ -1,39 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { ArrowRight, Check } from "lucide-react";
 import { PRODUCTS, PRODUCT_CATEGORIES } from "@/data/products";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { ProductSpecTable } from "@/components/products/product-spec-table";
 import { cn } from "@/lib/utils";
 
 export function ProductBento() {
-  const pathname = usePathname();
-  const isProductsPage = pathname === "/products";
   const [activeCategory, setActiveCategory] = useState("all");
 
-  useEffect(() => {
-    const syncHash = () => {
-      if (typeof window !== "undefined" && window.location.hash) {
-        const hash = window.location.hash.replace("#", "");
-        const matched = PRODUCT_CATEGORIES.find((c) => c.id === hash);
-        if (matched) {
-          setActiveCategory(matched.id);
-        }
-      }
-    };
-    syncHash();
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
-  }, []);
-
+  // When "all" is active on home, show 4 flagship products (one representing each category)
   const filteredProducts =
     activeCategory === "all"
-      ? PRODUCTS
+      ? [
+          PRODUCTS.find((p) => p.id === "rubber-cork-sheets"),
+          PRODUCTS.find((p) => p.id === "plain-cork-sheets"),
+          PRODUCTS.find((p) => p.id === "acoustic-cork-wall-tiles"),
+          PRODUCTS.find((p) => p.id === "cork-desk-accessories"),
+        ].filter(Boolean)
       : PRODUCTS.filter((p) => p.category === activeCategory);
 
   return (
@@ -46,7 +33,7 @@ export function ProductBento() {
               Product Catalogue
             </span>
             <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
-              Engineered cork materials & cut components
+              Engineered cork materials &amp; cut components
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
               Standard sheets and precision-fabricated parts manufactured to your technical drawings, dimensions, and operational media.
@@ -77,7 +64,7 @@ export function ProductBento() {
           ))}
         </div>
 
-        {/* Product Bento Grid - Single Column Layout */}
+        {/* Product Bento Grid */}
         <div className="mt-10 grid grid-cols-1 gap-8">
           {filteredProducts.map((product) => (
             <div
@@ -105,7 +92,9 @@ export function ProductBento() {
               <div className="flex flex-1 flex-col justify-between p-6 sm:p-8">
                 <div>
                   <h3 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl group-hover:text-maroon transition-colors duration-150">
-                    {product.name}
+                    <Link href={`/products/${product.category}/${product.slug}`}>
+                      {product.name}
+                    </Link>
                   </h3>
 
                   <p className="mt-3 text-sm leading-relaxed text-muted">
@@ -121,58 +110,20 @@ export function ProductBento() {
                       </li>
                     ))}
                   </ul>
-
-                  {/* On product page, display specifications table and application tags directly */}
-                  {isProductsPage && product.specifications && (
-                    <div className="mt-6 space-y-4 border-t border-line/70 pt-4">
-                      <div>
-                        <h4 className="text-xs font-semibold text-maroon uppercase tracking-wider mb-2">
-                          Key Industrial Applications:
-                        </h4>
-                        <div className="flex flex-wrap gap-1.5">
-                          {product.applications.map((app) => (
-                            <span
-                              key={app}
-                              className="rounded-full bg-field border border-line px-2.5 py-0.5 text-[11px] text-ink"
-                            >
-                              {app}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="text-xs font-semibold text-maroon uppercase tracking-wider mb-2">
-                          Technical Parameters:
-                        </h4>
-                        <ProductSpecTable specifications={product.specifications} />
-                      </div>
-                    </div>
-                  )}
                 </div>
 
-                {/* Action Hooks - Redirect to Product Page without opening dialog */}
+                {/* Action Hooks */}
                 <div className="mt-6 flex items-center justify-between border-t border-line pt-4">
-                  {isProductsPage ? (
-                    <Link
-                      href="/contact"
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
-                    >
-                      <span>Custom drawing inquiry</span>
-                      <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
-                    </Link>
-                  ) : (
-                    <Link
-                      href={`/products#${product.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
-                    >
-                      <span>Detailed specifications</span>
-                      <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
-                    </Link>
-                  )}
+                  <Link
+                    href={`/products/${product.category}/${product.slug}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
+                  >
+                    <span>Detailed specifications</span>
+                    <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
+                  </Link>
 
                   <Button
-                    href="/contact"
+                    href={`/contact?product=${encodeURIComponent(product.name)}`}
                     size="sm"
                     className="rounded-full px-4 text-xs"
                   >

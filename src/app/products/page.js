@@ -1,30 +1,57 @@
 import { ProductsHero } from "@/components/products/products-hero";
-import { ProductBento } from "@/components/home/product-bento";
+import { CategoryPills } from "@/components/products/category-pills";
+import { ProductsOverviewGrid } from "@/components/products/products-overview-grid";
+import { CategorySelectionGuide } from "@/components/products/category-selection-guide";
+import { ProductsProcess } from "@/components/products/products-process";
 import { ProductsCustomTooling } from "@/components/products/products-custom-tooling";
-import { FinalCTA } from "@/components/home/final-cta";
+import { ProductsEnquiryCTA } from "@/components/products/products-enquiry-cta";
+import { Container } from "@/components/ui/container";
 import { constructMetadata } from "@/lib/seo";
 
 export const metadata = constructMetadata({
-  title: "Industrial Cork Products & Custom Components",
+  title: "Industrial Materials for Diverse Applications | United Rubber Cork",
   description:
-    "Explore United Rubber Cork's full range of rubberised cork sheets, transformer gasket frames, automotive seals, and plain natural cork sheets.",
+    "Explore United Rubber Cork's full range of natural cork sheets, rubberised cork gaskets, transformer frames, acoustic tiles, and eco-friendly cork gifts. Conforming to IS: 4253 / ASTM F104.",
   path: "/products",
 });
+
+const GENERAL_SELECTION_GUIDE = {
+  headline: "The right material starts with the right understanding",
+  content:
+    "Every industrial application has specific constraints. For high-temperature transformer oils and aggressive fuels, Nitrile-bonded rubberised cork (RC70C / RC80C) provides permanent hermetic sealing. For acoustic underlayment, foundation dampening, and stoppers, high-density agglomerated natural cork delivers exceptional cellular recovery without synthetic elastomers.",
+};
 
 export default function ProductsPage() {
   return (
     <>
-      {/* 1. PRODUCTS HERO */}
+      {/* 01. PRODUCTS HERO */}
       <ProductsHero />
 
-      {/* 2. PRODUCT BENTO CATALOGUE */}
-      <ProductBento />
+      {/* 02. CATEGORY PILL NAVIGATION */}
+      <div className="pb-4">
+        <Container>
+          <CategoryPills activeCategory="all" />
+        </Container>
+      </div>
 
-      {/* 3. DRAWING & CUSTOM TOOLING CALLOUT */}
+      {/* 03. CORE PRODUCT CATEGORIES GRID */}
+      <ProductsOverviewGrid />
+
+      {/* 04. MATERIAL SELECTION GUIDANCE (PSYCHOLOGY.MD) */}
+      <CategorySelectionGuide selectionGuide={GENERAL_SELECTION_GUIDE} />
+
+      {/* 05. HOW WE WORK WITH TECHNICAL BUYERS */}
+      <ProductsProcess />
+
+      {/* 06. DRAWING & CUSTOM TOOLING CALLOUT */}
       <ProductsCustomTooling />
 
-      {/* 4. FINAL CTA */}
-      <FinalCTA />
+      {/* 07. ENQUIRY CTA */}
+      <ProductsEnquiryCTA
+        headline="Looking for a specific material?"
+        description="Tell us what you need. Share your application, thickness, or technical drawing, and our engineering team will help you find the right solution."
+        buttonText="Request a Quote"
+      />
     </>
   );
 }
