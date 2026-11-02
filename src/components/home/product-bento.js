@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ArrowRight, Check, FileSpreadsheet, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowRight, Check } from "lucide-react";
 import { PRODUCTS, PRODUCT_CATEGORIES } from "@/data/products";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
@@ -10,8 +12,9 @@ import { ProductSpecTable } from "@/components/products/product-spec-table";
 import { cn } from "@/lib/utils";
 
 export function ProductBento() {
+  const pathname = usePathname();
+  const isProductsPage = pathname === "/products";
   const [activeCategory, setActiveCategory] = useState("all");
-  const [selectedProductForModal, setSelectedProductForModal] = useState(null);
 
   useEffect(() => {
     const syncHash = () => {
@@ -118,19 +121,56 @@ export function ProductBento() {
                       </li>
                     ))}
                   </ul>
+
+                  {/* On product page, display specifications table and application tags directly */}
+                  {isProductsPage && product.specifications && (
+                    <div className="mt-6 space-y-4 border-t border-line/70 pt-4">
+                      <div>
+                        <h4 className="text-xs font-semibold text-maroon uppercase tracking-wider mb-2">
+                          Key Industrial Applications:
+                        </h4>
+                        <div className="flex flex-wrap gap-1.5">
+                          {product.applications.map((app) => (
+                            <span
+                              key={app}
+                              className="rounded-full bg-field border border-line px-2.5 py-0.5 text-[11px] text-ink"
+                            >
+                              {app}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="text-xs font-semibold text-maroon uppercase tracking-wider mb-2">
+                          Technical Parameters:
+                        </h4>
+                        <ProductSpecTable specifications={product.specifications} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Action Hooks */}
+              {/* Action Hooks - Redirect to Product Page without opening dialog */}
               <div className="flex items-center justify-between border-t border-line bg-page/30 px-6 py-4 sm:px-8">
-                <button
-                  type="button"
-                  onClick={() => setSelectedProductForModal(product)}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-muted hover:text-maroon transition-colors cursor-pointer"
-                >
-                  <span>Detailed specifications</span>
-                  <ArrowRight className="size-3.5" />
-                </button>
+                {isProductsPage ? (
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
+                  >
+                    <span>Custom drawing inquiry</span>
+                    <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/products#${product.id}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
+                  >
+                    <span>Detailed specifications</span>
+                    <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
+                  </Link>
+                )}
 
                 <Button
                   href="/contact"
@@ -143,84 +183,6 @@ export function ProductBento() {
             </div>
           ))}
         </div>
-
-        {/* Technical Specification Modal */}
-        {selectedProductForModal && (
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-spec-title"
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60 backdrop-blur-xs animate-in fade-in duration-200"
-          >
-            <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-line bg-white p-6 sm:p-8 shadow-xl">
-              <div className="flex items-center justify-between border-b border-line pb-4">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
-                    Technical Specification Sheet
-                  </span>
-                  <h3 id="modal-spec-title" className="text-xl font-semibold text-ink sm:text-2xl mt-0.5">
-                    {selectedProductForModal.name}
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedProductForModal(null)}
-                  className="rounded-full p-2 text-muted hover:bg-field hover:text-ink transition-colors cursor-pointer"
-                  aria-label="Close dialog"
-                >
-                  <X className="size-5" />
-                </button>
-              </div>
-
-              <div className="mt-6 space-y-6">
-                <div>
-                  <h4 className="text-xs font-semibold text-maroon uppercase tracking-wider">
-                    Primary Applications:
-                  </h4>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {selectedProductForModal.applications.map((app) => (
-                      <span
-                        key={app}
-                        className="rounded-full bg-field border border-line px-3 py-1 text-xs text-ink"
-                      >
-                        {app}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="text-xs font-semibold text-maroon uppercase tracking-wider mb-2">
-                    Verified Technical Parameters:
-                  </h4>
-                  <ProductSpecTable specifications={selectedProductForModal.specifications} />
-                </div>
-
-                <div className="rounded-2xl border border-line bg-page p-4 text-xs text-muted leading-relaxed">
-                  <span className="font-semibold text-ink">Custom dimensions or CAD profiling?</span> We manufacture custom endless rings, cut frames, and die-cut gaskets according to provided engineering drawings.
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-wrap items-center justify-end gap-3 border-t border-line pt-4">
-                <button
-                  type="button"
-                  onClick={() => setSelectedProductForModal(null)}
-                  className="rounded-full px-5 py-2 text-xs font-medium text-muted hover:text-ink cursor-pointer"
-                >
-                  Close
-                </button>
-                <Button
-                  href="/contact"
-                  size="sm"
-                  className="rounded-full px-5 text-xs"
-                  onClick={() => setSelectedProductForModal(null)}
-                >
-                  Request quote for this product
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
       </Container>
     </section>
   );
