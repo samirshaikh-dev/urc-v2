@@ -8,27 +8,36 @@ export function AboutHero() {
       <Container>
         <div className="relative rounded-3xl border border-line bg-white p-6 shadow-xs sm:p-12 lg:p-16">
           <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-line bg-page px-3.5 py-1 text-xs font-medium text-ink/80">
+            {/* Minimal Editorial Category Pill */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-line bg-page px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-ink">
               <span className="size-2 rounded-full bg-orange animate-pulse" aria-hidden="true" />
-              <span>Manufacturing Heritage &amp; Quality</span>
+              <span>About United Rubber Cork</span>
             </div>
 
+            {/* Main Headline */}
             <h1 className="mt-6 text-3xl font-semibold tracking-tight text-ink sm:text-5xl sm:leading-[1.12] lg:text-[3.25rem]">
-              Specialized cork engineering for{" "}
-              <span className="text-maroon">industrial excellence.</span>
+              Engineered Materials.{" "}
+              <span className="text-maroon">Reliable Performance.</span>
             </h1>
 
+            {/* Short introductory paragraph incorporating 13+ years and quality commitment */}
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-              United Rubber Cork is an established Indian manufacturer and bulk supplier of engineered cork and rubberised-cork materials, serving electrical transformer builders, automotive OEMs, and heavy equipment manufacturers.
+              United Rubber Cork has been an established presence in the Indian cork industry for over 13 years. Dedicated to uncompromising quality, customer satisfaction, and service, we engineer high-grade cork and rubberised cork products for India&apos;s leading manufacturers.
             </p>
 
+            {/* Dual CTAs */}
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Button href="/contact" size="md" className="rounded-full px-6 shadow-sm">
                 Request a quotation
                 <ArrowRight className="size-4 ml-1.5" />
               </Button>
-              <Button href="#pillars" variant="secondary" size="md" className="rounded-full px-6">
-                Our capabilities
+              <Button
+                href="/products"
+                variant="secondary"
+                size="md"
+                className="rounded-full px-6"
+              >
+                Explore products
               </Button>
             </div>
           </div>

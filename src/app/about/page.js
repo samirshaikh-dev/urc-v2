@@ -1,30 +1,34 @@
 import { AboutHero } from "@/components/about/about-hero";
-import { AboutPillars } from "@/components/about/about-pillars";
-import { AboutCallout } from "@/components/about/about-callout";
-import { FinalCTA } from "@/components/home/final-cta";
+import { AboutWhoWeAre } from "@/components/about/about-who-we-are";
+import { AboutWhatWeDo } from "@/components/about/about-what-we-do";
+import { AboutApproach } from "@/components/about/about-approach";
+import { AboutCTA } from "@/components/about/about-cta";
 import { constructMetadata } from "@/lib/seo";
 
 export const metadata = constructMetadata({
-  title: "About Us & Manufacturing Heritage",
+  title: "About Us | United Rubber Cork — Indian Cork & Rubberised Cork Manufacturer",
   description:
-    "Learn about United Rubber Cork — dedicated Indian manufacturer and bulk supplier of high-resilience rubberised cork sheets, transformer gaskets, and engineered cork composites.",
+    "Over 13 years of expertise in the Indian cork industry. United Rubber Cork manufactures specialized cork sheets, transformer gaskets, clutch plate materials, and generator foundation slabs.",
   path: "/about",
 });
 
 export default function AboutPage() {
   return (
     <>
-      {/* 1. ABOUT HERO */}
+      {/* 01. HERO – ABOUT UNITED RUBBER CORK */}
       <AboutHero />
 
-      {/* 2. CORE MANUFACTURING PILLARS */}
-      <AboutPillars />
+      {/* 02. WHO WE ARE (2-COLUMN EDITORIAL + IMAGE) */}
+      <AboutWhoWeAre />
 
-      {/* 3. CALLOUT */}
-      <AboutCallout />
+      {/* 03. WHAT WE DO (CORE PRODUCT & GRADE HIGHLIGHTS) */}
+      <AboutWhatWeDo />
 
-      {/* 4. FINAL CTA */}
-      <FinalCTA />
+      {/* 04. OUR APPROACH (3 PRINCIPLES: MATERIAL QUALITY, APPLICATION SOLUTIONS, RELIABLE SUPPLY) */}
+      <AboutApproach />
+
+      {/* 05. CONTACT CTA */}
+      <AboutCTA />
     </>
   );
 }
