@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ArrowRight, Check, FileSpreadsheet, X } from "lucide-react";
 import { PRODUCTS, PRODUCT_CATEGORIES } from "@/data/products";
@@ -12,6 +12,21 @@ import { cn } from "@/lib/utils";
 export function ProductBento() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedProductForModal, setSelectedProductForModal] = useState(null);
+
+  useEffect(() => {
+    const syncHash = () => {
+      if (typeof window !== "undefined" && window.location.hash) {
+        const hash = window.location.hash.replace("#", "");
+        const matched = PRODUCT_CATEGORIES.find((c) => c.id === hash);
+        if (matched) {
+          setActiveCategory(matched.id);
+        }
+      }
+    };
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, []);
 
   const filteredProducts =
     activeCategory === "all"
@@ -64,7 +79,8 @@ export function ProductBento() {
           {filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-line bg-white transition-all duration-200 hover:border-maroon/30 hover:shadow-sm"
+              id={product.id}
+              className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-line bg-white transition-all duration-200 hover:border-maroon/30 hover:shadow-sm scroll-mt-28"
             >
               <div>
                 {/* Product Imagery */}

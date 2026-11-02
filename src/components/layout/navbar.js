@@ -109,29 +109,24 @@ export function Navbar() {
                       />
                     </Link>
 
-                    {/* Popover Dropdown Menu */}
+                    {/* Popover Dropdown Menu matching brand styling */}
                     {productsOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-72 rounded-2xl border border-line bg-white/95 p-2 shadow-lg backdrop-blur-md animate-in fade-in-50 slide-in-from-top-1 duration-150 z-50">
-                        <div className="px-3 py-1.5 border-b border-line/60 mb-1">
-                          <span className="text-[11px] font-semibold text-orange-ink uppercase tracking-wider">
-                            Product Categories
-                          </span>
-                        </div>
-                        <ul className="space-y-0.5">
+                      <div className="absolute top-full left-0 mt-2 w-64 overflow-hidden rounded-xl border border-line border-t-[3px] border-t-yellow bg-white shadow-xl backdrop-blur-md animate-in fade-in-50 slide-in-from-top-1 duration-150 z-50">
+                        <ul className="py-1.5 divide-y divide-line/40">
                           {item.children.map((child) => (
                             <li key={child.label}>
                               <Link
                                 href={child.href}
                                 onClick={() => setProductsOpen(false)}
-                                className="group block rounded-xl p-2.5 transition-colors hover:bg-field"
+                                className="group flex flex-col px-4 py-2.5 transition-colors hover:bg-field"
                               >
-                                <div className="text-xs font-semibold text-ink group-hover:text-maroon transition-colors">
+                                <span className="text-sm font-medium text-ink transition-colors group-hover:text-maroon">
                                   {child.label}
-                                </div>
+                                </span>
                                 {child.description && (
-                                  <div className="mt-0.5 text-[11px] leading-tight text-muted">
+                                  <span className="mt-0.5 text-[11px] leading-snug text-muted">
                                     {child.description}
-                                  </div>
+                                  </span>
                                 )}
                               </Link>
                             </li>
