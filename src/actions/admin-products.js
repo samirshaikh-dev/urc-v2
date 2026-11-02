@@ -52,7 +52,7 @@ export async function createProductAction(payload) {
     return { success: false, error: "Unauthorized. Please log in again." };
   }
 
-  const { name, description, categorySlug, imageFileUri, faqs = [] } = payload;
+  const { name, description, categorySlug, imageFileUri, faqs = [], specifications = [] } = payload;
 
   if (!name || !name.trim()) {
     return { success: false, error: "Product name is required." };
@@ -90,18 +90,25 @@ export async function createProductAction(payload) {
     let finalSlug = baseSlug;
     let counter = 1;
 
-    // Check if slug already exists
     while (await prisma.product.findUnique({ where: { slug: finalSlug } })) {
       finalSlug = `${baseSlug}-${counter}`;
       counter++;
     }
 
-    // 3. Clean FAQs
+    // 3. Clean FAQs & Specifications
     const cleanFaqs = (faqs || [])
       .filter((f) => f.question && f.question.trim() && f.answer && f.answer.trim())
       .map((f, idx) => ({
         question: f.question.trim(),
         answer: f.answer.trim(),
+        sortOrder: idx,
+      }));
+
+    const cleanSpecs = (specifications || [])
+      .filter((s) => s.property && s.property.trim() && s.value && s.value.trim())
+      .map((s, idx) => ({
+        property: s.property.trim(),
+        value: s.value.trim(),
         sortOrder: idx,
       }));
 
@@ -116,6 +123,9 @@ export async function createProductAction(payload) {
         imagePublicId,
         faqs: {
           create: cleanFaqs,
+        },
+        specifications: {
+          create: cleanSpecs,
         },
       },
     });
@@ -142,6 +152,117 @@ export async function createProductAction(payload) {
 }
 
 /**
+ * Update an existing product
+ */
+export async function updateProductAction(productId, payload) {
+  const session = await getAdminSession();
+  if (!session) {
+    return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
+  const { name, description, categorySlug, imageFileUri, faqs = [], specifications = [] } = payload;
+
+  if (!productId) {
+    return { success: false, error: "Product ID is required." };
+  }
+
+  if (!name || !name.trim()) {
+    return { success: false, error: "Product name is required." };
+  }
+
+  if (!description || !description.trim()) {
+    return { success: false, error: "Product description is required." };
+  }
+
+  const validCategories = ["cork-products", "rubberised-cork", "decorative-cork", "cork-gifts"];
+  if (!validCategories.includes(categorySlug)) {
+    return { success: false, error: "Please select a valid category." };
+  }
+
+  try {
+    const existing = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!existing) {
+      return { success: false, error: "Product not found." };
+    }
+
+    let imageUrl = existing.imageUrl;
+    let imagePublicId = existing.imagePublicId;
+
+    // Only upload to Cloudinary if a new local image was chosen
+    if (imageFileUri && imageFileUri.startsWith("data:image")) {
+      const uploadRes = await uploadToCloudinary(imageFileUri);
+      if (!uploadRes.success) {
+        return { success: false, error: uploadRes.error || "Image upload failed." };
+      }
+      if (imagePublicId) {
+        await deleteFromCloudinary(imagePublicId).catch(() => {});
+      }
+      imageUrl = uploadRes.url;
+      imagePublicId = uploadRes.publicId;
+    }
+
+    const cleanFaqs = (faqs || [])
+      .filter((f) => f.question && f.question.trim() && f.answer && f.answer.trim())
+      .map((f, idx) => ({
+        question: f.question.trim(),
+        answer: f.answer.trim(),
+        sortOrder: idx,
+      }));
+
+    const cleanSpecs = (specifications || [])
+      .filter((s) => s.property && s.property.trim() && s.value && s.value.trim())
+      .map((s, idx) => ({
+        property: s.property.trim(),
+        value: s.value.trim(),
+        sortOrder: idx,
+      }));
+
+    // In a transaction: delete old faqs/specs and update product with new ones
+    await prisma.$transaction([
+      prisma.productFaq.deleteMany({ where: { productId } }),
+      prisma.productSpecification.deleteMany({ where: { productId } }),
+      prisma.product.update({
+        where: { id: productId },
+        data: {
+          name: name.trim(),
+          categorySlug,
+          description,
+          imageUrl,
+          imagePublicId,
+          faqs: {
+            create: cleanFaqs,
+          },
+          specifications: {
+            create: cleanSpecs,
+          },
+        },
+      }),
+    ]);
+
+    revalidatePath("/products");
+    revalidatePath(`/products/${categorySlug}`);
+    revalidatePath(`/products/${categorySlug}/${existing.slug}`);
+    revalidatePath("/admin/products");
+
+    return {
+      success: true,
+      slug: existing.slug,
+      categorySlug,
+      productName: name.trim(),
+    };
+  } catch (error) {
+    console.error("Failed to update product:", error);
+    return {
+      success: false,
+      error: error.message || "An unexpected error occurred while updating the product.",
+    };
+  }
+}
+
+/**
  * Delete a product
  */
 export async function deleteProductAction(productId) {
@@ -159,17 +280,14 @@ export async function deleteProductAction(productId) {
       return { success: false, error: "Product not found." };
     }
 
-    // Delete image from Cloudinary if stored
     if (product.imagePublicId) {
       await deleteFromCloudinary(product.imagePublicId);
     }
 
-    // Delete product (cascades to FAQs)
     await prisma.product.delete({
       where: { id: productId },
     });
 
-    // Revalidate paths
     revalidatePath("/products");
     revalidatePath(`/products/${product.categorySlug}`);
     revalidatePath("/admin/products");
@@ -180,4 +298,3 @@ export async function deleteProductAction(productId) {
     return { success: false, error: error.message || "Failed to delete product." };
   }
 }
-

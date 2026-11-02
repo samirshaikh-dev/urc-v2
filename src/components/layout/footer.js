@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { FOOTER_NAV } from "@/data/navigation";
 import { SITE_CONFIG } from "@/lib/constants";
 import { COMPANY_INFO } from "@/data/company";
@@ -67,12 +64,6 @@ const SOCIAL_LINKS = [
 ];
 
 export function Footer({ currentYear }) {
-  const pathname = usePathname();
-
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
-
   const year = currentYear ?? 2026;
 
   return (

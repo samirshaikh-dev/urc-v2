@@ -36,10 +36,6 @@ export function Navbar() {
     return () => breakpoint.removeEventListener("change", handleChange);
   }, []);
 
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
-
   return (
     <header className="sticky top-0 z-40 w-full transition-all duration-200">
       <div className="px-4 py-2.5 sm:px-6">

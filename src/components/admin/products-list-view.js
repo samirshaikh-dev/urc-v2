@@ -94,9 +94,9 @@ export function ProductsListView({ initialProducts = [] }) {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
             Products
           </h1>
-          <p className="mt-1 text-xs text-[#687080]">
+          {/* <p className="mt-1 text-xs text-[#687080]">
             {products.length} {products.length === 1 ? "product" : "products"} published across 4 industrial categories.
-          </p>
+          </p> */}
         </div>
 
         {/* '+' Add Button — Exact Style from Reference Screenshot */}
@@ -293,7 +293,7 @@ export function ProductsListView({ initialProducts = [] }) {
 
                         {/* Edit Button */}
                         <Link
-                          href={`/admin/products/new?category=${categorySlug}`}
+                          href={`/admin/products/${product.id}/edit`}
                           className="size-7 sm:size-8 rounded-lg border border-[#D9DCD1] bg-white hover:bg-[#F1F2EA] flex items-center justify-center text-[#111111] transition-colors shadow-2xs"
                           title="Edit product"
                         >

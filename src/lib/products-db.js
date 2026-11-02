@@ -147,3 +147,60 @@ export async function getAllProducts() {
   }));
 }
 
+
+
+/**
+ * Fetch a single product by its database ID (or static fallback).
+ */
+export async function getProductById(id) {
+  try {
+    if (process.env.DATABASE_URL) {
+      const dbProduct = await prisma.product.findUnique({
+        where: { id },
+        include: {
+          faqs: { orderBy: { sortOrder: "asc" } },
+          specifications: { orderBy: { sortOrder: "asc" } },
+        },
+      });
+
+      if (dbProduct) {
+        return {
+          id: dbProduct.id,
+          slug: dbProduct.slug,
+          name: dbProduct.name,
+          categorySlug: dbProduct.categorySlug,
+          imageUrl: dbProduct.imageUrl,
+          imagePublicId: dbProduct.imagePublicId,
+          badge: dbProduct.badge || "",
+          description: dbProduct.description,
+          faqs: dbProduct.faqs || [],
+          specifications: dbProduct.specifications || [],
+        };
+      }
+    }
+  } catch (error) {
+    console.warn("Database getProductById fallback:", error.message);
+  }
+
+  const staticProduct = PRODUCTS.find((p) => p.id === id);
+  if (staticProduct) {
+    return {
+      id: staticProduct.id,
+      slug: staticProduct.slug,
+      name: staticProduct.name,
+      categorySlug: staticProduct.category,
+      imageUrl: staticProduct.image,
+      imagePublicId: null,
+      badge: staticProduct.badge || "",
+      description: staticProduct.fullDescription || staticProduct.shortDescription,
+      faqs: [],
+      specifications: (staticProduct.specifications || []).map((s, idx) => ({
+        property: s.property,
+        value: s.value,
+        sortOrder: idx,
+      })),
+    };
+  }
+
+  return null;
+}
