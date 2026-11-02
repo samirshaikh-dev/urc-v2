@@ -100,7 +100,7 @@ export async function Footer() {
         {/* Legal & Bottom Bar */}
         <div className="mt-12 flex flex-col gap-4 border-t border-white/15 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {currentYear} {SITE_CONFIG.name}. All rights reserved. Industrial Cork Materials &amp; Customized Component Manufacturing.
+            &copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.
           </p>
           <ul className="flex gap-6">
             {FOOTER_NAV.legal.map((item) => (

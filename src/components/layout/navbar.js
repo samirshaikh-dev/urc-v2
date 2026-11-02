@@ -1,20 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ArrowUpRight } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
 import { MAIN_NAV } from "@/data/navigation";
 import { SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
 import { MobileNav } from "./mobile-nav";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const dropdownRef = useRef(null);
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
   useEffect(() => {
@@ -23,6 +24,17 @@ export function Navbar() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setProductsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Close mobile drawer when resizing beyond md breakpoint
@@ -62,9 +74,74 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
             {MAIN_NAV.map((item) => {
+              const hasChildren = Boolean(item.children?.length);
               const isActive =
                 pathname === item.href ||
                 (item.href !== "/" && pathname?.startsWith(item.href));
+
+              if (hasChildren) {
+                return (
+                  <div
+                    key={item.href}
+                    ref={dropdownRef}
+                    className="relative"
+                    onMouseEnter={() => setProductsOpen(true)}
+                    onMouseLeave={() => setProductsOpen(false)}
+                  >
+                    <Link
+                      href={item.href}
+                      aria-expanded={productsOpen}
+                      aria-haspopup="true"
+                      className={cn(
+                        "flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-medium tracking-wide transition-all duration-150 sm:text-sm",
+                        isActive
+                          ? "bg-maroon/5 text-maroon font-semibold"
+                          : "text-ink/80 hover:bg-field hover:text-maroon"
+                      )}
+                    >
+                      <span>{item.label}</span>
+                      <ChevronDown
+                        className={cn(
+                          "size-3.5 transition-transform duration-200",
+                          productsOpen ? "rotate-180 text-maroon" : "text-muted"
+                        )}
+                        aria-hidden="true"
+                      />
+                    </Link>
+
+                    {/* Popover Dropdown Menu */}
+                    {productsOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-72 rounded-2xl border border-line bg-white/95 p-2 shadow-lg backdrop-blur-md animate-in fade-in-50 slide-in-from-top-1 duration-150 z-50">
+                        <div className="px-3 py-1.5 border-b border-line/60 mb-1">
+                          <span className="text-[11px] font-semibold text-orange-ink uppercase tracking-wider">
+                            Product Categories
+                          </span>
+                        </div>
+                        <ul className="space-y-0.5">
+                          {item.children.map((child) => (
+                            <li key={child.label}>
+                              <Link
+                                href={child.href}
+                                onClick={() => setProductsOpen(false)}
+                                className="group block rounded-xl p-2.5 transition-colors hover:bg-field"
+                              >
+                                <div className="text-xs font-semibold text-ink group-hover:text-maroon transition-colors">
+                                  {child.label}
+                                </div>
+                                {child.description && (
+                                  <div className="mt-0.5 text-[11px] leading-tight text-muted">
+                                    {child.description}
+                                  </div>
+                                )}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
 
               return (
                 <Link
@@ -97,7 +174,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="-mr-1 rounded-full p-2 text-maroon transition-colors duration-150 hover:bg-field md:hidden"
+              className="-mr-1 rounded-full p-2 text-maroon transition-colors duration-150 hover:bg-field md:hidden cursor-pointer"
               aria-label="Open menu"
               aria-haspopup="dialog"
               aria-expanded={mobileOpen}

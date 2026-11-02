@@ -5,9 +5,10 @@
 
 export const PRODUCT_CATEGORIES = [
   { id: "all", name: "All Products", slug: "all" },
-  { id: "rubber-cork", name: "Rubberised Cork", slug: "rubber-cork" },
-  { id: "gaskets", name: "Gaskets & Molded Parts", slug: "gaskets" },
-  { id: "plain-cork", name: "Natural Cork & Granules", slug: "plain-cork" },
+  { id: "cork-products", name: "Cork Products", slug: "cork-products" },
+  { id: "rubberised-cork", name: "Rubberised Cork Products", slug: "rubberised-cork" },
+  { id: "decorative-cork", name: "Decorative Cork", slug: "decorative-cork" },
+  { id: "cork-gifts", name: "Cork Gifts", slug: "cork-gifts" },
 ];
 
 export const PRODUCTS = [
@@ -15,7 +16,7 @@ export const PRODUCTS = [
     id: "rubber-cork-sheet",
     slug: "rubber-cork-sheets",
     name: "Rubberised Cork Sheets",
-    category: "rubber-cork",
+    category: "rubberised-cork",
     badge: "Core Material",
     image: "/images/carousel-images/custom-molded-cork-components-manufacturing-vapi-gujarat-02.jpg",
     shortDescription:
@@ -41,7 +42,7 @@ export const PRODUCTS = [
     id: "transformer-gaskets",
     slug: "transformer-gaskets",
     name: "Transformer Cork Gaskets & Frames",
-    category: "gaskets",
+    category: "rubberised-cork",
     badge: "Power Sector",
     image: "/images/industries-serve-images/industrial-cork-transformer-gaskets-manufacturer-vapi-gujarat.jpg",
     shortDescription:
@@ -67,7 +68,7 @@ export const PRODUCTS = [
     id: "automotive-cork-gaskets",
     slug: "automotive-cork-gaskets",
     name: "Automotive & Heavy Equipment Gaskets",
-    category: "gaskets",
+    category: "rubberised-cork",
     badge: "Automotive OEM",
     image: "/images/industries-serve-images/automotive-rubber-cork-gaskets-supplier-vapi-gujarat.jpg",
     shortDescription:
@@ -93,7 +94,7 @@ export const PRODUCTS = [
     id: "plain-cork-sheet",
     slug: "plain-cork-sheets",
     name: "Plain Natural Cork Sheets & Granules",
-    category: "plain-cork",
+    category: "cork-products",
     badge: "Acoustic & Insulation",
     image: "/images/carousel-images/industrial-cork-granules-processing-manufacturer-vapi-gujarat-01.jpg",
     shortDescription:
@@ -115,5 +116,56 @@ export const PRODUCTS = [
       { property: "Fire Behavior", value: "Class B2 / Self-extinguishing" },
     ],
   },
+  {
+    id: "decorative-cork-tiles",
+    slug: "decorative-cork-tiles",
+    name: "Decorative Cork Wall Tiles & Panels",
+    category: "decorative-cork",
+    badge: "Acoustic & Interior",
+    image: "/images/industries-serve-images/cork-expansion-joints-construction-insulation-vapi-gujarat.jpeg",
+    shortDescription:
+      "Sound-absorbing decorative cork tiles, acoustic wall panels, and textured natural cork surfaces for architectural interiors.",
+    applications: [
+      "Commercial Office Acoustic Walls",
+      "Architectural Feature Wall Coverings",
+      "Bulletin & Notice Board Installations",
+    ],
+    features: [
+      "Natural warmth and acoustic reverberation reduction",
+      "Lightweight and easy adhesive installation",
+      "100% renewable and biodegradable material",
+    ],
+    specifications: [
+      { property: "Standard Tile Sizes", value: "300 × 300 mm / 600 × 300 mm" },
+      { property: "Thickness Range", value: "3.0 mm to 12.0 mm" },
+      { property: "Surface Finish", value: "Natural wax, matte seal, or raw texture" },
+      { property: "NRC Rating", value: "0.25 to 0.45 sound absorption" },
+    ],
+  },
+  {
+    id: "cork-gifts-accessories",
+    slug: "cork-gifts-accessories",
+    name: "Custom Cork Gifts & Lifestyle Products",
+    category: "cork-gifts",
+    badge: "Sustainable Gifts",
+    image: "/images/industries-serve-images/orthopedic-cork-shoe-soles-footwear-manufacturer-vapi-gujarat.jpeg",
+    shortDescription:
+      "Eco-friendly customized cork lifestyle goods, desk accessories, coasters, and sustainable corporate promotional merchandise.",
+    applications: [
+      "Corporate Executive Gifting",
+      "Sustainable Desk & Office Organizers",
+      "Custom Embossed Branding Merchandise",
+    ],
+    features: [
+      "Water-resistant, stain-resistant natural surface",
+      "Laser engraving and screen printing compatible",
+      "Premium tactile organic texture",
+    ],
+    specifications: [
+      { property: "Customization Options", value: "Laser engraved logo, foil stamp, UV print" },
+      { property: "Material Construction", value: "Fine-grain agglomerated cork" },
+      { property: "Minimum Order Volume", value: "Bulk OEM / corporate batches" },
+      { property: "Packaging", value: "Custom biodegradable packaging available" },
+    ],
+  },
 ];
-

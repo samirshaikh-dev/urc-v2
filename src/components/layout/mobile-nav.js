@@ -90,23 +90,40 @@ export function MobileNav({ isOpen, onClose }) {
       <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-6">
         <ul className="divide-y divide-line">
           {MAIN_NAV.map((item) => {
+            const hasChildren = Boolean(item.children?.length);
             const isActive =
               pathname === item.href ||
               (item.href !== "/" && pathname?.startsWith(item.href));
 
             return (
-              <li key={item.href}>
+              <li key={item.href} className="py-2">
                 <Link
                   href={item.href}
                   onClick={onClose}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "block py-4 text-base font-medium transition-colors duration-150",
-                    isActive ? "text-maroon" : "text-ink hover:text-maroon"
+                    "block py-2 text-base font-medium transition-colors duration-150",
+                    isActive ? "text-maroon font-semibold" : "text-ink hover:text-maroon"
                   )}
                 >
                   {item.label}
                 </Link>
+
+                {hasChildren && (
+                  <ul className="mt-1 space-y-1 border-l-2 border-line pl-4">
+                    {item.children.map((child) => (
+                      <li key={child.label}>
+                        <Link
+                          href={child.href}
+                          onClick={onClose}
+                          className="block py-1.5 text-xs text-muted transition-colors hover:text-maroon"
+                        >
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             );
           })}

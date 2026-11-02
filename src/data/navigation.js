@@ -1,6 +1,33 @@
+export const PRODUCT_NAV_ITEMS = [
+  {
+    label: "Cork Products",
+    href: "/products#cork-products",
+    description: "Pure natural cork sheets, rolls, blocks, and granules",
+  },
+  {
+    label: "Rubberised Cork Products",
+    href: "/products#rubberised-cork",
+    description: "High-recovery sheets, transformer gaskets, and cut components",
+  },
+  {
+    label: "Decorative Cork",
+    href: "/products#decorative-cork",
+    description: "Acoustic wall tiles, decorative panels, and bulletin cork",
+  },
+  {
+    label: "Cork Gifts",
+    href: "/products#cork-gifts",
+    description: "Customized sustainable corporate gifts and lifestyle accessories",
+  },
+];
+
 export const MAIN_NAV = [
   { label: "Home", href: "/" },
-  { label: "Products", href: "/products" },
+  {
+    label: "Products",
+    href: "/products",
+    children: PRODUCT_NAV_ITEMS,
+  },
   { label: "Industries", href: "/industries" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
@@ -8,10 +35,10 @@ export const MAIN_NAV = [
 
 export const FOOTER_NAV = {
   products: [
-    { label: "Rubber Cork Sheets", href: "/products/rubber-cork-sheets" },
-    { label: "Cork Gaskets & Components", href: "/products/cork-gaskets" },
-    { label: "Plain Cork Sheets & Rolls", href: "/products/plain-cork" },
-    { label: "Transformer Gaskets", href: "/products/transformer-gaskets" },
+    { label: "Cork Products", href: "/products#cork-products" },
+    { label: "Rubberised Cork Products", href: "/products#rubberised-cork" },
+    { label: "Decorative Cork", href: "/products#decorative-cork" },
+    { label: "Cork Gifts", href: "/products#cork-gifts" },
   ],
   industries: [
     { label: "Transformers & Power", href: "/industries#electrical" },
@@ -31,4 +58,3 @@ export const FOOTER_NAV = {
     { label: "Terms of Supply", href: "/terms" },
   ],
 };
-

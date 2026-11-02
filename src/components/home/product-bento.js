@@ -102,22 +102,6 @@ export function ProductBento() {
                       </li>
                     ))}
                   </ul>
-
-                  {/* Specifications Table Preview */}
-                  <div className="mt-6 rounded-2xl border border-line bg-page/60 p-4">
-                    <div className="flex items-center gap-1.5 text-xs font-semibold text-maroon mb-2.5">
-                      <FileSpreadsheet className="size-3.5" />
-                      <span>Technical Parameters</span>
-                    </div>
-                    <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
-                      {product.specifications.map((spec) => (
-                        <div key={spec.property} className="flex flex-col">
-                          <dt className="text-muted font-normal">{spec.property}</dt>
-                          <dd className="font-semibold text-ink mt-0.5">{spec.value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
                 </div>
               </div>
 
