@@ -1,4 +1,4 @@
-import { ArrowDown, Clock, Mail, MapPin } from "lucide-react";
+import { ArrowDown, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { COMPANY_INFO } from "@/data/company";
@@ -46,16 +46,37 @@ export function ContactHero() {
 
               <dl className="mt-4 divide-y divide-line border-y border-line">
                 <div className="flex items-start gap-3 py-4">
+                  <Phone className="mt-0.5 size-4 shrink-0 text-orange-ink" aria-hidden="true" />
+                  <div className="min-w-0">
+                    <dt className="text-xs font-medium text-muted">Phone</dt>
+                    <dd className="mt-1 flex flex-col gap-1 text-sm font-medium text-ink">
+                      {COMPANY_INFO.phones.map((phone) => (
+                        <a
+                          key={phone}
+                          href={`tel:${phone.replace(/\s+/g, "")}`}
+                          className="rounded-control underline-offset-4 transition-colors hover:text-maroon hover:underline"
+                        >
+                          {phone}
+                        </a>
+                      ))}
+                    </dd>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 py-4">
                   <Mail className="mt-0.5 size-4 shrink-0 text-orange-ink" aria-hidden="true" />
                   <div className="min-w-0">
                     <dt className="text-xs font-medium text-muted">Email</dt>
-                    <dd className="mt-1 break-words text-sm font-medium text-ink">
-                      <a
-                        href={`mailto:${COMPANY_INFO.email}`}
-                        className="rounded-control underline-offset-4 transition-colors hover:text-maroon hover:underline"
-                      >
-                        {COMPANY_INFO.email}
-                      </a>
+                    <dd className="mt-1 flex flex-col gap-1 text-sm font-medium text-ink">
+                      {COMPANY_INFO.emails.map((email) => (
+                        <a
+                          key={email}
+                          href={`mailto:${email}`}
+                          className="break-words rounded-control underline-offset-4 transition-colors hover:text-maroon hover:underline"
+                        >
+                          {email}
+                        </a>
+                      ))}
                     </dd>
                   </div>
                 </div>
@@ -71,8 +92,10 @@ export function ContactHero() {
                 <div className="flex items-start gap-3 py-4">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-orange-ink" aria-hidden="true" />
                   <div>
-                    <dt className="text-xs font-medium text-muted">Manufacturing</dt>
-                    <dd className="mt-1 text-sm text-ink">Vapi, Gujarat, India</dd>
+                    <dt className="text-xs font-medium text-muted">Works &amp; Office</dt>
+                    <dd className="mt-1 text-sm leading-relaxed text-ink">
+                      No. 5, Balaji Complex, 2nd Phase, GIDC, Vapi — 396195, Gujarat, India
+                    </dd>
                   </div>
                 </div>
               </dl>

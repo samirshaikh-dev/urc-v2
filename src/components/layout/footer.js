@@ -9,6 +9,7 @@ import {
   Clock,
   ShieldCheck,
   Factory,
+  Phone,
 } from "lucide-react";
 
 const linkClasses =
@@ -164,26 +165,43 @@ export async function Footer() {
           {/* Column 5: Manufacturing & Supply Facilities (2 cols) */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
             <h4 className="text-xs font-semibold text-yellow uppercase tracking-wider">
-              Facilities &amp; Office
+              Works &amp; Office
             </h4>
             <ul className="mt-4 space-y-3.5 text-xs text-white/75">
               <li className="flex items-start gap-2.5">
                 <MapPin className="size-4 shrink-0 text-yellow mt-0.5" />
                 <div className="leading-snug">
-                  <span className="font-semibold text-white block">Vapi Works:</span>
-                  <span>GIDC Industrial Estate, Vapi, Gujarat — 396195</span>
+                  <span className="font-semibold text-white block">Works &amp; Facility:</span>
+                  <span>No. 5, Balaji Complex, 2nd Phase, GIDC, Vapi — 396195</span>
                 </div>
               </li>
               <li className="flex items-start gap-2.5">
-                <MapPin className="size-4 shrink-0 text-yellow mt-0.5" />
+                <Mail className="size-4 shrink-0 text-yellow mt-0.5" />
                 <div className="leading-snug">
-                  <span className="font-semibold text-white block">Corporate Office:</span>
-                  <span>New Delhi — 110002, India</span>
+                  <span className="font-semibold text-white block">Email:</span>
+                  <a
+                    href={`mailto:${COMPANY_INFO.email}`}
+                    className="hover:text-white underline-offset-2 hover:underline"
+                  >
+                    {COMPANY_INFO.email}
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <Phone className="size-4 shrink-0 text-yellow mt-0.5" />
+                <div className="leading-snug">
+                  <span className="font-semibold text-white block">Phone:</span>
+                  <a
+                    href={`tel:${COMPANY_INFO.phone.replace(/\s+/g, "")}`}
+                    className="hover:text-white underline-offset-2 hover:underline"
+                  >
+                    {COMPANY_INFO.phone}
+                  </a>
                 </div>
               </li>
               <li className="flex items-center gap-2.5">
                 <Clock className="size-4 shrink-0 text-yellow" />
-                <span>Mon–Sat: 8:30 AM – 7:00 PM</span>
+                <span>Mon–Sat: 9:00 AM – 6:30 PM</span>
               </li>
             </ul>
           </div>

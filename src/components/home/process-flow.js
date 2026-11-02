@@ -77,9 +77,9 @@ export function ProcessFlow() {
                   </p>
                 </div>
 
-                <div className="mt-6 border-t border-line/60 pt-4 text-[11px] font-medium text-ink/75 leading-tight">
+                {/* <div className="mt-6 border-t border-line/60 pt-4 text-[11px] font-medium text-ink/75 leading-tight">
                   {step.details}
-                </div>
+                </div> */}
               </div>
             );
           })}
