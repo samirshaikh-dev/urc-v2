@@ -102,9 +102,6 @@ export function IndustrySlider() {
                         className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute top-3 left-3">
-                        <span className="rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-maroon shadow-2xs backdrop-blur-xs">
-                          {ind.tagline}
-                        </span>
                       </div>
                     </div>
 
@@ -118,28 +115,6 @@ export function IndustrySlider() {
                         {ind.description}
                       </p>
 
-                      {/* Critical Requirement */}
-                      <div className="mt-4 rounded-xl border border-line/60 bg-white p-3 text-[11px] leading-tight text-ink/80">
-                        <span className="font-semibold text-maroon">Key Requirement:</span>{" "}
-                        {ind.keyRequirement}
-                      </div>
-
-                      {/* Typical Components */}
-                      <div className="mt-4">
-                        <span className="text-[11px] font-semibold text-muted uppercase tracking-wider">
-                          Typical Components:
-                        </span>
-                        <div className="mt-2 flex flex-wrap gap-1.5">
-                          {ind.typicalComponents.map((comp) => (
-                            <span
-                              key={comp}
-                              className="rounded-full bg-page border border-line px-2.5 py-0.5 text-[11px] text-ink/80"
-                            >
-                              {comp}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
                     </div>
                   </div>
 

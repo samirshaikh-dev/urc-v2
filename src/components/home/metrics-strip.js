@@ -5,28 +5,24 @@ const CAPABILITIES = [
   {
     icon: Droplet,
     title: "Dielectric Oil Barrier",
-    metric: "Zero Leaks",
     description:
       "Formulated with specialized NBR and Neoprene matrices resistant to mineral transformer oil, synthetic esters, and petroleum fluids.",
   },
   {
     icon: Gauge,
     title: "Controlled Compressibility",
-    metric: "25% – 40%",
     description:
       "Conforms to cast or uneven sheet-metal flanges with low bolt torque, eliminating flange deflection and bolt-hole distortion.",
   },
   {
     icon: RefreshCcw,
     title: "Elastic Recovery",
-    metric: "> 75% Recovery",
     description:
       "Sustains seal resilience across continuous thermal cycling from -30°C to +120°C without permanent compression set.",
   },
   {
     icon: Layers,
     title: "Custom CNC Profiling",
-    metric: "CAD Precision",
     description:
       "Direct fabrication of endless molded gaskets, precision dovetail joints, custom washers, and complex CAD drawing geometries.",
   },
@@ -59,9 +55,6 @@ export function MetricsStrip() {
                   <div className="flex items-center justify-between">
                     <span className="flex size-10 items-center justify-center rounded-xl bg-white border border-line text-maroon group-hover:border-maroon/20 group-hover:bg-maroon group-hover:text-white transition-colors duration-200">
                       <Icon className="size-5" />
-                    </span>
-                    <span className="text-xs font-semibold tracking-tight text-orange-ink">
-                      {item.metric}
                     </span>
                   </div>
                   <h3 className="mt-5 text-base font-semibold text-ink">
