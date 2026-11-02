@@ -77,33 +77,33 @@ export function ProductBento() {
           ))}
         </div>
 
-        {/* Product Bento Grid */}
-        <div className="mt-10 grid gap-8 md:grid-cols-2">
+        {/* Product Bento Grid - Single Column Layout */}
+        <div className="mt-10 grid grid-cols-1 gap-8">
           {filteredProducts.map((product) => (
             <div
               key={product.id}
               id={product.id}
-              className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-line bg-white transition-all duration-200 hover:border-maroon/30 hover:shadow-sm scroll-mt-28"
+              className="group flex flex-col overflow-hidden rounded-3xl border border-line bg-white transition-all duration-200 hover:border-maroon/30 hover:shadow-sm scroll-mt-28 md:flex-row md:items-stretch"
             >
-              <div>
-                {/* Product Imagery */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-field">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-maroon shadow-xs backdrop-blur-xs">
-                      {product.badge}
-                    </span>
-                  </div>
+              {/* Product Imagery */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-field md:aspect-auto md:w-5/12 lg:w-1/2 md:min-h-[320px]">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-maroon shadow-xs backdrop-blur-xs">
+                    {product.badge}
+                  </span>
                 </div>
+              </div>
 
-                {/* Content details */}
-                <div className="p-6 sm:p-8">
+              {/* Content details */}
+              <div className="flex flex-1 flex-col justify-between p-6 sm:p-8">
+                <div>
                   <h3 className="text-xl font-semibold tracking-tight text-ink sm:text-2xl group-hover:text-maroon transition-colors duration-150">
                     {product.name}
                   </h3>
@@ -150,35 +150,35 @@ export function ProductBento() {
                     </div>
                   )}
                 </div>
-              </div>
 
-              {/* Action Hooks - Redirect to Product Page without opening dialog */}
-              <div className="flex items-center justify-between border-t border-line bg-page/30 px-6 py-4 sm:px-8">
-                {isProductsPage ? (
-                  <Link
+                {/* Action Hooks - Redirect to Product Page without opening dialog */}
+                <div className="mt-6 flex items-center justify-between border-t border-line pt-4">
+                  {isProductsPage ? (
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
+                    >
+                      <span>Custom drawing inquiry</span>
+                      <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/products#${product.id}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
+                    >
+                      <span>Detailed specifications</span>
+                      <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
+                    </Link>
+                  )}
+
+                  <Button
                     href="/contact"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
+                    size="sm"
+                    className="rounded-full px-4 text-xs"
                   >
-                    <span>Custom drawing inquiry</span>
-                    <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
-                  </Link>
-                ) : (
-                  <Link
-                    href={`/products#${product.id}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-maroon transition-colors group/link"
-                  >
-                    <span>Detailed specifications</span>
-                    <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
-                  </Link>
-                )}
-
-                <Button
-                  href="/contact"
-                  size="sm"
-                  className="rounded-full px-4 text-xs"
-                >
-                  Request quote
-                </Button>
+                    Request quote
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
