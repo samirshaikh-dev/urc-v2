@@ -10,8 +10,11 @@ Use **United Rubber Cork** as the official brand name throughout the redesigned 
 
 Before making any changes, read these files completely:
 
-1. `prompt.md` — the main website redesign brief, requirements, structure, design direction, and implementation expectations.
+1. `code-review-install-guide.txt` — the code review and installation guide.
 2. `psychology.md` — the buyer psychology, trust-building principles, content strategy, and conversion guidance.
+3. `Design-System.md` — the color system, typography rules, spacing guidelines, and responsive patterns.
+4. `target-audience.md` — the target audience, buyer personas, and user needs.
+5. `AVOID.md` — what to avoid when designing the website.
 
 These files are the primary source of truth for this project. Follow them throughout the entire implementation—not only while designing the homepage.
 
