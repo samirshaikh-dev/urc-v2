@@ -1,39 +1,49 @@
 import Image from "next/image";
-import { ArrowUpRight, CheckCircle2, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
+import { TextLink } from "@/components/ui/text-link";
 import { INDUSTRIES } from "@/data/industries";
 
 export function IndustriesList() {
   return (
-    <section id="sectors-list" className="scroll-mt-24 border-t border-line bg-page py-16 sm:py-24">
+    <section id="sectors" className="border-t border-line bg-white py-16 sm:py-24">
       <Container>
-        <div className="max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
-            Application Architecture
-          </span>
-          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
-            Specialized materials for demanding operating environments
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">
-            Every sector demands specific elastomeric formulations. We match your operating fluids, bolt torques, and vibration levels to the verified cork composite.
-          </p>
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
+          <div className="lg:col-span-7">
+            <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
+              Sector requirements
+            </span>
+            <h2 className="mt-3 max-w-xl text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
+              Each sector asks something different of the material.
+            </h2>
+          </div>
+
+          <div className="lg:col-span-5">
+            <p className="text-sm leading-relaxed text-muted sm:text-base">
+              Operating media, temperature cycling, bolt torque, and mechanical load determine the
+              right cork composite and component format. These are the sectors we supply and the
+              constraints that shape each part.
+            </p>
+            <p className="mt-4 border-t border-line pt-4 text-xs leading-relaxed text-muted">
+              Sheet format: 915 × 610 mm. Finished components are cut or molded to drawing.
+            </p>
+          </div>
         </div>
 
-        <div className="mt-12 space-y-12">
+        <div className="mt-12 border-t border-line">
           {INDUSTRIES.map((sector, index) => {
-            const isEven = index % 2 === 1;
+            const imageRight = index % 2 === 1;
+
             return (
-              <div
+              <article
                 key={sector.id}
                 id={sector.id}
-                className="scroll-mt-28 overflow-hidden rounded-3xl border border-line bg-white shadow-xs transition-all duration-200 hover:border-maroon/30 hover:shadow-sm"
+                className="scroll-mt-28 border-b border-line py-10 sm:py-14"
               >
-                <div className={`grid lg:grid-cols-12 ${isEven ? "lg:flex-row-reverse" : ""}`}>
-                  
-                  {/* Visual Media Column */}
-                  <div className={`relative min-h-[280px] lg:col-span-5 ${isEven ? "lg:order-2" : ""}`}>
-                    <div className="relative h-full w-full bg-field">
+                <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+                  <div
+                    className={`lg:col-span-5 ${imageRight ? "lg:order-2" : ""}`}
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-field">
                       <Image
                         src={sector.image}
                         alt={sector.title}
@@ -41,79 +51,60 @@ export function IndustriesList() {
                         sizes="(min-width: 1024px) 40vw, 100vw"
                         className="object-cover object-center"
                       />
-                      <div className="absolute top-4 left-4">
-                        <span className="rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-maroon shadow-xs backdrop-blur-xs">
-                          {sector.tagline}
-                        </span>
-                      </div>
                     </div>
                   </div>
 
-                  {/* Detailed Specifications Column */}
-                  <div className={`p-6 sm:p-10 lg:col-span-7 flex flex-col justify-between ${isEven ? "lg:order-1" : ""}`}>
-                    <div>
-                      <div className="flex items-center gap-2 text-xs font-semibold text-orange-ink uppercase tracking-wider">
-                        <ShieldCheck className="size-4" />
-                        <span>Industry Focus: {sector.tagline}</span>
-                      </div>
+                  <div className={`lg:col-span-7 ${imageRight ? "lg:order-1" : ""}`}>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
+                      <span className="tabular-nums">{String(index + 1).padStart(2, "0")}</span>
+                      <span aria-hidden="true"> / </span>
+                      {sector.tagline}
+                    </p>
 
-                      <h3 className="mt-2 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                        {sector.title}
-                      </h3>
+                    <h3 className="mt-3 text-xl font-semibold tracking-tight text-ink sm:text-2xl lg:text-3xl">
+                      {sector.title}
+                    </h3>
 
-                      <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
-                        {sector.description}
+                    <p className="mt-4 max-w-prose text-sm leading-relaxed text-muted sm:text-base">
+                      {sector.description}
+                    </p>
+
+                    <div className="mt-6 border-l-2 border-orange pl-4">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
+                        Operating requirement
+                      </h4>
+                      <p className="mt-1.5 text-sm font-medium leading-relaxed text-ink">
+                        {sector.keyRequirement}
                       </p>
+                    </div>
 
-                      {/* Critical Requirement Callout */}
-                      <div className="mt-6 rounded-2xl border border-line bg-page/70 p-4">
-                        <span className="text-xs font-semibold text-maroon uppercase tracking-wider">
-                          Primary Engineering Challenge:
-                        </span>
-                        <p className="mt-1 text-xs sm:text-sm font-medium text-ink">
-                          {sector.keyRequirement}
-                        </p>
-                      </div>
-
-                      {/* Typical Components Produced */}
-                      <div className="mt-6">
-                        <h4 className="text-xs font-semibold text-ink uppercase tracking-wider">
-                          Typical Fabricated Components:
-                        </h4>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {sector.typicalComponents.map((comp) => (
+                    <div className="mt-6">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-ink">
+                        Typical components
+                      </h4>
+                      <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                        {sector.typicalComponents.map((component) => (
+                          <li
+                            key={component}
+                            className="flex items-start gap-2.5 text-sm leading-relaxed text-ink"
+                          >
                             <span
-                              key={comp}
-                              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-field px-3 py-1 text-xs font-medium text-ink/80"
-                            >
-                              <CheckCircle2 className="size-3 text-orange-ink" />
-                              {comp}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                              className="mt-2 size-1.5 shrink-0 rounded-full bg-orange"
+                              aria-hidden="true"
+                            />
+                            {component}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
 
-                    {/* Footer Actions */}
-                    <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line/80 pt-6">
-                      <div className="text-xs text-muted">
-                        Available in sheets (915 × 610 mm) or finished CNC components.
-                      </div>
-
-                      <Button
-                        href="/contact"
-                        size="sm"
-                        className="rounded-full px-5 text-xs font-semibold"
-                      >
-                        Request quote for this sector
-                        <ArrowUpRight className="size-3.5 ml-1" />
-                      </Button>
-                    </div>
-
+                    <TextLink href="/contact" className="mt-7 min-h-11">
+                      Discuss this application
+                      <span className="sr-only"> for {sector.title}</span>
+                    </TextLink>
                   </div>
-
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>

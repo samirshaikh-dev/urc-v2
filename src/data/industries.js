@@ -6,6 +6,7 @@ export const INDUSTRIES = [
     id: "electrical",
     title: "Electrical Transformers & Switchgear",
     tagline: "Dielectric Sealing",
+    shortLabel: "Transformers",
     image: "/images/industries-serve-images/industrial-cork-transformer-gaskets-manufacturer-vapi-gujarat.jpg",
     description:
       "Gasketing materials engineered specifically for high dielectric strength, low bolt torques, and zero oil seepage under hot mineral transformer oil.",
@@ -16,6 +17,7 @@ export const INDUSTRIES = [
     id: "automotive",
     title: "Automotive & Powertrain",
     tagline: "Vibration Dampening",
+    shortLabel: "Automotive",
     image: "/images/industries-serve-images/automotive-rubber-cork-gaskets-supplier-vapi-gujarat.jpg",
     description:
       "Resilient rubber-cork gaskets engineered for heavy vibration damping, valve cover sealing, and high-recovery fluid containment.",
@@ -26,6 +28,7 @@ export const INDUSTRIES = [
     id: "railway",
     title: "Railways & Transit Systems",
     tagline: "Dynamic Isolation",
+    shortLabel: "Railways",
     image: "/images/industries-serve-images/railway-cork-vibration-damping-pads-supplier-india.jpg",
     description:
       "Heavy-duty elastomer-cork pads designed for structural vibration absorption, bogie dampening, and track isolation under high cyclic loads.",
@@ -36,6 +39,7 @@ export const INDUSTRIES = [
     id: "aerospace",
     title: "Aerospace & Defense Systems",
     tagline: "Lightweight Thermal Barrier",
+    shortLabel: "Aerospace",
     image: "/images/industries-serve-images/aerospace-lightweight-cork-insulation-components-india.jpg",
     description:
       "Lightweight, precision-machined cork composite components serving as thermal insulation barriers and acoustic dampeners in specialized assemblies.",
@@ -46,6 +50,7 @@ export const INDUSTRIES = [
     id: "marine",
     title: "Marine & Offshore Vessels",
     tagline: "Corrosion & Saltwater Proof",
+    shortLabel: "Marine",
     image: "/images/industries-serve-images/marine-shipbuilding-cork-decking-gaskets-india.jpg",
     description:
       "Impervious cork compositions providing non-slip acoustic decking, hatch cover sealing, and saltwater-resistant gaskets.",
@@ -56,6 +61,7 @@ export const INDUSTRIES = [
     id: "construction",
     title: "Structural Construction & Civil Works",
     tagline: "Expansion Integrity",
+    shortLabel: "Construction",
     image: "/images/industries-serve-images/cork-expansion-joints-construction-insulation-vapi-gujarat.jpeg",
     description:
       "Natural and resin-bonded cork expansion joint fillers accommodating concrete slab expansion without extrusion or deterioration.",

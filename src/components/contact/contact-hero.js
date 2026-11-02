@@ -1,23 +1,82 @@
+import { ArrowDown, Clock, Mail, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
+import { COMPANY_INFO } from "@/data/company";
 
+/**
+ * Contact page introduction. Left-aligned editorial layout with the direct
+ * contact channel kept visible above the fold — no centered card-in-card hero.
+ */
 export function ContactHero() {
   return (
-    <section className="relative overflow-hidden pt-4 pb-12 sm:pt-8 sm:pb-16 lg:pb-20">
+    <section className="border-b border-line bg-white pt-10 pb-12 sm:pt-14 sm:pb-16">
       <Container>
-        <div className="relative rounded-3xl border border-line bg-white p-6 shadow-xs sm:p-12 lg:p-16">
-          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-line bg-page px-3.5 py-1 text-xs font-medium text-ink/80">
-              <span className="size-2 rounded-full bg-orange animate-pulse" aria-hidden="true" />
-              <span>Direct Engineering &amp; Commercial Support</span>
-            </div>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.1em] text-orange-ink">
+              Contact &amp; quotation
+            </p>
 
-            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-ink sm:text-5xl sm:leading-[1.12] lg:text-[3.25rem]">
-              Contact our <span className="text-maroon">technical team.</span>
+            <h1 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-[3rem] lg:leading-[1.1]">
+              Discuss your cork or rubberised-cork requirement.
             </h1>
 
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-              Have a new equipment design, custom drawing requirement, or bulk material inquiry? Speak directly with our material specialists to discuss specifications, test samples, and scheduled supply.
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              Share the material, dimensions, quantity and application you have in mind.
+              We will review the details and follow up with the questions or quotation you
+              need.
             </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Button href="#enquiry" size="md">
+                Start an enquiry
+                <ArrowDown className="size-4" aria-hidden="true" />
+              </Button>
+              <Button href="/products" variant="secondary" size="md">
+                Explore products
+              </Button>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5">
+            <div className="border-t border-line pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.1em] text-muted">
+                Direct contact
+              </h2>
+
+              <dl className="mt-4 divide-y divide-line border-y border-line">
+                <div className="flex items-start gap-3 py-4">
+                  <Mail className="mt-0.5 size-4 shrink-0 text-orange-ink" aria-hidden="true" />
+                  <div className="min-w-0">
+                    <dt className="text-xs font-medium text-muted">Email</dt>
+                    <dd className="mt-1 break-words text-sm font-medium text-ink">
+                      <a
+                        href={`mailto:${COMPANY_INFO.email}`}
+                        className="rounded-control underline-offset-4 transition-colors hover:text-maroon hover:underline"
+                      >
+                        {COMPANY_INFO.email}
+                      </a>
+                    </dd>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 py-4">
+                  <Clock className="mt-0.5 size-4 shrink-0 text-orange-ink" aria-hidden="true" />
+                  <div>
+                    <dt className="text-xs font-medium text-muted">Working hours</dt>
+                    <dd className="mt-1 text-sm text-ink">{COMPANY_INFO.workingHours}</dd>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 py-4">
+                  <MapPin className="mt-0.5 size-4 shrink-0 text-orange-ink" aria-hidden="true" />
+                  <div>
+                    <dt className="text-xs font-medium text-muted">Manufacturing</dt>
+                    <dd className="mt-1 text-sm text-ink">Vapi, Gujarat, India</dd>
+                  </div>
+                </div>
+              </dl>
+            </div>
           </div>
         </div>
       </Container>

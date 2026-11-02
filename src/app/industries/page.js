@@ -1,6 +1,6 @@
 import { IndustriesHero } from "@/components/industries/industries-hero";
 import { IndustriesList } from "@/components/industries/industries-list";
-import { IndustriesCallout } from "@/components/industries/industries-callout";
+import { IndustriesGuidance } from "@/components/industries/industries-guidance";
 import { FinalCTA } from "@/components/home/final-cta";
 import { constructMetadata } from "@/lib/seo";
 
@@ -20,8 +20,8 @@ export default function IndustriesPage() {
       {/* 2. SECTORS DEEP-DIVE LIST */}
       <IndustriesList />
 
-      {/* 3. CUSTOM SPECIFICATION & TOOLING CALLOUT */}
-      <IndustriesCallout />
+      {/* 3. MATERIAL FIT & ENQUIRY GUIDANCE */}
+      <IndustriesGuidance />
 
       {/* 4. FINAL CTA */}
       <FinalCTA />
