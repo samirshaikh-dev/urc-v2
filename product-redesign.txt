@@ -1,0 +1,168 @@
+Since United Rubber Cork has 4 product categories and you're creating dedicated pages for each, I recommend a minimal product architecture rather than putting everything on one long Products page.
+
+Your current category navigation is a good starting point. Keep the pill-style navigation, but make each category navigate to its dedicated page.
+
+## 1. Main Products page
+
+Purpose: Give visitors a quick overview of all product categories and help them find the right product.
+
+[Top Benefits of Cork Rubber Sheets for Sealing & Vibration](https://images.openai.com/static-rsc-4/O4zFSRTvhrDgbtFIIz1A8fah0E1u4FVUGL4KGHzk28pzrDvjYCn8g-ffKA2dbFz2TIL9i7bCfS2kDyHtgps2rF8AA8yWVY-u9PAycXcQdgc1ydr1deJA_U2z5adg8lQ0Vt72LOgHMftMLkgEkpq5BgTfKj5_hxcKtN46Sefvm4M?purpose=inline)
+
+[hydermanrubber.com](https://www.hydermanrubber.com/what-to-choose-for-sealing-damping-high-cost-effective-cork-rubber-sheet.html?utm_source=chatgpt.com)
+
+01\. Products Hero
+
+Headline: Industrial Materials for Diverse Applications.
+
+Short description about United Rubber Cork's product range.
+
+02\. Category Navigation
+
+Keep your existing pill navigation:
+
+All Products
+
+Cork Products
+
+Rubberised Cork
+
+Decorative Cork
+
+Cork Gifts
+
+Each category links to its own dedicated page.
+
+03\. Product Categories
+
+[Cork Rolls, Cork Sheets — Jelinek Cork Group®](https://images.openai.com/static-rsc-4/NV3VG_F0F2AdrkHjSR9hSVtRYjzsOq-mtSO8WGQfh2m2mf-VjMr8SL30TpMpl7ojuSgJCvDpZBlPavhgTwvdnmZJfLndKsD1Abz4TLEb6N_g3VSgJYoNITotpH_dXpNaS5wqaj-_A_sRH66dsfX7WXdYlOALH3T7EtPS6nOO04M?purpose=inline)
+
+Cork Products
+
+Natural cork materials and solutions.
+
+Explore category →
+
+[Rubber Cork Sheets at Best Price in Vapi, Gujarat | United Rubber Cork Industries](https://images.openai.com/static-rsc-4/pqTBBL37QY0D5mc0h-6PBRvJ_iSDr6YsASsZXQVzAFstILwV3JjqDopcOPjZhkYhKKGGZVjBKHzkpahkr82ZKG3JsJHowj59JhcspHCZAldecUzA269xGOlbVwVhskfsEu_m_3l9MXN7hQ1N0TJd4pShfbihP4FtY7RpWeXPma0?purpose=inline)
+
+Rubberised Cork
+
+Cork and rubber composite materials.
+
+Explore category →
+
+[Stripe Rhombus Cork Wall Tiles | OakViva Premium Interiors](https://images.openai.com/static-rsc-4/HnYHRIDwYDRcfULj_MxL1t7VQlgnliOjL1Wq6qgCe0UfNj8UFqP0461EZ2T08ZpjOGyOu0EiZauITn4t6Tefzy2JL_kvifQFNyBUzbQaEZ0z7Y-WWXY63piJl_xO9GOv3y14Y2d8arAWg4TY3xpQIfnRvXxzl4Prklap_tFws6U?purpose=inline)
+
+Decorative Cork
+
+Decorative cork materials.
+
+Explore category →
+
+[Discover the Cork Collection - Our Best Selling Products – Page 2](https://images.openai.com/static-rsc-4/Qh6rFxjmjGW55mj8hpQTiyMZLisBhEvJyixPgIgHEayaRfqgiFDBUBiK4bef-592KT2ObMYc8lLH4B-ptiZ4ijpPWeRJ1i4dgdyWdOXjwkNRFUlM2BCTWu3zQnREEE9Gj7C_i3gJjZW9LyJdbtXW57S11WQgfCUUDOblshuNcfY?purpose=inline)
+
+Cork Gifts
+
+Cork-based gift products.
+
+Explore category →
+
+04\. Enquiry CTA
+
+Looking for a specific material?
+
+Tell us what you need. We'll help you find the right solution.
+
+Request a Quote →
+
+## 2. Dedicated category page template
+
+Use the same layout for all four categories. Only change the content, images and products.
+
+[Lençol de cortiça com borracha - Lester Equipamentos](https://images.openai.com/static-rsc-4/J6npYkZLYwbjKPb4WOQ0fhRp93ULWSQZYx-VhPqCWuGA0O0PZXMcMNZIIuSkSDnKUC3SXsfdjHFwOe91z2AnYsj-_g9g1y2MJ-MbRMKvMvdhTNyHpnmLGr_p26oR10UoCJqvK2laQmwJZyCkSRET_Vsp4mT2WK-MoCu1_L8M8JU?purpose=inline)
+
+[lesterequipamentos.com.br](https://www.lesterequipamentos.com.br/produto/lencol-de-cortica-com-borracha?utm_source=chatgpt.com)
+
+01\. Category Hero
+
+Example: Rubberised Cork Products
+
+- Short category introduction.
+- Strong product image.
+- Request a Quote CTA.
+
+02\. Product Listing
+
+Display products in a clean grid with:
+
+- Product image
+- Product name
+- One-line description
+- View Details →
+
+[Premium Nitrile Bonded Cork Rubber Pads Industrial](https://images.openai.com/static-rsc-4/O74JyEUYrjYuIpXLRBm33Wsn0y7ajVgXgee2khmidB5kYEVWlLRAWhYST9PjIc3rpGedvKkHZ-JeYR41MvH9IqksmL16IaBa0gF85IFRZBEcb-RM4hPiDgwVSHZGgf9WMfYho3A9TOS2VkL7gEfQUUL_4wrhjXH-RguQoBXrPI0?purpose=inline)
+
+Rubber Cork Sheets
+
+View Details →
+
+[Verified Supplier Rubber Cork Roll Customizable Thickness, Eco-Friendly | Alibaba.com](https://images.openai.com/static-rsc-4/ekeWVV2aR2JuW65UKvwVzZdSJqkRyCXTZQCBDozcG5Ene6zTfJiXi0RQkkf2i7WLXcR_WDgXuUwc-FpSXrE_N5ubQb14eOZBY0WfSjwShD5OhTnYfMyYZ1Hb1ssQNDgpXEJB8WoFfGHLQAwWZqg6baWt0his4UZXy6MSL-qhkeA?purpose=inline)
+
+Rubber Cork Rolls
+
+View Details →
+
+03\. Applications & Benefits
+
+Keep it visual and concise.
+
+Explain where the materials are used and their key properties.
+
+04\. Enquiry CTA
+
+Need a specific material specification?
+
+Contact our team for product details and quotations.
+
+## 3. Recommended website architecture
+
+```
+/products
+    /cork-products
+    /rubberised-cork-products
+    /decorative-cork
+    /cork-gifts
+
+/product/[slug]  (optional product detail pages)
+```
+
+## 4. Design recommendations
+
+[カシフジ｜Works｜MONデザイン｜京都のブランディング・デザイン事務所](https://images.openai.com/static-rsc-4/nQ52s0f36jILCosrW9IHpy9ROTQAhtrxLOCseWn8K8isOHHw3eX5sPZVtYL5bG7Vgv5wAqZ92IVNuGW7dmgURQnuzUCE274DDAe5Te7rxLoT-Rjgs0rlHKps6hL033OPz0l0q1iTq-06GIEb1z2S4v992kT-owhWp2zbrSwqCoM?purpose=inline)
+
+[Aspect beauty skincare branding and web design :: Behance](https://images.openai.com/static-rsc-4/UY_bTTsJcD2WGVWprTWw8-CmQwUE0Jt-r3JM3qHEToQIl24bsTSizGEMTevyG3K6pvaCx9kduuWkc8MC9x_-YgSUUDZuvYi9Hn-1xSVxT8B_kODobtl1XYXj9dEKqrdqEouS9AHp26srgTTX7-H5vgZ3Hf6aNoGY2w7IR8uR6iA?purpose=inline)
+
+[Products - Awwwards](https://images.openai.com/static-rsc-4/pHB_fgU7CejGycQMKJkbGqfwgoWxAv4qrkWqSWaJ4mNm-3sP9W9MFGtT8UlKdBkd3aIohX0mzpZHLCJq_lK9dfXx6Cte10Krr7g7g9fP5gXuh6hz2dKD6EB0vU7ZoEz8oyIrEZlmGzKagHeLb9obIXL8rzTECjaIXFCLuqo19sQ?purpose=inline)
+
+10
+
+- Navigation: Keep your existing rounded category pills.
+- Product grid: Two or three columns depending on screen width.
+- Images: Consistent image ratios and backgrounds.
+- Typography: Clear product names, short descriptions.
+- Colors: White/off-white, maroon `#650510`, orange `#F58634`.
+- Interactions: Subtle hover image zoom and transitions.
+- Mobile: Horizontally scrollable category navigation.
+
+## My final recommendation
+
+Keep the entire product experience to three levels:
+
+| Level | Page                 | Purpose                                    |
+| ----- | -------------------- | ------------------------------------------ |
+| 1     | All Products         | Discover categories                        |
+| 2     | Category pages       | Explore products within a category         |
+| 3     | Product detail pages | Specifications, applications and enquiries |
+
+One important SEO recommendation: Give every category its own unique title, meta description, introductory content and product links. Don't duplicate the same category description across pages.
+
+This architecture will keep United Rubber Cork's website minimal while making it scalable as you add more products.

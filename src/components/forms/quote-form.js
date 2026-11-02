@@ -81,7 +81,7 @@ export function QuoteForm() {
       className="space-y-5"
     >
       <div className="flex items-center justify-between border-b border-line pb-3">
-        <p className="text-xs text-muted">Fields marked with <span className="text-orange-ink">*</span> are required.</p>
+        {/* <p className="text-xs text-muted">Fields marked with <span className="text-orange-ink">*</span> are required.</p> */}
         <div className="flex items-center gap-1 text-[11px] font-medium text-orange-ink">
           <ShieldCheck className="size-3.5" />
           <span>Confidential Drawing Review</span>

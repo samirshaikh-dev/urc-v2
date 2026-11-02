@@ -116,19 +116,6 @@ export function ContactMain() {
                 </div>
               </div>
 
-              {/* Drawing Submission Prompt */}
-              <div className="rounded-2xl border border-line bg-page/70 p-4 text-xs leading-relaxed text-muted">
-                <div className="flex items-center gap-2 font-semibold text-ink">
-                  <FileCheck className="size-4 text-maroon" />
-                  <span>Custom CAD Drawings</span>
-                </div>
-                <p className="mt-1.5">
-                  Working with custom gasket profiles? Email CAD drawings (DXF, DWG, PDF) directly to{" "}
-                  <a href={`mailto:${COMPANY_INFO.email}`} className="font-medium text-maroon hover:underline">
-                    {COMPANY_INFO.email}
-                  </a>.
-                </p>
-              </div>
             </div>
           </div>
         </div>
