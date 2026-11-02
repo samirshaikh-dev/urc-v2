@@ -103,7 +103,7 @@ let blogsCache = [...INITIAL_BLOGS];
 export async function getAllBlogs() {
   try {
     if (process.env.DATABASE_URL) {
-      // If a blog model exists in prisma in the future, fetch here
+      // Blog records remain in the in-memory cache until a database model is added.
     }
   } catch (err) {
     console.warn("DB blog fetch fallback:", err.message);

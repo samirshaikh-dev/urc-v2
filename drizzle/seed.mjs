@@ -1,10 +1,9 @@
 import "dotenv/config";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/client.ts";
-
-const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
-});
+import { randomUUID } from "node:crypto";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { eq } from "drizzle-orm";
+import { Pool } from "pg";
+import { productFaqs, productSpecifications, products } from "../src/db/schema.js";
 
 const INITIAL_PRODUCTS = [
   {
@@ -127,40 +126,77 @@ const INITIAL_PRODUCTS = [
   },
 ];
 
+
 async function main() {
-  console.log("Starting database seeding...");
-
-  for (const item of INITIAL_PRODUCTS) {
-    const { faqs, specifications, ...productData } = item;
-
-    const product = await prisma.product.upsert({
-      where: { slug: item.slug },
-      update: {
-        ...productData,
-      },
-      create: {
-        ...productData,
-        faqs: {
-          create: faqs,
-        },
-        specifications: {
-          create: specifications,
-        },
-      },
-    });
-
-    console.log(`Seeded product: ${product.name} (${product.slug})`);
+  const connectionString = process.env.DATABASE_URL?.trim();
+  if (!connectionString) {
+    throw new Error("DATABASE_URL must be configured before seeding the database.");
   }
 
-  console.log("Database seeding completed successfully!");
+  const pool = new Pool({ connectionString });
+  const db = drizzle(pool);
+
+  try {
+    console.log("Starting database seeding...");
+
+    for (const item of INITIAL_PRODUCTS) {
+      const { faqs, specifications, ...productData } = item;
+      const [existing] = await db
+        .select({ id: products.id })
+        .from(products)
+        .where(eq(products.slug, item.slug))
+        .limit(1);
+      const productId = existing?.id || randomUUID();
+
+      const product = await db.transaction(async (tx) => {
+        const [savedProduct] = existing
+          ? await tx
+              .update(products)
+              .set({ ...productData, updatedAt: new Date() })
+              .where(eq(products.id, productId))
+              .returning()
+          : await tx.insert(products).values({ ...productData, id: productId }).returning();
+
+        await tx.delete(productFaqs).where(eq(productFaqs.productId, productId));
+        await tx
+          .delete(productSpecifications)
+          .where(eq(productSpecifications.productId, productId));
+
+        if (faqs.length) {
+          await tx.insert(productFaqs).values(
+            faqs.map((faq, sortOrder) => ({
+              ...faq,
+              id: randomUUID(),
+              productId,
+              sortOrder: faq.sortOrder ?? sortOrder,
+            }))
+          );
+        }
+
+        if (specifications.length) {
+          await tx.insert(productSpecifications).values(
+            specifications.map((specification, sortOrder) => ({
+              ...specification,
+              id: randomUUID(),
+              productId,
+              sortOrder: specification.sortOrder ?? sortOrder,
+            }))
+          );
+        }
+
+        return savedProduct;
+      });
+
+      console.log("Seeded product: " + product.name + " (" + product.slug + ")");
+    }
+
+    console.log("Database seeding completed successfully!");
+  } finally {
+    await pool.end();
+  }
 }
 
-main()
-  .catch((e) => {
-    console.error("Seeding error:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
-
+main().catch((error) => {
+  console.error("Seeding error:", error);
+  process.exitCode = 1;
+});

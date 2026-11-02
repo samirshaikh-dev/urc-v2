@@ -30,62 +30,12 @@ The client is **non-technical**. The admin portal must be radically simple, fool
 
 ---
 
-## 3. Simplified Database Schema (Supabase PostgreSQL + Prisma)
+## 3. Database Schema (Supabase PostgreSQL + Drizzle ORM)
 
-The database schema is stripped of complex configuration flags while maintaining high data integrity:
-
-```prisma
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-// -------------------------------------------------------------
-// PRODUCT MODEL (Radically Simple)
-// -------------------------------------------------------------
-model Product {
-  id             String       @id @default(cuid())
-  slug           String       @unique // Auto-generated from product name
-  name           String
-  description    String       @db.Text
-  categorySlug   String       // Strictly one of: "cork-products", "rubberised-cork", "decorative-cork", "cork-gifts"
-  
-  // Cloudinary Image
-  imageUrl       String
-  imagePublicId  String?
-  
-  // Timestamps
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-
-  // FAQs
-  faqs           ProductFaq[]
-
-  // Indexes for instant frontend retrieval
-  @@index([categorySlug])
-  @@map("products")
-}
-
-// -------------------------------------------------------------
-// PRODUCT FAQS
-// -------------------------------------------------------------
-model ProductFaq {
-  id         String   @id @default(cuid())
-  productId  String
-  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  question   String
-  answer     String   @db.Text
-  sortOrder  Int      @default(0)
-
-  @@index([productId, sortOrder])
-  @@map("product_faqs")
-}
-```
+The Drizzle schema is maintained in `src/db/schema.js`; generated migrations are
+stored in `drizzle/`. It defines `products`, `product_faqs`, and
+`product_specifications`, including the product relationships, cascade deletes,
+and indexes used by the catalog queries.
 
 ---
 
@@ -187,7 +137,7 @@ Every single product published by the client gets its own dedicated, SEO-optimiz
 ## 6. Live Frontend Synchronization
 
 When "Publish" is clicked:
-1. Server action executes `prisma.product.create(...)`.
+1. Server action inserts the product and related records using Drizzle in a transaction.
 2. Next.js cache revalidation triggers:
    ```js
    revalidatePath('/products');
@@ -219,11 +169,12 @@ ADMIN_SESSION_SECRET="a-random-32-character-secret-key"
 ## 8. Implementation Checklist & Order of Execution
 
 1. **Step 1: Install Required Dependencies**
-   - Runtime: `npm install @prisma/client cloudinary jose @tiptap/react @tiptap/starter-kit`
-   - Development: `npm install -D prisma`
+   - Runtime: `npm install drizzle-orm pg cloudinary jose @tiptap/react @tiptap/starter-kit`
+   - Development: `npm install -D drizzle-kit`
 2. **Step 2: Database Initialization & Seeding**
-   - Apply `prisma/schema.prisma` to Supabase.
-   - Run seed script from existing `src/data/products.js` so verified data is preserved.
+   - Set `DATABASE_URL` and run `npm run db:push` to synchronize the Drizzle schema.
+   - Run `npm run db:seed` to upsert the initial product catalog and related FAQs/specifications.
+   - The public catalog keeps its existing static fallback when the database is unavailable.
 3. **Step 3: Restructure Category Page (`/products/[category]`)**
    - Remove lines 56–79 (`#products-list` grid) and lines 81–83 (`CategoryBenefits`).
    - Replace with the clean dynamic Product Listing connected to the database.

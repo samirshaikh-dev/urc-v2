@@ -1,18 +1,11 @@
-import { getPrismaClient } from "@/lib/prisma";
-import { PRODUCTS, CATEGORY_DETAILS } from "@/data/products";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
+import { PRODUCTS } from "@/data/products";
+import { productFaqs, productSpecifications, products } from "@/db/schema";
+import { getDbClient } from "@/lib/db";
 
 export { slugify } from "@/lib/utils";
 
-/**
- * Database connectivity is optional.
- *
- * When Supabase is unreachable or the products table is missing, every reader
- * below falls back to the static catalogue in `@/data/products`.
- *
- * A short per-process circuit breaker prevents the same failure from being
- * retried (and logged) for every page generated during a production build.
- */
 const DB_RETRY_COOLDOWN_MS = 60_000;
 let databaseUnavailableUntil = 0;
 let databaseFailureReported = false;
@@ -22,7 +15,7 @@ function getDatabase() {
     return null;
   }
 
-  return getPrismaClient();
+  return getDbClient();
 }
 
 function markDatabaseAvailable() {
@@ -50,44 +43,84 @@ function handleDatabaseFailure(error) {
   );
 }
 
-/**
- * Fetch all products for a specific category slug.
- * Reads from Supabase via Prisma, falling back to static data if database is
- * unconfigured, unreachable, or has no rows for the category.
- */
+async function loadRelatedRows(db, rows, { faqs = false, specifications = false } = {}) {
+  if (!rows.length) {
+    return rows;
+  }
+
+  const ids = [...new Set(rows.map((row) => row.id))];
+
+  if (faqs) {
+    const records = await db
+      .select()
+      .from(productFaqs)
+      .where(inArray(productFaqs.productId, ids))
+      .orderBy(asc(productFaqs.sortOrder));
+    const byProduct = new Map();
+
+    for (const record of records) {
+      const current = byProduct.get(record.productId) || [];
+      current.push(record);
+      byProduct.set(record.productId, current);
+    }
+
+    for (const row of rows) {
+      row.faqs = byProduct.get(row.id) || [];
+    }
+  }
+
+  if (specifications) {
+    const records = await db
+      .select()
+      .from(productSpecifications)
+      .where(inArray(productSpecifications.productId, ids))
+      .orderBy(asc(productSpecifications.sortOrder));
+    const byProduct = new Map();
+
+    for (const record of records) {
+      const current = byProduct.get(record.productId) || [];
+      current.push(record);
+      byProduct.set(record.productId, current);
+    }
+
+    for (const row of rows) {
+      row.specifications = byProduct.get(row.id) || [];
+    }
+  }
+
+  return rows;
+}
+
 export async function getProductsByCategory(categorySlug) {
   "use cache";
   cacheLife("hours");
   cacheTag("products", `category-${categorySlug}`);
 
   try {
-    const prisma = getDatabase();
+    const db = getDatabase();
 
-    if (prisma) {
-      const dbProducts = await prisma.product.findMany({
-        where: { categorySlug },
-        include: {
-          faqs: {
-            orderBy: { sortOrder: "asc" },
-          },
-        },
-        orderBy: { createdAt: "desc" },
-      });
-
+    if (db) {
+      const rows = await db
+        .select()
+        .from(products)
+        .where(eq(products.categorySlug, categorySlug))
+        .orderBy(desc(products.createdAt));
+      await loadRelatedRows(db, rows, { faqs: true });
       markDatabaseAvailable();
 
-      if (dbProducts.length > 0) {
-        return dbProducts.map((p) => ({
-          id: p.id,
-          slug: p.slug,
-          name: p.name,
-          category: p.categorySlug,
-          image: p.imageUrl,
-          imagePublicId: p.imagePublicId,
-          badge: p.badge || "",
-          shortDescription: p.description.replace(/<[^>]*>/g, "").slice(0, 160) + "...",
-          fullDescription: p.description,
-          faqs: p.faqs || [],
+      if (rows.length) {
+        return rows.map((product) => ({
+          id: product.id,
+          slug: product.slug,
+          name: product.name,
+          category: product.categorySlug,
+          image: product.imageUrl,
+          imagePublicId: product.imagePublicId,
+          badge: product.badge || "",
+          shortDescription:
+            product.description.replace(/<[^>]*>/g, "").slice(0, 160) + "...",
+          fullDescription: product.description,
+          faqs: product.faqs || [],
         }));
       }
     }
@@ -95,55 +128,50 @@ export async function getProductsByCategory(categorySlug) {
     handleDatabaseFailure(error);
   }
 
-  // Fallback to static data
-  return PRODUCTS.filter((p) => p.category === categorySlug);
+  return PRODUCTS.filter((product) => product.category === categorySlug);
 }
 
-/**
- * Fetch a single product by slug and category.
- */
 export async function getProductBySlug(slug, categorySlug) {
   "use cache";
   cacheLife("hours");
   cacheTag("products", `product-${slug}`);
 
   try {
-    const prisma = getDatabase();
+    const db = getDatabase();
 
-    if (prisma) {
-      const dbProduct = await prisma.product.findFirst({
-        where: {
-          slug,
-          ...(categorySlug ? { categorySlug } : {}),
-        },
-        include: {
-          faqs: {
-            orderBy: { sortOrder: "asc" },
-          },
-          specifications: {
-            orderBy: { sortOrder: "asc" },
-          },
-        },
-      });
+    if (db) {
+      const conditions = [eq(products.slug, slug)];
+      if (categorySlug) {
+        conditions.push(eq(products.categorySlug, categorySlug));
+      }
 
+      const rows = await db
+        .select()
+        .from(products)
+        .where(and(...conditions))
+        .limit(1);
+      await loadRelatedRows(db, rows, { faqs: true, specifications: true });
       markDatabaseAvailable();
 
-      if (dbProduct) {
+      const product = rows[0];
+      if (product) {
         return {
-          id: dbProduct.id,
-          slug: dbProduct.slug,
-          name: dbProduct.name,
-          category: dbProduct.categorySlug,
-          image: dbProduct.imageUrl,
-          imagePublicId: dbProduct.imagePublicId,
-          badge: dbProduct.badge || "",
-          shortDescription: dbProduct.description.replace(/<[^>]*>/g, "").slice(0, 160) + "...",
-          fullDescription: dbProduct.description,
-          faqs: dbProduct.faqs || [],
-          specifications: dbProduct.specifications || [],
+          id: product.id,
+          slug: product.slug,
+          name: product.name,
+          category: product.categorySlug,
+          image: product.imageUrl,
+          imagePublicId: product.imagePublicId,
+          badge: product.badge || "",
+          shortDescription:
+            product.description.replace(/<[^>]*>/g, "").slice(0, 160) + "...",
+          fullDescription: product.description,
+          faqs: product.faqs || [],
+          specifications: product.specifications || [],
           features: [],
           applications: [],
-          howToSpecify: "Contact us with your technical drawing or dimensional requirements for tailored fabrication.",
+          howToSpecify:
+            "Contact us with your technical drawing or dimensional requirements for tailored fabrication.",
         };
       }
     }
@@ -151,47 +179,39 @@ export async function getProductBySlug(slug, categorySlug) {
     handleDatabaseFailure(error);
   }
 
-  // Fallback to static data
-  return PRODUCTS.find(
-    (p) => p.slug === slug && (!categorySlug || p.category === categorySlug)
-  ) || null;
+  return (
+    PRODUCTS.find(
+      (product) =>
+        product.slug === slug && (!categorySlug || product.category === categorySlug)
+    ) || null
+  );
 }
 
-/**
- * Fetch all products grouped or flat for admin/sitemaps.
- */
 export async function getAllProducts() {
   "use cache";
   cacheLife("hours");
   cacheTag("products");
 
   try {
-    const prisma = getDatabase();
+    const db = getDatabase();
 
-    if (prisma) {
-      const dbProducts = await prisma.product.findMany({
-        include: {
-          faqs: {
-            orderBy: { sortOrder: "asc" },
-          },
-        },
-        orderBy: { createdAt: "desc" },
-      });
-
+    if (db) {
+      const rows = await db.select().from(products).orderBy(desc(products.createdAt));
+      await loadRelatedRows(db, rows, { faqs: true });
       markDatabaseAvailable();
 
-      if (dbProducts.length > 0) {
-        return dbProducts.map((p) => ({
-          id: p.id,
-          slug: p.slug,
-          name: p.name,
-          category: p.categorySlug,
-          image: p.imageUrl,
-          imagePublicId: p.imagePublicId,
-          badge: p.badge || "",
-          description: p.description,
-          faqs: p.faqs || [],
-          createdAt: p.createdAt,
+      if (rows.length) {
+        return rows.map((product) => ({
+          id: product.id,
+          slug: product.slug,
+          name: product.name,
+          category: product.categorySlug,
+          image: product.imageUrl,
+          imagePublicId: product.imagePublicId,
+          badge: product.badge || "",
+          description: product.description,
+          faqs: product.faqs || [],
+          createdAt: product.createdAt,
         }));
       }
     }
@@ -199,53 +219,45 @@ export async function getAllProducts() {
     handleDatabaseFailure(error);
   }
 
-  return PRODUCTS.map((p) => ({
-    id: p.id,
-    slug: p.slug,
-    name: p.name,
-    category: p.category,
-    image: p.image,
-    badge: p.badge || "",
-    description: p.fullDescription || p.shortDescription,
+  return PRODUCTS.map((product) => ({
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    category: product.category,
+    image: product.image,
+    badge: product.badge || "",
+    description: product.fullDescription || product.shortDescription,
     faqs: [],
     createdAt: new Date(),
   }));
 }
 
-/**
- * Fetch a single product by its database ID (or static fallback).
- */
 export async function getProductById(id) {
   "use cache";
   cacheLife("hours");
   cacheTag("products", `product-id-${id}`);
 
   try {
-    const prisma = getDatabase();
+    const db = getDatabase();
 
-    if (prisma) {
-      const dbProduct = await prisma.product.findUnique({
-        where: { id },
-        include: {
-          faqs: { orderBy: { sortOrder: "asc" } },
-          specifications: { orderBy: { sortOrder: "asc" } },
-        },
-      });
-
+    if (db) {
+      const rows = await db.select().from(products).where(eq(products.id, id)).limit(1);
+      await loadRelatedRows(db, rows, { faqs: true, specifications: true });
       markDatabaseAvailable();
 
-      if (dbProduct) {
+      const product = rows[0];
+      if (product) {
         return {
-          id: dbProduct.id,
-          slug: dbProduct.slug,
-          name: dbProduct.name,
-          categorySlug: dbProduct.categorySlug,
-          imageUrl: dbProduct.imageUrl,
-          imagePublicId: dbProduct.imagePublicId,
-          badge: dbProduct.badge || "",
-          description: dbProduct.description,
-          faqs: dbProduct.faqs || [],
-          specifications: dbProduct.specifications || [],
+          id: product.id,
+          slug: product.slug,
+          name: product.name,
+          categorySlug: product.categorySlug,
+          imageUrl: product.imageUrl,
+          imagePublicId: product.imagePublicId,
+          badge: product.badge || "",
+          description: product.description,
+          faqs: product.faqs || [],
+          specifications: product.specifications || [],
         };
       }
     }
@@ -253,25 +265,25 @@ export async function getProductById(id) {
     handleDatabaseFailure(error);
   }
 
-  const staticProduct = PRODUCTS.find((p) => p.id === id);
-  if (staticProduct) {
-    return {
-      id: staticProduct.id,
-      slug: staticProduct.slug,
-      name: staticProduct.name,
-      categorySlug: staticProduct.category,
-      imageUrl: staticProduct.image,
-      imagePublicId: null,
-      badge: staticProduct.badge || "",
-      description: staticProduct.fullDescription || staticProduct.shortDescription,
-      faqs: [],
-      specifications: (staticProduct.specifications || []).map((s, idx) => ({
-        property: s.property,
-        value: s.value,
-        sortOrder: idx,
-      })),
-    };
+  const product = PRODUCTS.find((item) => item.id === id);
+  if (!product) {
+    return null;
   }
 
-  return null;
+  return {
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    categorySlug: product.category,
+    imageUrl: product.image,
+    imagePublicId: null,
+    badge: product.badge || "",
+    description: product.fullDescription || product.shortDescription,
+    faqs: [],
+    specifications: (product.specifications || []).map((specification, sortOrder) => ({
+      property: specification.property,
+      value: specification.value,
+      sortOrder,
+    })),
+  };
 }
