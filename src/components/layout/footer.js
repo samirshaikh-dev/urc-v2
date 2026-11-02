@@ -95,6 +95,22 @@ export async function Footer() {
             <p className="mt-3.5 max-w-sm text-xs leading-relaxed text-white/75 sm:text-sm">
               Specialized Indian manufacturer and bulk supplier of engineered rubberised cork sheets, precision transformer gaskets, and resilient elastomer composites.
             </p>
+
+            {/* Social Icons Row */}
+            <div className="mt-6 flex items-center gap-2.5">
+              {SOCIAL_LINKS.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.name}
+                  className="flex size-8 sm:size-9 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-150 hover:bg-white hover:text-maroon shadow-xs"
+                >
+                  <item.icon className="size-4" />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Column 2: Products (2 cols) */}
@@ -173,24 +189,8 @@ export async function Footer() {
           </div>
         </div>
 
-        {/* Social Icons Row */}
-        <div className="mt-12 flex items-center justify-center gap-3">
-          {SOCIAL_LINKS.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={item.name}
-              className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-150 hover:bg-white hover:text-maroon shadow-xs"
-            >
-              <item.icon className="size-4" />
-            </a>
-          ))}
-        </div>
-
         {/* 3. LEGAL & BOTTOM BAR */}
-        <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
             <p>
               &copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.
