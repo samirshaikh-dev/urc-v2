@@ -66,9 +66,6 @@ export function ProcessFlow() {
                     <span className="text-2xl font-bold tracking-tight text-maroon/20">
                       {step.step}
                     </span>
-                    <span className="flex size-9 items-center justify-center rounded-xl bg-page border border-line text-maroon">
-                      <Icon className="size-4" />
-                    </span>
                   </div>
 
                   <h3 className="mt-5 text-base font-semibold text-ink sm:text-lg">
