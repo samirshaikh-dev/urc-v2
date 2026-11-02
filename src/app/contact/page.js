@@ -1,30 +1,30 @@
 import { ContactHero } from "@/components/contact/contact-hero";
-import { ContactEnquiry } from "@/components/contact/contact-enquiry";
-import { ContactLocations } from "@/components/contact/contact-locations";
-import { ContactExplore } from "@/components/contact/contact-explore";
+import { ContactMain } from "@/components/contact/contact-main";
+import { ContactMap } from "@/components/contact/contact-map";
+import { ContactFinalCTA } from "@/components/contact/contact-final-cta";
 import { constructMetadata } from "@/lib/seo";
 
 export const metadata = constructMetadata({
-  title: "Contact & Request a Quote",
+  title: "Contact Us & Request a Quote | United Rubber Cork",
   description:
-    "Contact United Rubber Cork to discuss rubberised cork sheets, gaskets, granules or custom components. Share dimensions, quantity and application details for a quotation.",
+    "Get in touch with United Rubber Cork. Request a quotation or technical guidance for transformer gaskets, clutch plate materials, foundation slabs, or rubberised cork sheets.",
   path: "/contact",
 });
 
 export default function ContactPage() {
   return (
     <>
-      {/* 1. PAGE INTRO & DIRECT CONTACT */}
+      {/* 01. CONTACT HERO */}
       <ContactHero />
 
-      {/* 2. ENQUIRY FORM & WHAT HAPPENS NEXT */}
-      <ContactEnquiry />
+      {/* 02. ENQUIRY FORM + CONTACT INFORMATION (TWO-COLUMN EDITORIAL) */}
+      <ContactMain />
 
-      {/* 3. MANUFACTURING & OFFICE LOCATIONS */}
-      <ContactLocations />
+      {/* 03. FIND US (COMPACT GOOGLE MAPS + DIRECTIONS) */}
+      <ContactMap />
 
-      {/* 4. PRODUCT & INDUSTRY LINKS */}
-      <ContactExplore />
+      {/* 04. FINAL CTA */}
+      <ContactFinalCTA />
     </>
   );
 }

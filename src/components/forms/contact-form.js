@@ -1,29 +1,32 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Mail } from "lucide-react";
+import { ArrowRight, Check, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { COMPANY_INFO } from "@/data/company";
 
-const ENQUIRY_TYPES = [
-  "Request a quotation",
-  "Discuss a custom requirement",
-  "Ask about a product",
-  "Bulk or repeat supply",
+const PRODUCT_OPTIONS = [
+  "Select product or material...",
+  "Transformer & Switchgear Cork Gaskets & Frames",
+  "Automotive Gaskets & Clutch Plates",
+  "Heavy Generator Foundation Cork Slabs",
+  "PP Cap Wads & Bottle Closures",
+  "Standard Rubberised Cork Sheets",
+  "Custom CNC Drawing-Based Gaskets & Dovetails",
+  "General Inquiry / Other",
 ];
 
 const INITIAL_VALUES = {
-  enquiryType: ENQUIRY_TYPES[0],
   name: "",
   company: "",
   email: "",
   phone: "",
   product: "",
-  quantity: "",
   message: "",
+  _hp: "", // Honeypot spam protection
 };
 
-const FIELD_ORDER = ["name", "company", "email", "phone", "product", "quantity", "message"];
+const FIELD_ORDER = ["name", "company", "email", "phone", "product", "message"];
 
 const FIELD_IDS = {
   name: "contact-name",
@@ -31,14 +34,13 @@ const FIELD_IDS = {
   email: "contact-email",
   phone: "contact-phone",
   product: "contact-product",
-  quantity: "contact-quantity",
   message: "contact-message",
 };
 
 const fieldClasses =
-  "mt-1 w-full rounded-control border bg-field px-3 py-2.5 text-sm text-ink placeholder:text-muted transition-colors duration-150 focus:border-maroon focus:bg-white";
+  "mt-1.5 w-full rounded-xl border bg-field px-3.5 py-2.5 text-sm text-ink placeholder:text-muted transition-colors duration-150 focus:border-maroon focus:bg-white focus:outline-none focus:ring-1 focus:ring-maroon";
 
-const labelClasses = "block text-sm font-medium text-ink";
+const labelClasses = "block text-xs font-semibold uppercase tracking-wider text-ink";
 
 function RequiredMark() {
   return (
@@ -53,52 +55,46 @@ function validate(values) {
   const errors = {};
 
   if (!values.name.trim()) {
-    errors.name = "Enter your name.";
+    errors.name = "Enter your full name.";
   }
 
   if (!values.company.trim()) {
-    errors.company = "Enter your company or organisation.";
+    errors.company = "Enter your company name.";
   }
 
   if (!values.email.trim()) {
-    errors.email = "Enter your email address.";
+    errors.email = "Enter your business email address.";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) {
-    errors.email = "Enter a valid email address, for example name@company.com.";
+    errors.email = "Enter a valid email address (e.g. name@company.com).";
   }
 
   const phoneDigits = values.phone.replace(/\D/g, "");
   if (values.phone.trim() && (phoneDigits.length < 7 || phoneDigits.length > 15)) {
-    errors.phone = "Enter a phone number with 7 to 15 digits, or leave this blank.";
+    errors.phone = "Enter a valid phone number with 7 to 15 digits.";
   }
 
   if (!values.message.trim()) {
-    errors.message = "Describe what you need so the team can respond usefully.";
-  } else if (values.message.trim().length < 20) {
-    errors.message = "Add a little more detail, at least 20 characters.";
+    errors.message = "Please describe your material or application requirement.";
+  } else if (values.message.trim().length < 15) {
+    errors.message = "Please provide at least 15 characters describing your requirement.";
   }
 
   return errors;
 }
 
-/**
- * The site has no configured enquiry endpoint yet. Rather than simulating a
- * successful submission, this builds a real email draft addressed to the
- * company and opens it in the visitor's mail app. Replace this handler with a
- * POST to the external backend once the endpoint and spam protection exist.
- */
 function buildMailto(values) {
-  const subject = `Enquiry — ${values.product.trim() || values.enquiryType}`;
+  const subject = `B2B Enquiry — ${values.product && values.product !== PRODUCT_OPTIONS[0] ? values.product : "Industrial Cork Solution"}`;
 
   const lines = [
-    `Enquiry type: ${values.enquiryType}`,
-    `Name: ${values.name.trim()}`,
-    `Company: ${values.company.trim()}`,
-    `Email: ${values.email.trim()}`,
+    `Full Name: ${values.name.trim()}`,
+    `Company Name: ${values.company.trim()}`,
+    `Business Email: ${values.email.trim()}`,
     values.phone.trim() ? `Phone: ${values.phone.trim()}` : null,
-    values.product.trim() ? `Product or application: ${values.product.trim()}` : null,
-    values.quantity.trim() ? `Quantity: ${values.quantity.trim()}` : null,
+    values.product && values.product !== PRODUCT_OPTIONS[0]
+      ? `Product / Material: ${values.product}`
+      : null,
     "",
-    "Requirement:",
+    "Requirement Details:",
     values.message.trim(),
   ].filter((line) => line !== null);
 
@@ -136,21 +132,22 @@ export function ContactForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    // Honeypot spam detection
+    if (values._hp) {
+      return;
+    }
+
     const nextErrors = validate(values);
     setErrors(nextErrors);
 
     const firstInvalid = FIELD_ORDER.find((key) => nextErrors[key]);
     if (firstInvalid) {
-      // Moving focus to the field also announces its error through
-      // aria-describedby, so no separate live-region announcement is needed.
       document.getElementById(FIELD_IDS[firstInvalid])?.focus();
       return;
     }
 
     const href = buildMailto(values);
     setPreparedHref(href);
-    // Opening the draft here, inside the submit event, keeps the user gesture
-    // that mail clients require.
     window.location.href = href;
   };
 
@@ -163,9 +160,9 @@ export function ContactForm() {
 
   if (preparedHref) {
     return (
-      <div>
+      <div className="rounded-2xl border border-line bg-page/50 p-6 sm:p-8">
         <div className="flex items-start gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-control border border-maroon/20 bg-maroon/5 text-maroon">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-maroon/20 bg-maroon/5 text-maroon">
             <Check className="size-5" aria-hidden="true" />
           </span>
           <div>
@@ -174,32 +171,30 @@ export function ContactForm() {
               tabIndex={-1}
               className="text-lg font-semibold tracking-tight text-ink sm:text-xl"
             >
-              Your email draft is ready
+              Enquiry draft prepared
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              This page does not send the enquiry itself. Your details have been placed in
-              an email addressed to{" "}
-              <span className="font-medium text-ink">{COMPANY_INFO.email}</span>. Send it
-              from your email app to complete the enquiry.
+              Your details have been assembled into an email addressed to{" "}
+              <strong className="text-ink">{COMPANY_INFO.email}</strong>. Send it directly from your email client to complete your submission.
             </p>
           </div>
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Button href={preparedHref} size="md">
-            <Mail className="size-4" aria-hidden="true" />
+          <Button href={preparedHref} size="md" className="rounded-full px-6">
+            <Mail className="size-4 mr-2" aria-hidden="true" />
             Open email draft
           </Button>
-          <Button type="button" variant="secondary" size="md" onClick={handleEdit}>
-            Edit enquiry
+          <Button type="button" variant="secondary" size="md" className="rounded-full px-6" onClick={handleEdit}>
+            Edit details
           </Button>
         </div>
 
         <p className="mt-4 text-xs leading-relaxed text-muted">
-          If your email app did not open, use the button above or write directly to{" "}
+          Did your email app not open? Send your details manually to{" "}
           <a
             href={`mailto:${COMPANY_INFO.email}`}
-            className="font-medium text-maroon underline-offset-4 hover:underline"
+            className="font-medium text-maroon hover:underline"
           >
             {COMPANY_INFO.email}
           </a>
@@ -210,48 +205,27 @@ export function ContactForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      aria-labelledby="enquiry-heading"
-      className="space-y-5"
-      noValidate
-    >
-      <p className="text-xs text-muted">
-        Fields marked <span className="font-semibold text-orange-ink">*</span> are required.
-      </p>
+    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      {/* Honeypot field for bot spam prevention */}
+      <input
+        type="text"
+        name="_hp"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        aria-hidden="true"
+        value={values._hp}
+        onChange={handleChange}
+      />
 
       {Object.keys(errors).length > 0 && (
-        <p className="rounded-control border border-maroon/30 bg-maroon/5 px-3 py-2.5 text-sm text-maroon">
-          Please check the highlighted fields below.
-        </p>
+        <div className="rounded-xl border border-maroon/20 bg-maroon/5 p-3.5 text-xs text-maroon">
+          Please correct the highlighted fields below before submitting.
+        </div>
       )}
 
-      <fieldset>
-        <legend className={labelClasses}>Enquiry type</legend>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {ENQUIRY_TYPES.map((type) => (
-            <label key={type} className="relative cursor-pointer">
-              <input
-                type="radio"
-                name="enquiryType"
-                value={type}
-                checked={values.enquiryType === type}
-                onChange={handleChange}
-                className="peer sr-only"
-              />
-              <span className="flex min-h-11 items-center rounded-control border border-line-strong bg-white py-2 pr-8 pl-3 text-xs font-medium text-ink transition-colors duration-150 peer-checked:border-maroon peer-checked:bg-maroon/5 peer-checked:font-semibold peer-checked:text-maroon peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-maroon sm:text-sm">
-                {type}
-              </span>
-              <Check
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 right-2.5 size-3.5 -translate-y-1/2 text-maroon opacity-0 peer-checked:opacity-100"
-              />
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
       <div className="grid gap-4 sm:grid-cols-2">
+        {/* Full Name */}
         <div>
           <label htmlFor={FIELD_IDS.name} className={labelClasses}>
             Full name
@@ -263,23 +237,24 @@ export function ContactForm() {
             type="text"
             required
             autoComplete="name"
-            maxLength={120}
+            placeholder="e.g. Rajesh Sharma"
             value={values.name}
             onChange={handleChange}
             aria-invalid={errors.name ? "true" : undefined}
             aria-describedby={errors.name ? `${FIELD_IDS.name}-error` : undefined}
-            className={`${fieldClasses} ${errors.name ? "border-maroon" : "border-line-strong"}`}
+            className={`${fieldClasses} ${errors.name ? "border-maroon" : "border-line"}`}
           />
           {errors.name && (
-            <p id={`${FIELD_IDS.name}-error`} className="mt-1 text-xs font-medium text-maroon">
+            <p id={`${FIELD_IDS.name}-error`} className="mt-1 text-xs text-maroon">
               {errors.name}
             </p>
           )}
         </div>
 
+        {/* Company Name */}
         <div>
           <label htmlFor={FIELD_IDS.company} className={labelClasses}>
-            Company or organisation
+            Company name
             <RequiredMark />
           </label>
           <input
@@ -288,23 +263,24 @@ export function ContactForm() {
             type="text"
             required
             autoComplete="organization"
-            maxLength={160}
+            placeholder="e.g. Premier Transformers Ltd."
             value={values.company}
             onChange={handleChange}
             aria-invalid={errors.company ? "true" : undefined}
             aria-describedby={errors.company ? `${FIELD_IDS.company}-error` : undefined}
-            className={`${fieldClasses} ${errors.company ? "border-maroon" : "border-line-strong"}`}
+            className={`${fieldClasses} ${errors.company ? "border-maroon" : "border-line"}`}
           />
           {errors.company && (
-            <p id={`${FIELD_IDS.company}-error`} className="mt-1 text-xs font-medium text-maroon">
+            <p id={`${FIELD_IDS.company}-error`} className="mt-1 text-xs text-maroon">
               {errors.company}
             </p>
           )}
         </div>
 
+        {/* Business Email */}
         <div>
           <label htmlFor={FIELD_IDS.email} className={labelClasses}>
-            Email
+            Business email
             <RequiredMark />
           </label>
           <input
@@ -314,23 +290,24 @@ export function ContactForm() {
             required
             autoComplete="email"
             inputMode="email"
-            maxLength={254}
+            placeholder="e.g. rajesh@company.com"
             value={values.email}
             onChange={handleChange}
             aria-invalid={errors.email ? "true" : undefined}
             aria-describedby={errors.email ? `${FIELD_IDS.email}-error` : undefined}
-            className={`${fieldClasses} ${errors.email ? "border-maroon" : "border-line-strong"}`}
+            className={`${fieldClasses} ${errors.email ? "border-maroon" : "border-line"}`}
           />
           {errors.email && (
-            <p id={`${FIELD_IDS.email}-error`} className="mt-1 text-xs font-medium text-maroon">
+            <p id={`${FIELD_IDS.email}-error`} className="mt-1 text-xs text-maroon">
               {errors.email}
             </p>
           )}
         </div>
 
+        {/* Phone Number */}
         <div>
           <label htmlFor={FIELD_IDS.phone} className={labelClasses}>
-            Phone or WhatsApp <span className="font-normal text-muted">(optional)</span>
+            Phone number <span className="font-normal text-muted lowercase">(optional)</span>
           </label>
           <input
             id={FIELD_IDS.phone}
@@ -338,112 +315,77 @@ export function ContactForm() {
             type="tel"
             autoComplete="tel"
             inputMode="tel"
-            maxLength={32}
+            placeholder="+91 98765 43210"
             value={values.phone}
             onChange={handleChange}
             aria-invalid={errors.phone ? "true" : undefined}
-            aria-describedby={
-              errors.phone ? `${FIELD_IDS.phone}-error` : `${FIELD_IDS.phone}-hint`
-            }
-            className={`${fieldClasses} ${errors.phone ? "border-maroon" : "border-line-strong"}`}
+            aria-describedby={errors.phone ? `${FIELD_IDS.phone}-error` : undefined}
+            className={`${fieldClasses} ${errors.phone ? "border-maroon" : "border-line"}`}
           />
-          {errors.phone ? (
-            <p id={`${FIELD_IDS.phone}-error`} className="mt-1 text-xs font-medium text-maroon">
+          {errors.phone && (
+            <p id={`${FIELD_IDS.phone}-error`} className="mt-1 text-xs text-maroon">
               {errors.phone}
-            </p>
-          ) : (
-            <p id={`${FIELD_IDS.phone}-hint`} className="mt-1 text-xs text-muted">
-              Include a country code if you are outside India.
             </p>
           )}
         </div>
-
-        <div>
-          <label htmlFor={FIELD_IDS.product} className={labelClasses}>
-            Product or application <span className="font-normal text-muted">(optional)</span>
-          </label>
-          <input
-            id={FIELD_IDS.product}
-            name="product"
-            type="text"
-            maxLength={200}
-            value={values.product}
-            onChange={handleChange}
-            placeholder="e.g. 3 mm NBR rubberised cork sheet"
-            className={`${fieldClasses} border-line-strong placeholder:text-muted/80`}
-          />
-        </div>
-
-        <div>
-          <label htmlFor={FIELD_IDS.quantity} className={labelClasses}>
-            Quantity <span className="font-normal text-muted">(optional)</span>
-          </label>
-          <input
-            id={FIELD_IDS.quantity}
-            name="quantity"
-            type="text"
-            maxLength={120}
-            value={values.quantity}
-            onChange={handleChange}
-            placeholder="e.g. 500 sheets or 1,000 gaskets"
-            className={`${fieldClasses} border-line-strong placeholder:text-muted/80`}
-          />
-        </div>
       </div>
 
+      {/* Product / Material Interested In Dropdown */}
+      <div>
+        <label htmlFor={FIELD_IDS.product} className={labelClasses}>
+          Product / material interested in
+        </label>
+        <select
+          id={FIELD_IDS.product}
+          name="product"
+          value={values.product}
+          onChange={handleChange}
+          className={`${fieldClasses} border-line bg-field cursor-pointer`}
+        >
+          {PRODUCT_OPTIONS.map((opt, i) => (
+            <option key={opt} value={i === 0 ? "" : opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Message */}
       <div>
         <label htmlFor={FIELD_IDS.message} className={labelClasses}>
-          Message or technical requirements
+          Message &amp; technical specifications
           <RequiredMark />
         </label>
         <textarea
           id={FIELD_IDS.message}
           name="message"
-          rows={5}
+          rows={4}
           required
           maxLength={1000}
           value={values.message}
           onChange={handleChange}
           aria-invalid={errors.message ? "true" : undefined}
-          aria-describedby={
-            errors.message ? `${FIELD_IDS.message}-error` : `${FIELD_IDS.message}-hint`
-          }
-          placeholder="Describe dimensions, thickness, operating conditions, drawing references or batch quantity."
-          className={`${fieldClasses} ${
-            errors.message ? "border-maroon" : "border-line-strong"
-          } placeholder:text-muted/80`}
+          aria-describedby={errors.message ? `${FIELD_IDS.message}-error` : undefined}
+          placeholder="Describe your required dimensions, thickness, contact fluids, operating temperature, or drawing references."
+          className={`${fieldClasses} ${errors.message ? "border-maroon" : "border-line"}`}
         />
-        {errors.message ? (
-          <p
-            id={`${FIELD_IDS.message}-error`}
-            className="mt-1 text-xs font-medium text-maroon"
-          >
+        {errors.message && (
+          <p id={`${FIELD_IDS.message}-error`} className="mt-1 text-xs text-maroon">
             {errors.message}
-          </p>
-        ) : (
-          <p id={`${FIELD_IDS.message}-hint`} className="mt-1 text-xs text-muted">
-            Include what the part or material is used for, and attach any drawing once the
-            email draft opens.
           </p>
         )}
       </div>
 
-      <div className="border-t border-line pt-5">
-        <Button type="submit" size="md" className="w-full sm:w-auto">
-          <Mail className="size-4" aria-hidden="true" />
-          Prepare email enquiry
+      {/* Submit Button */}
+      <div className="pt-2">
+        <Button
+          type="submit"
+          size="md"
+          className="w-full sm:w-auto rounded-full px-8 shadow-sm group"
+        >
+          <span>Submit Enquiry</span>
+          <ArrowRight className="size-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
         </Button>
-        <p className="mt-3 text-xs leading-relaxed text-muted">
-          This opens an email draft in your mail app so you can review and send it. Prefer
-          to write directly? Email{" "}
-          <a
-            href={`mailto:${COMPANY_INFO.email}`}
-            className="font-medium text-maroon underline-offset-4 hover:underline"
-          >
-            {COMPANY_INFO.email}
-          </a>
-          .
-        </p>
       </div>
     </form>
   );
