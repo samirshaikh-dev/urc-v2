@@ -136,43 +136,41 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
   };
 
   return (
-    <div className="mx-auto max-w-[1100px] pb-12">
-      {/* Page Header */}
-      <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#687080] mb-2">
-        <Link
-          href="/admin/products"
-          className="hover:text-[#111111] transition-colors flex items-center gap-1.5 font-medium"
-        >
-          <ArrowLeft className="size-3.5" />
-          <span>Back to Products</span>
-        </Link>
-      </nav>
+    <div className="w-full">
+      <div className="mx-auto max-w-[1100px]">
+        {/* Page Header */}
+        <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#687080] mb-2">
+          <Link
+            href="/admin/products"
+            className="hover:text-[#111111] transition-colors flex items-center gap-1.5 font-medium"
+          >
+            <ArrowLeft className="size-3.5" />
+            <span>Back to Products</span>
+          </Link>
+        </nav>
 
-      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
-            {isEdit ? "Edit Product" : "New Product"}
-          </h1>
-          {/* <p className="mt-1 text-xs sm:text-sm text-[#687080]">
-            {isEdit
-              ? "Update product specifications, media, or FAQs. Changes take effect across public catalog routes instantly."
-              : "Fill in the details below. When published, it will go live immediately on the customer-facing website."}
-          </p> */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
+              {isEdit ? "Edit Product" : "New Product"}
+            </h1>
+          </div>
         </div>
+
+        <div className="mt-4 mb-8 h-px w-full bg-[#D9DCD1]" />
+
+        {/* Global Error Notification */}
+        {errorMessage && (
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-xs sm:text-sm text-red-700">
+            {errorMessage}
+          </div>
+        )}
       </div>
 
-      <div className="mt-4 mb-8 h-px w-full bg-[#D9DCD1]" />
-
-      {/* Global Error Notification */}
-      {errorMessage && (
-        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-xs sm:text-sm text-red-700">
-          {errorMessage}
-        </div>
-      )}
-
       {/* Single Combined Form (Clean & Unified, matching New Blog reference) */}
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Row 1: Product Name & Slug in 2-Column Grid */}
+      <form onSubmit={handleSubmit}>
+        <div className="mx-auto max-w-[1100px] space-y-6">
+          {/* Row 1: Product Name & Slug in 2-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
           <div>
             <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
@@ -323,12 +321,13 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
             onChange={(updated) => setFaqs(updated)}
           />
         </div>
+      </div>
 
-        {/* Sticky Action Bar */}
-        <aside
-          aria-label="Publishing Controls"
-          className="sticky bottom-0 z-30 mt-10 -mx-4 sm:-mx-8 lg:-mx-10 px-4 sm:px-8 lg:px-10 py-3.5 bg-white/95 backdrop-blur-md border-t border-[#D9DCD1] shadow-2xs"
-        >
+      {/* Sticky Action Bar */}
+      <aside
+        aria-label="Publishing Controls"
+        className="sticky bottom-0 z-30 mt-10 -mx-4 sm:-mx-8 lg:-mx-10 -mb-4 sm:-mb-8 lg:-mb-10 px-4 sm:px-8 lg:px-10 py-3.5 bg-white/95 backdrop-blur-md border-t border-[#D9DCD1] shadow-2xs"
+      >
           <div className="max-w-[1100px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             {/* Left Info */}
             <div className="flex items-center gap-2.5 text-xs text-[#687080] min-w-0 w-full sm:w-auto">
