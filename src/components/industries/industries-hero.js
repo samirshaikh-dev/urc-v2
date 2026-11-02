@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
@@ -9,59 +8,41 @@ export function IndustriesHero() {
   return (
     <section className="relative overflow-hidden pt-4 pb-12 sm:pt-8 sm:pb-16 lg:pb-20">
       <Container>
-        <div className="grid overflow-hidden rounded-3xl border border-line bg-maroon text-white lg:grid-cols-12">
-          {/* Content leads the DOM so mobile reads the proposition before the image. */}
-          <div className="p-6 sm:p-10 lg:col-span-7 lg:p-12 xl:p-16">
-            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-white/80">
-              <span className="h-px w-6 bg-yellow" aria-hidden="true" />
-              Industries &amp; applications
-            </p>
+        <div className="overflow-hidden rounded-3xl border border-line bg-maroon p-6 sm:p-10 lg:p-12 xl:p-16 text-white shadow-xs">
+          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-white/80">
+            <span className="h-px w-6 bg-yellow" aria-hidden="true" />
+            Industries &amp; applications
+          </p>
 
-            <h1 className="mt-6 max-w-xl text-3xl font-semibold tracking-tight text-white sm:text-4xl sm:leading-[1.12] lg:text-[2.75rem]">
-              Engineered for the conditions your sector runs in.
-            </h1>
+          <h1 className="mt-6 max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl sm:leading-[1.12] lg:text-[2.75rem]">
+            Engineered for the conditions your sector runs in.
+          </h1>
 
-            <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/80 sm:text-base">
-              Hot transformer oil, continuous powertrain vibration, saltwater exposure, and
-              structural movement each impose different demands on a seal or isolator. Explore the
-              sectors United Rubber Cork supplies and the components fabricated for them.
-            </p>
+          <p className="mt-5 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base">
+            Hot transformer oil, continuous powertrain vibration, saltwater exposure, and
+            structural movement each impose different demands on a seal or isolator. Explore the
+            sectors United Rubber Cork supplies and the components fabricated for them.
+          </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
-              <Button
-                href="/contact"
-                variant="inverse"
-                size="md"
-                className="rounded-full px-5 font-semibold sm:px-6"
-              >
-                Request sector quotation
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </Button>
+          <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+            <Button
+              href="/contact"
+              variant="inverse"
+              size="md"
+              className="rounded-full px-5 font-semibold sm:px-6"
+            >
+              Request sector quotation
+              <ArrowRight className="size-4 ml-1.5" aria-hidden="true" />
+            </Button>
 
-              <Link
-                href="#sectors"
-                className="inline-flex h-11 items-center justify-center rounded-full border border-white/30 bg-white/5 px-5 text-sm font-medium text-white transition-colors duration-150 hover:border-white hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                Browse sectors
-              </Link>
-            </div>
-
-            <div className="mt-10 flex flex-col gap-2 border-t border-white/15 pt-5 text-xs text-white/70 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-              <span>Sheet format: 915 × 610 mm</span>
-              <span>Finished cut and molded components</span>
-            </div>
+            <Link
+              href="#sectors"
+              className="inline-flex h-11 items-center justify-center rounded-full border border-white/30 bg-white/5 px-5 text-sm font-medium text-white transition-colors duration-150 hover:border-white hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              Browse sectors
+            </Link>
           </div>
 
-          <div className="relative aspect-[4/3] bg-field lg:col-span-5 lg:aspect-auto lg:min-h-full">
-            <Image
-              src="/images/carousel-images/custom-molded-cork-components-manufacturing-vapi-gujarat-02.jpg"
-              alt="Custom molded cork components in production."
-              fill
-              preload
-              sizes="(min-width: 1024px) 42vw, 100vw"
-              className="object-cover"
-            />
-          </div>
         </div>
 
         {/* Sector index — a compact editorial contents list, not a card row. */}
