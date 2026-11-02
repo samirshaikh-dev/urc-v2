@@ -39,9 +39,6 @@ export function ProductsProcess() {
           <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
             How we work with technical buyers
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">
-            From initial drawing review to bulk delivery, we eliminate uncertainty through technical clarity.
-          </p>
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -56,9 +53,7 @@ export function ProductsProcess() {
                   <span className="text-xs font-mono font-bold text-orange-ink">
                     Step {item.step}
                   </span>
-                  <span className="flex size-9 items-center justify-center rounded-xl bg-field text-maroon">
-                    <Icon className="size-4" aria-hidden="true" />
-                  </span>
+                  
                 </div>
                 <h3 className="mt-4 text-base font-semibold text-ink">
                   {item.title}
