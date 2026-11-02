@@ -9,9 +9,7 @@ export const metadata = {
   title: "Edit Article | URC Admin",
 };
 
-export default async function EditBlogPage({ params }) {
-  const { id } = await params;
-
+export default function EditBlogPage({ params }) {
   return (
     <Suspense
       fallback={
@@ -20,12 +18,13 @@ export default async function EditBlogPage({ params }) {
         </div>
       }
     >
-      <EditBlogLoader id={id} />
+      <EditBlogLoader params={params} />
     </Suspense>
   );
 }
 
-async function EditBlogLoader({ id }) {
+async function EditBlogLoader({ params }) {
+  const { id } = await params;
   await connection();
   const blog = await getBlogById(id);
 
@@ -49,4 +48,3 @@ async function EditBlogLoader({ id }) {
 
   return <BlogEditorForm initialData={blog} isEdit={true} />;
 }
-

@@ -1,15 +1,69 @@
-import prisma from "@/lib/prisma";
+import { getPrismaClient } from "@/lib/prisma";
 import { PRODUCTS, CATEGORY_DETAILS } from "@/data/products";
+import { cacheLife, cacheTag } from "next/cache";
 
 export { slugify } from "@/lib/utils";
 
 /**
+ * Database connectivity is optional.
+ *
+ * When Supabase is unreachable or the products table is missing, every reader
+ * below falls back to the static catalogue in `@/data/products`.
+ *
+ * A short per-process circuit breaker prevents the same failure from being
+ * retried (and logged) for every page generated during a production build.
+ */
+const DB_RETRY_COOLDOWN_MS = 60_000;
+let databaseUnavailableUntil = 0;
+let databaseFailureReported = false;
+
+function getDatabase() {
+  if (Date.now() < databaseUnavailableUntil) {
+    return null;
+  }
+
+  return getPrismaClient();
+}
+
+function markDatabaseAvailable() {
+  databaseUnavailableUntil = 0;
+  databaseFailureReported = false;
+}
+
+function handleDatabaseFailure(error) {
+  databaseUnavailableUntil = Date.now() + DB_RETRY_COOLDOWN_MS;
+
+  if (databaseFailureReported) {
+    return;
+  }
+
+  databaseFailureReported = true;
+  const firstLine = String(error?.message || error)
+    .split("\n")
+    .map((line) => line.trim())
+    .find(Boolean);
+
+  console.warn(
+    `[products] Database unavailable; using static product data.${
+      firstLine ? ` (${firstLine})` : ""
+    }`
+  );
+}
+
+/**
  * Fetch all products for a specific category slug.
- * Reads from Supabase via Prisma, falling back to static data if database is unconfigured.
+ * Reads from Supabase via Prisma, falling back to static data if database is
+ * unconfigured, unreachable, or has no rows for the category.
  */
 export async function getProductsByCategory(categorySlug) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products", `category-${categorySlug}`);
+
   try {
-    if (process.env.DATABASE_URL) {
+    const prisma = getDatabase();
+
+    if (prisma) {
       const dbProducts = await prisma.product.findMany({
         where: { categorySlug },
         include: {
@@ -19,6 +73,8 @@ export async function getProductsByCategory(categorySlug) {
         },
         orderBy: { createdAt: "desc" },
       });
+
+      markDatabaseAvailable();
 
       if (dbProducts.length > 0) {
         return dbProducts.map((p) => ({
@@ -36,7 +92,7 @@ export async function getProductsByCategory(categorySlug) {
       }
     }
   } catch (error) {
-    console.warn("Database fetch fallback to static data:", error.message);
+    handleDatabaseFailure(error);
   }
 
   // Fallback to static data
@@ -47,8 +103,14 @@ export async function getProductsByCategory(categorySlug) {
  * Fetch a single product by slug and category.
  */
 export async function getProductBySlug(slug, categorySlug) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products", `product-${slug}`);
+
   try {
-    if (process.env.DATABASE_URL) {
+    const prisma = getDatabase();
+
+    if (prisma) {
       const dbProduct = await prisma.product.findFirst({
         where: {
           slug,
@@ -63,6 +125,8 @@ export async function getProductBySlug(slug, categorySlug) {
           },
         },
       });
+
+      markDatabaseAvailable();
 
       if (dbProduct) {
         return {
@@ -84,7 +148,7 @@ export async function getProductBySlug(slug, categorySlug) {
       }
     }
   } catch (error) {
-    console.warn("Database fetch single product fallback:", error.message);
+    handleDatabaseFailure(error);
   }
 
   // Fallback to static data
@@ -97,8 +161,14 @@ export async function getProductBySlug(slug, categorySlug) {
  * Fetch all products grouped or flat for admin/sitemaps.
  */
 export async function getAllProducts() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products");
+
   try {
-    if (process.env.DATABASE_URL) {
+    const prisma = getDatabase();
+
+    if (prisma) {
       const dbProducts = await prisma.product.findMany({
         include: {
           faqs: {
@@ -107,6 +177,8 @@ export async function getAllProducts() {
         },
         orderBy: { createdAt: "desc" },
       });
+
+      markDatabaseAvailable();
 
       if (dbProducts.length > 0) {
         return dbProducts.map((p) => ({
@@ -124,7 +196,7 @@ export async function getAllProducts() {
       }
     }
   } catch (error) {
-    console.warn("Database getAllProducts fallback:", error.message);
+    handleDatabaseFailure(error);
   }
 
   return PRODUCTS.map((p) => ({
@@ -144,8 +216,14 @@ export async function getAllProducts() {
  * Fetch a single product by its database ID (or static fallback).
  */
 export async function getProductById(id) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products", `product-id-${id}`);
+
   try {
-    if (process.env.DATABASE_URL) {
+    const prisma = getDatabase();
+
+    if (prisma) {
       const dbProduct = await prisma.product.findUnique({
         where: { id },
         include: {
@@ -153,6 +231,8 @@ export async function getProductById(id) {
           specifications: { orderBy: { sortOrder: "asc" } },
         },
       });
+
+      markDatabaseAvailable();
 
       if (dbProduct) {
         return {
@@ -170,7 +250,7 @@ export async function getProductById(id) {
       }
     }
   } catch (error) {
-    console.warn("Database getProductById fallback:", error.message);
+    handleDatabaseFailure(error);
   }
 
   const staticProduct = PRODUCTS.find((p) => p.id === id);

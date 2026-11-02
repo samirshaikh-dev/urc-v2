@@ -1,4 +1,3 @@
-import prisma from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
 
 export { slugify };

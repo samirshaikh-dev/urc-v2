@@ -4,7 +4,7 @@ import { jwtVerify } from "jose";
 const COOKIE_NAME = "urc_admin_session";
 const SECRET = new TextEncoder().encode( process.env.ADMIN_SESSION_SECRET );
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   // Only run on /admin routes

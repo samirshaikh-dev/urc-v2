@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
+import { getPrismaClient } from "@/lib/prisma";
 import {
   validateAdminCredentials,
   signSessionToken,
@@ -50,6 +50,14 @@ export async function createProductAction(payload) {
   const session = await getAdminSession();
   if (!session) {
     return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
+  const prisma = getPrismaClient();
+  if (!prisma) {
+    return {
+      success: false,
+      error: "Database is not configured. Product management is unavailable.",
+    };
   }
 
   const { name, description, categorySlug, imageFileUri, faqs = [], specifications = [] } = payload;
@@ -158,6 +166,14 @@ export async function updateProductAction(productId, payload) {
   const session = await getAdminSession();
   if (!session) {
     return { success: false, error: "Unauthorized. Please log in again." };
+  }
+
+  const prisma = getPrismaClient();
+  if (!prisma) {
+    return {
+      success: false,
+      error: "Database is not configured. Product management is unavailable.",
+    };
   }
 
   const { name, description, categorySlug, imageFileUri, faqs = [], specifications = [] } = payload;
@@ -269,6 +285,14 @@ export async function deleteProductAction(productId) {
   const session = await getAdminSession();
   if (!session) {
     return { success: false, error: "Unauthorized." };
+  }
+
+  const prisma = getPrismaClient();
+  if (!prisma) {
+    return {
+      success: false,
+      error: "Database is not configured. Product management is unavailable.",
+    };
   }
 
   try {

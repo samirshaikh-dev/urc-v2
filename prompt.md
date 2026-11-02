@@ -1,8 +1,8 @@
-# Website Redesign Master Prompt — New United Rubber Cork
+# Website Redesign Master Prompt —  United Rubber Cork
 
 > **Project:** Complete redesign of the existing company website  
 > **Current website/reference:** https://amcorkindia.com/index.php  
-> **New official brand name:** **New United Rubber Cork**  
+> ** official brand name:** ** United Rubber Cork**  
 > **Primary objective:** Build a modern, minimal, trustworthy, product-led B2B manufacturing website that generates qualified enquiries and quotation requests.
 
 ---
@@ -16,7 +16,7 @@ You are authorised to rethink and redesign the complete website experience from 
 You may:
 - Reorganise the information architecture and navigation.
 - Redesign every page and section.
-- Create a new visual system and reusable components.
+- Create a  visual system and reusable components.
 - Improve content hierarchy, messaging and calls to action.
 - Introduce suitable animation, interaction and transition libraries.
 - Install appropriate packages when they are genuinely useful and compatible with the existing stack.
@@ -32,24 +32,24 @@ Work independently through the redesign. Do not stop after producing a plan or m
 
 ## 2. Brand Identity — Critical
 
-The new official website and company brand name is:
+The  official website and company brand name is:
 
-# New United Rubber Cork
+#  United Rubber Cork
 
 This name replaces the old website branding, AMCORK Industries.
 
 ### Brand rules
-- Use **New United Rubber Cork** consistently across the website.
-- Do not present AMCORK Industries as the new brand name.
+- Use ** United Rubber Cork** consistently across the website.
+- Do not present AMCORK Industries as the  brand name.
 - Remove outdated brand references from visible content, navigation, page titles, metadata, footer, structured data and other customer-facing surfaces.
 - If the old name appears in legacy content, determine whether it is historical/legal information that must be retained. Do not silently alter legal facts.
-- Do not invent a new abbreviation, acronym, logo, tagline, company history or legal identity.
+- Do not invent a  abbreviation, acronym, logo, tagline, company history or legal identity.
 - Use “NURC” only if the company has approved it or the existing assets establish that it is an accepted abbreviation.
 - Inspect the current logo and brand assets. Reuse the official logo if suitable. If no usable logo exists, create a restrained typographic wordmark treatment without pretending it is an approved registered logo.
 - Keep the brand professional, credible, industrial and contemporary.
 
 ### Brand positioning
-Present New United Rubber Cork as a specialist cork and rubberised-cork products manufacturer/supplier, but verify the precise business description from existing company information before publishing it.
+Present  United Rubber Cork as a specialist cork and rubberised-cork products manufacturer/supplier, but verify the precise business description from existing company information before publishing it.
 
 Possible positioning direction (refine only using verified facts):
 
@@ -68,7 +68,7 @@ The website must serve real B2B buyers, procurement teams, engineers, manufactur
 
 Prioritise these outcomes:
 
-1. Make it immediately clear what New United Rubber Cork makes and supplies.
+1. Make it immediately clear what  United Rubber Cork makes and supplies.
 2. Help visitors discover relevant products quickly.
 3. Explain product applications and available specifications clearly.
 4. Establish trust through genuine company, process, quality and capability information.
@@ -186,7 +186,7 @@ The experience should feel:
 
 ## 6. Colour System and Typography
 
-Keep the existing brand palette of New United Rubber Cork rather than introducing a cork-brown palette. These colors already establish brand recognition. Our job is to make their application more sophisticated, consistent and modern. **Do not introduce the previous cork-brown palette.**
+Keep the existing brand palette of  United Rubber Cork rather than introducing a cork-brown palette. These colors already establish brand recognition. Our job is to make their application more sophisticated, consistent and modern. **Do not introduce the previous cork-brown palette.**
 
 ### Confirmed brand color system
 
@@ -257,7 +257,7 @@ Do not create empty pages just to increase the page count. Every page must have 
 
 ### Navigation
 Create a clean, responsive navigation system:
-- Official New United Rubber Cork logo/wordmark.
+- Official  United Rubber Cork logo/wordmark.
 - Home.
 - About.
 - Products (with a considered dropdown or mega-menu if the number of categories justifies it).
@@ -315,7 +315,7 @@ The hero must:
 - Avoid a generic gradient background.
 
 ### Section 3: Company Introduction
-Introduce New United Rubber Cork in a concise, credible way.
+Introduce  United Rubber Cork in a concise, credible way.
 
 Include:
 - A short company overview.
@@ -372,7 +372,7 @@ Only show verified industries and applications.
 
 Use concise labels and relevant imagery/icons. Avoid long explanatory paragraphs. Make it clear how the company's products relate to the application where the information is known.
 
-### Section 6: Why Choose New United Rubber Cork
+### Section 6: Why Choose  United Rubber Cork
 Present genuine reasons to work with the company.
 
 Potential themes to verify:
@@ -418,7 +418,7 @@ The CTA should lead to a real working enquiry route or form.
 
 ### Section 9: Footer
 Create a polished and useful footer containing:
-- New United Rubber Cork brand/wordmark.
+-  United Rubber Cork brand/wordmark.
 - Short, accurate company description.
 - Main navigation.
 - Product links or product categories.
@@ -651,7 +651,7 @@ The website must be usable, not just visually attractive.
 Implement technical and on-page SEO properly.
 
 ### Brand consistency
-Use **New United Rubber Cork** as the official brand name in:
+Use ** United Rubber Cork** as the official brand name in:
 - Page titles.
 - Meta descriptions.
 - Main headings where appropriate.
@@ -869,7 +869,7 @@ Use browser/device testing if the environment provides it. Fix issues rather tha
 
 The redesign is complete only when:
 
-1. The entire website uses **New United Rubber Cork** as the new official brand.
+1. The entire website uses ** United Rubber Cork** as the  official brand.
 2. The visual design is clearly modern, minimal and professional.
 3. The homepage communicates the business and products immediately.
 4. Visitors can discover all confirmed products easily.
@@ -918,7 +918,7 @@ Follow this sequence:
 - Run the application.
 - Test desktop and mobile.
 - Check every route and interaction.
-- Review content accuracy and new brand consistency.
+- Review content accuracy and  brand consistency.
 - Run available build, lint and type checks.
 - Fix all discovered issues.
 
@@ -939,7 +939,7 @@ Do not claim a test passed unless you actually ran it.
 
 ## Final Instruction
 
-Create a genuinely high-quality website for **New United Rubber Cork**.
+Create a genuinely high-quality website for ** United Rubber Cork**.
 
 Do not deliver a generic template, a superficial reskin or only a design proposal. Deliver a complete, coherent, responsive and production-minded redesign.
 

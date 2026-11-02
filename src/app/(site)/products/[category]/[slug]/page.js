@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -52,6 +53,79 @@ export async function generateMetadata({ params }) {
   });
 }
 
+async function RelatedProductsSection({ category, currentSlug }) {
+  const categoryProducts = await getProductsByCategory(category.slug || category.id);
+  const relatedProducts = (categoryProducts || []).filter((p) => p.slug !== currentSlug);
+
+  if (!relatedProducts || relatedProducts.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="border-t border-line bg-white py-14 sm:py-16">
+      <Container>
+        <div className="flex items-center justify-between border-b border-line pb-4">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
+              More in {category.name}
+            </span>
+            <h2 className="mt-1 text-xl font-semibold tracking-tight text-ink sm:text-2xl">
+              Related Materials &amp; Profiles
+            </h2>
+          </div>
+          <Link
+            href={`/products/${category.slug}`}
+            className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-maroon hover:text-ink"
+          >
+            <span>View all in category</span>
+            <ArrowRight className="size-3.5" />
+          </Link>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {relatedProducts.slice(0, 2).map((rel) => (
+            <div
+              key={rel.id || rel.slug}
+              className="group flex flex-col sm:flex-row overflow-hidden rounded-2xl border border-line bg-page/30 hover:border-maroon/30 transition-colors"
+            >
+              <div className="relative aspect-[16/10] sm:aspect-square w-full sm:w-40 shrink-0 bg-field">
+                <Image
+                  src={rel.image || "/images/placeholder-product.jpg"}
+                  alt={rel.name}
+                  fill
+                  sizes="160px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
+                <div>
+                  <h3 className="text-sm font-semibold text-ink group-hover:text-maroon transition-colors">
+                    <Link href={`/products/${rel.category}/${rel.slug}`}>
+                      {rel.name}
+                    </Link>
+                  </h3>
+                  <p className="mt-1.5 text-xs text-muted line-clamp-2">
+                    {rel.shortDescription || rel.description}
+                  </p>
+                </div>
+                <div className="mt-3">
+                  <Link
+                    href={`/products/${rel.category}/${rel.slug}`}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-maroon"
+                  >
+                    <span>View details</span>
+                    <ArrowRight className="size-3" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 export default async function ProductDetailPage({ params }) {
   const { category: categorySlug, slug: productSlug } = await params;
   const product = await getProductBySlug(productSlug, categorySlug);
@@ -62,9 +136,6 @@ export default async function ProductDetailPage({ params }) {
   }
 
   const quoteUrl = `/contact?product=${encodeURIComponent(product.name)}`;
-  const categoryProducts = await getProductsByCategory(product.category);
-  const relatedProducts = categoryProducts.filter((p) => p.slug !== product.slug);
-
   const hasHtml = typeof product.fullDescription === "string" && /<[a-z][\s\S]*>/i.test(product.fullDescription);
 
   return (
@@ -234,69 +305,9 @@ export default async function ProductDetailPage({ params }) {
       )}
 
       {/* 04. RELATED PRODUCTS IN THIS CATEGORY */}
-      {relatedProducts.length > 0 && (
-        <section className="border-t border-line bg-white py-14 sm:py-16">
-          <Container>
-            <div className="flex items-center justify-between border-b border-line pb-4">
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
-                  More in {category.name}
-                </span>
-                <h2 className="mt-1 text-xl font-semibold tracking-tight text-ink sm:text-2xl">
-                  Related Materials &amp; Profiles
-                </h2>
-              </div>
-              <Link
-                href={`/products/${category.slug}`}
-                className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-maroon hover:text-ink"
-              >
-                <span>View all in category</span>
-                <ArrowRight className="size-3.5" />
-              </Link>
-            </div>
-
-            <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {relatedProducts.slice(0, 2).map((rel) => (
-                <div
-                  key={rel.id || rel.slug}
-                  className="group flex flex-col sm:flex-row overflow-hidden rounded-2xl border border-line bg-page/30 hover:border-maroon/30 transition-colors"
-                >
-                  <div className="relative aspect-[16/10] sm:aspect-square w-full sm:w-40 shrink-0 bg-field">
-                    <Image
-                      src={rel.image || "/images/placeholder-product.jpg"}
-                      alt={rel.name}
-                      fill
-                      sizes="160px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
-                    <div>
-                      <h3 className="text-sm font-semibold text-ink group-hover:text-maroon transition-colors">
-                        <Link href={`/products/${rel.category}/${rel.slug}`}>
-                          {rel.name}
-                        </Link>
-                      </h3>
-                      <p className="mt-1.5 text-xs text-muted line-clamp-2">
-                        {rel.shortDescription || rel.description}
-                      </p>
-                    </div>
-                    <div className="mt-3">
-                      <Link
-                        href={`/products/${rel.category}/${rel.slug}`}
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-maroon"
-                      >
-                        <span>View details</span>
-                        <ArrowRight className="size-3" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Container>
-        </section>
-      )}
+      <Suspense fallback={null}>
+        <RelatedProductsSection category={category} currentSlug={product.slug} />
+      </Suspense>
 
       {/* 05. PRODUCT FINAL ENQUIRY CTA */}
       <ProductsEnquiryCTA

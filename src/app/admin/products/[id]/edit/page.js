@@ -10,9 +10,7 @@ export const metadata = {
   title: "Edit Product | URC Admin",
 };
 
-export default async function EditProductPage({ params }) {
-  const { id } = await params;
-
+export default function EditProductPage({ params }) {
   return (
     <Suspense
       fallback={
@@ -21,12 +19,13 @@ export default async function EditProductPage({ params }) {
         </div>
       }
     >
-      <EditProductLoader id={id} />
+      <EditProductLoader params={params} />
     </Suspense>
   );
 }
 
-async function EditProductLoader({ id }) {
+async function EditProductLoader({ params }) {
+  const { id } = await params;
   await connection();
   const product = await getProductById(id);
 
@@ -50,4 +49,3 @@ async function EditProductLoader({ id }) {
 
   return <ProductEditorForm initialData={product} isEdit={true} />;
 }
-
