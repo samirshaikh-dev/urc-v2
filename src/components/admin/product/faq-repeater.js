@@ -29,17 +29,17 @@ export function FaqRepeater({ faqs = [], onChange }) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {faqs.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-[#D9DCD1] bg-[#F7F8F2]/60 p-6 text-center">
+        <div className="rounded-xl border border-dashed border-[#D9DCD1] bg-[#F7F8F2] p-5 text-center">
           <p className="text-xs text-[#687080]">No FAQs added yet.</p>
           <button
             type="button"
             onClick={addFaq}
-            className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-[#650510] hover:underline cursor-pointer"
+            className="mt-2.5 inline-flex items-center gap-1.5 rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-1.5 text-xs font-medium text-[#111111] hover:bg-[#F1F2EA] transition-colors cursor-pointer shadow-2xs"
           >
             <Plus className="size-3.5" />
-            <span>Add first question</span>
+            <span>Add First Question</span>
           </button>
         </div>
       ) : (
@@ -47,10 +47,10 @@ export function FaqRepeater({ faqs = [], onChange }) {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] p-4 shadow-2xs space-y-3"
+              className="rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] p-3.5 space-y-2.5"
             >
-              <div className="flex items-center justify-between border-b border-[#D9DCD1] pb-2.5">
-                <span className="text-xs font-semibold text-[#111111] uppercase tracking-wider">
+              <div className="flex items-center justify-between border-b border-[#D9DCD1]/60 pb-2">
+                <span className="text-xs font-medium text-[#111111]">
                   FAQ #{index + 1}
                 </span>
 
@@ -59,7 +59,7 @@ export function FaqRepeater({ faqs = [], onChange }) {
                     type="button"
                     onClick={() => moveFaq(index, -1)}
                     disabled={index === 0}
-                    className="size-7 rounded border border-[#D9DCD1] flex items-center justify-center text-[#687080] hover:bg-[#F1F2EA] hover:text-[#111111] disabled:opacity-25 transition-colors"
+                    className="size-7 rounded-lg border border-[#D9DCD1] bg-white flex items-center justify-center text-[#687080] hover:bg-[#F1F2EA] hover:text-[#111111] disabled:opacity-25 transition-colors cursor-pointer"
                     title="Move up"
                   >
                     <ArrowUp className="size-3" />
@@ -69,7 +69,7 @@ export function FaqRepeater({ faqs = [], onChange }) {
                     type="button"
                     onClick={() => moveFaq(index, 1)}
                     disabled={index === faqs.length - 1}
-                    className="size-7 rounded border border-[#D9DCD1] flex items-center justify-center text-[#687080] hover:bg-[#F1F2EA] hover:text-[#111111] disabled:opacity-25 transition-colors"
+                    className="size-7 rounded-lg border border-[#D9DCD1] bg-white flex items-center justify-center text-[#687080] hover:bg-[#F1F2EA] hover:text-[#111111] disabled:opacity-25 transition-colors cursor-pointer"
                     title="Move down"
                   >
                     <ArrowDown className="size-3" />
@@ -78,7 +78,7 @@ export function FaqRepeater({ faqs = [], onChange }) {
                   <button
                     type="button"
                     onClick={() => removeFaq(index)}
-                    className="size-7 rounded border border-[#D9DCD1] flex items-center justify-center text-[#687080] hover:border-red-200 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
+                    className="size-7 rounded-lg border border-[#D9DCD1] bg-white flex items-center justify-center text-[#687080] hover:border-red-200 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
                     title="Remove FAQ"
                   >
                     <Trash2 className="size-3.5" />
@@ -95,7 +95,7 @@ export function FaqRepeater({ faqs = [], onChange }) {
                   value={faq.question}
                   onChange={(e) => updateFaq(index, "question", e.target.value)}
                   placeholder="e.g. What is the maximum operating temperature?"
-                  className="w-full h-[46px] rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#687080]/60 focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
+                  className="w-full h-[42px] rounded-xl border border-[#D9DCD1] bg-white px-3.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
                 />
               </div>
 
@@ -107,8 +107,8 @@ export function FaqRepeater({ faqs = [], onChange }) {
                   rows={2}
                   value={faq.answer}
                   onChange={(e) => updateFaq(index, "answer", e.target.value)}
-                  placeholder="e.g. It withstands up to 125°C in continuous oil immersion without degradation."
-                  className="w-full rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 py-2.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#687080]/60 focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
+                  placeholder="e.g. Withstands up to 125°C in continuous oil immersion without degradation."
+                  className="w-full rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-2 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -119,7 +119,7 @@ export function FaqRepeater({ faqs = [], onChange }) {
       <button
         type="button"
         onClick={addFaq}
-        className="inline-flex items-center gap-1.5 h-[40px] px-3.5 rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] hover:bg-[#F1F2EA] text-xs font-semibold text-[#111111] shadow-2xs transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 rounded-xl border border-[#D9DCD1] bg-white px-4 py-2 text-xs sm:text-sm font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer"
       >
         <Plus className="size-3.5" />
         <span>Add FAQ</span>
@@ -127,4 +127,3 @@ export function FaqRepeater({ faqs = [], onChange }) {
     </div>
   );
 }
-

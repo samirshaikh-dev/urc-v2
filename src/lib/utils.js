@@ -20,3 +20,16 @@ export function formatPhoneLink(phone) {
   return phone.replace(/[^\d+]/g, "");
 }
 
+/**
+ * Convert string to URL-safe slug
+ * @param {string} text
+ * @returns {string}
+ */
+export function slugify(text) {
+  return (text || "")
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[\s\W-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}

@@ -1,15 +1,7 @@
 import prisma from "@/lib/prisma";
-import { slugify } from "@/lib/products-db";
+import { slugify } from "@/lib/utils";
 
 export { slugify };
-
-export const BLOG_CATEGORIES = [
-  { id: "all", name: "All Articles" },
-  { id: "technical-guides", name: "Technical Guides" },
-  { id: "industry-insights", name: "Industry Insights" },
-  { id: "sustainability", name: "Sustainability & Eco" },
-  { id: "case-studies", name: "Case Studies" },
-];
 
 export const INITIAL_BLOGS = [
   {
@@ -19,6 +11,7 @@ export const INITIAL_BLOGS = [
     category: "technical-guides",
     author: "URC Engineering Team",
     readTime: "6 min read",
+    tags: "Transformer Gaskets, ASTM F104, High Voltage, NBR Cork",
     imageUrl: "/images/products/rubberised-cork-1.jpg",
     excerpt: "Detailed breakdown of ASTM F104 line callouts, oil immersion swelling thresholds, and bolting torque calculations for hermetically sealed distribution transformers.",
     content: `<h2>Understanding Gasket Behavior in Transformer Oils</h2>
@@ -41,6 +34,7 @@ export const INITIAL_BLOGS = [
     category: "sustainability",
     author: "Design & Materials Desk",
     readTime: "4 min read",
+    tags: "Acoustics, Interior Architecture, LEED, Wall Tiles",
     imageUrl: "/images/products/decorative-cork-1.jpg",
     excerpt: "How cellular honeycomb microstructures in pure agglomerated cork deliver NRC ratings up to 0.70 while achieving carbon-negative interior fitouts.",
     content: `<h2>Cellular Physics Behind Cork Acoustics</h2>
@@ -62,6 +56,7 @@ export const INITIAL_BLOGS = [
     category: "industry-insights",
     author: "Technical Sales Division",
     readTime: "5 min read",
+    tags: "Civil Infrastructure, ASTM D1752, Bridge Decks, Expansion Joints",
     imageUrl: "/images/products/cork-products-1.jpg",
     excerpt: "Comparing preformed cork filler boards against bitumen fiber: 90% elastic recovery, weather immunity, and prevention of concrete spalling.",
     content: `<h2>Non-Extruding Resilience in Civil Engineering</h2>
@@ -83,6 +78,7 @@ export const INITIAL_BLOGS = [
     category: "case-studies",
     author: "Merchandise & OEM Team",
     readTime: "3 min read",
+    tags: "Corporate Gifts, Sustainable ESG, Laser Engraving, Lifestyle Cork",
     imageUrl: "/images/products/cork-gifts-1.jpg",
     excerpt: "How multinational enterprises replaced single-use plastic conference kits with custom laser-engraved cork organizers, desk pads, and tote bags.",
     content: `<h2>Responsible Brand Positioning Through Sustainable Materials</h2>
@@ -103,9 +99,9 @@ export const INITIAL_BLOGS = [
 let blogsCache = [...INITIAL_BLOGS];
 
 /**
- * Fetch all blogs with optional category filter
+ * Fetch all blogs
  */
-export async function getAllBlogs(category = "all") {
+export async function getAllBlogs() {
   try {
     if (process.env.DATABASE_URL) {
       // If a blog model exists in prisma in the future, fetch here
@@ -114,11 +110,7 @@ export async function getAllBlogs(category = "all") {
     console.warn("DB blog fetch fallback:", err.message);
   }
 
-  let list = [...blogsCache];
-  if (category && category !== "all") {
-    list = list.filter((b) => b.category === category);
-  }
-  return list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  return [...blogsCache].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
 /**
@@ -143,9 +135,9 @@ export async function createBlogRecord(data) {
     id: `blog-${Date.now()}`,
     slug: data.slug || slugify(data.title),
     title: data.title,
-    category: data.category || "technical-guides",
-    author: data.author || "URC Editorial Team",
+    author: data.author || "URC Engineering Team",
     readTime: data.readTime || "4 min read",
+    tags: data.tags || "",
     imageUrl: data.imageUrl || "/images/placeholder-product.jpg",
     excerpt: data.excerpt || "",
     content: data.content || "",
@@ -183,4 +175,3 @@ export async function deleteBlogRecord(id) {
   blogsCache = blogsCache.filter((b) => b.id !== id);
   return blogsCache.length < prevLen;
 }
-

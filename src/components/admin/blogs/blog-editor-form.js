@@ -6,14 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   UploadCloud,
+  ArrowLeft,
   Sparkles,
-  FileText,
-  User,
-  Clock,
-  ImageIcon,
 } from "lucide-react";
 import { RichTextEditor } from "@/components/admin/shared/rich-text-editor";
 import { createBlogAction, updateBlogAction } from "@/actions/admin-blogs";
+import { slugify } from "@/lib/utils";
 import { toast } from "sonner";
 
 export function BlogEditorForm({ initialData = null, isEdit = false }) {
@@ -21,15 +19,16 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
 
   // Form State
   const [title, setTitle] = useState(initialData?.title || "");
-  const [author, setAuthor] = useState(initialData?.author || "URC Engineering Team");
-  const [readTime, setReadTime] = useState(initialData?.readTime || "5 min read");
   const [excerpt, setExcerpt] = useState(initialData?.excerpt || "");
+  const [tags, setTags] = useState(initialData?.tags || "");
   const [content, setContent] = useState(initialData?.content || "");
   const [imagePreview, setImagePreview] = useState(initialData?.imageUrl || null);
   const [newImageSelected, setNewImageSelected] = useState(false);
   const [published, setPublished] = useState(initialData ? initialData.published : true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const generatedSlug = title ? slugify(title) : (initialData?.slug || "");
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
@@ -73,11 +72,10 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
 
     try {
       const payload = {
-        title,
-        author,
-        readTime,
-        excerpt,
-        content,
+        title: title.trim(),
+        excerpt: excerpt.trim(),
+        tags: tags.trim(),
+        content: content.trim(),
         imageFileUri: newImageSelected ? imagePreview : (isEdit ? null : imagePreview),
         published,
       };
@@ -112,133 +110,111 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
   return (
     <div className="mx-auto max-w-[1100px] pb-32">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#687080]">
-        <Link href="/admin/blogs" className="hover:text-[#111111] transition-colors">
-          Blogs
+      <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#687080] mb-2">
+        <Link
+          href="/admin/blogs"
+          className="hover:text-[#111111] transition-colors flex items-center gap-1.5 font-medium"
+        >
+          <ArrowLeft className="size-3.5" />
+          <span>Back to Blogs</span>
         </Link>
-        <span className="mx-2 text-[#D9DCD1]" aria-hidden="true">
-          /
-        </span>
-        <span className="font-medium text-[#111111]">
-          {isEdit ? "Edit Article" : "Write Article"}
-        </span>
       </nav>
 
-      {/* Heading */}
-      <div className="mt-3 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+      {/* Heading (Exact style from screenshot: "New Blog") */}
+      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
-            {isEdit ? "Edit Article" : "Write New Technical Article"}
+            {isEdit ? "Edit Blog" : "New Blog"}
           </h1>
           <p className="mt-1 text-xs sm:text-sm text-[#687080]">
             {isEdit
-              ? "Update article copy, technical figures, or publication status."
-              : "Draft and publish technical guides, industry bulletins, and application notes."}
+              ? "Update article content, metadata, or publication state."
+              : "Compose and publish technical guides, application notes, and industry insights."}
           </p>
         </div>
       </div>
 
-      <div className="mt-5 mb-8 h-px w-full bg-[#D9DCD1]" />
+      <div className="mt-4 mb-8 h-px w-full bg-[#D9DCD1]" />
 
       {/* Error Message */}
       {errorMessage && (
-        <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 text-xs sm:text-sm text-red-700">
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-xs sm:text-sm text-red-700">
           {errorMessage}
         </div>
       )}
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-10">
-        {/* Section 01: Article Information */}
-        <section className="space-y-4">
-          <div className="border-b border-[#D9DCD1] pb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-              <FileText className="size-4 text-[#650510]" />
-              <span>Section 01 — Title &amp; Details</span>
-            </h2>
-            <p className="mt-0.5 text-xs text-[#687080]">
-              Headline, summary, and authorship credentials.
-            </p>
+      {/* Main Form — Structure matches reference screenshot exactly */}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Row 1: Title & Slug in 2-Column Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+              Title <span className="text-red-500 font-semibold">*</span>
+            </label>
+            <input
+              type="text"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. ASTM F104 Gasket Callouts for Transformers"
+              className="w-full h-[46px] rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors"
+            />
           </div>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-[#111111] mb-1.5">
-                Article Title <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. ASTM F104 Gasket Callouts for High-Voltage Transformers"
-                className="w-full h-[46px] rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 text-sm text-[#111111] placeholder:text-[#687080]/60 focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-[#111111] mb-1.5 flex items-center gap-1.5">
-                  <User className="size-3.5 text-[#687080]" />
-                  <span>Author / Department</span>
-                </label>
-                <input
-                  type="text"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="e.g. URC Technical Research Desk"
-                  className="w-full h-[46px] rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 text-sm text-[#111111] focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-[#111111] mb-1.5 flex items-center gap-1.5">
-                  <Clock className="size-3.5 text-[#687080]" />
-                  <span>Estimated Read Time</span>
-                </label>
-                <input
-                  type="text"
-                  value={readTime}
-                  onChange={(e) => setReadTime(e.target.value)}
-                  placeholder="e.g. 5 min read"
-                  className="w-full h-[46px] rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 text-sm text-[#111111] focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-[#111111] mb-1.5">
-                Executive Excerpt (1-2 sentences)
-              </label>
-              <textarea
-                rows={2}
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-                placeholder="Brief summary of findings, standards covered, and recommendations..."
-                className="w-full rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 py-2.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#687080]/60 focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
-              />
-            </div>
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+              Slug <span className="text-red-500 font-semibold">*</span>
+            </label>
+            <input
+              type="text"
+              readOnly
+              value={generatedSlug}
+              placeholder="auto-generated-slug"
+              className="w-full h-[46px] rounded-xl border border-[#D9DCD1] bg-[#F1F2EA]/60 px-4 text-xs sm:text-sm text-[#687080] font-mono cursor-not-allowed select-none"
+            />
           </div>
-        </section>
+        </div>
 
-        {/* Section 02: Cover Media */}
-        <section className="space-y-4">
-          <div className="border-b border-[#D9DCD1] pb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-              <ImageIcon className="size-4 text-[#650510]" />
-              <span>Section 02 — Cover Banner</span>
-            </h2>
-            <p className="mt-0.5 text-xs text-[#687080]">
-              High-resolution technical illustration, facility photography, or material macro shot.
-            </p>
-          </div>
+        {/* Row 2: Excerpt */}
+        <div>
+          <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+            Excerpt
+          </label>
+          <textarea
+            rows={3}
+            value={excerpt}
+            onChange={(e) => setExcerpt(e.target.value)}
+            placeholder="Short summary shown in blog cards..."
+            className="w-full rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] p-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors resize-y min-h-[90px]"
+          />
+        </div>
+
+        {/* Row 3: Tags (comma separated) */}
+        <div>
+          <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+            Tags (comma separated)
+          </label>
+          <input
+            type="text"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder="AI, RAG, Node.js, Local SEO"
+            className="w-full h-[46px] rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors"
+          />
+        </div>
+
+        {/* Row 4: Cover Image (Choose from Library button from reference) */}
+        <div className="space-y-2.5">
+          <label className="block text-xs sm:text-sm font-medium text-[#374151]">
+            Cover Image
+          </label>
 
           {imagePreview ? (
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] p-4 shadow-2xs">
-              <div className="relative aspect-[16/9] w-full sm:w-56 overflow-hidden rounded-lg border border-[#D9DCD1] bg-[#F7F8F2] shrink-0">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] p-4">
+              <div className="relative aspect-[16/9] w-full sm:w-52 overflow-hidden rounded-xl border border-[#D9DCD1] bg-white shrink-0">
                 <Image
                   src={imagePreview}
-                  alt="Article cover preview"
+                  alt="Cover preview"
                   fill
                   className="object-cover"
                 />
@@ -247,12 +223,12 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-semibold text-[#111111]">
                   {newImageSelected
-                    ? "New banner selected (will upload on publish)"
+                    ? "New banner selected (will upload on save)"
                     : "Current cover image"}
                 </p>
 
                 <div className="mt-3 flex items-center gap-2">
-                  <label className="h-[36px] px-3 rounded-lg border border-[#D9DCD1] bg-white hover:bg-[#F1F2EA] text-xs font-medium text-[#111111] flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs">
+                  <label className="inline-flex items-center gap-1.5 rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-1.5 text-xs font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer">
                     <span>Replace Image</span>
                     <input
                       type="file"
@@ -268,7 +244,7 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
                       setImagePreview(null);
                       setNewImageSelected(false);
                     }}
-                    className="h-[36px] px-3 rounded-lg border border-[#D9DCD1] text-xs font-medium text-[#687080] hover:border-red-200 hover:bg-red-50 hover:text-red-700 transition-colors shadow-2xs cursor-pointer"
+                    className="inline-flex items-center rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-1.5 text-xs font-medium text-[#687080] hover:border-red-200 hover:bg-red-50 hover:text-red-700 shadow-2xs transition-colors cursor-pointer"
                   >
                     Remove
                   </button>
@@ -276,44 +252,32 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
               </div>
             </div>
           ) : (
-            <label className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-[#D9DCD1] bg-[#FFFFFF] p-8 text-center cursor-pointer hover:border-[#650510]/50 hover:bg-[#650510]/[0.02] transition-colors">
-              <div className="size-11 rounded-lg border border-[#D9DCD1] bg-[#F7F8F2] flex items-center justify-center text-[#111111] shadow-2xs">
-                <UploadCloud className="size-5 text-[#687080]" />
-              </div>
-              <p className="mt-3 text-xs sm:text-sm font-semibold text-[#111111]">
-                Click or drag &amp; drop article cover photo
-              </p>
-              <p className="mt-1 text-[11px] text-[#687080]">
-                JPG, PNG, or WebP up to 8MB
-              </p>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-              />
-            </label>
+            <div className="flex items-center">
+              <label className="inline-flex items-center gap-2 rounded-xl border border-[#D9DCD1] bg-white px-4 py-2.5 text-xs sm:text-sm font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer">
+                <UploadCloud className="size-4 text-[#687080]" />
+                <span>Choose from Library</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
           )}
-        </section>
+        </div>
 
-        {/* Section 03: Body Content */}
-        <section className="space-y-4">
-          <div className="border-b border-[#D9DCD1] pb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-              <FileText className="size-4 text-[#650510]" />
-              <span>Section 03 — Full Article Body</span>
-            </h2>
-            <p className="mt-0.5 text-xs text-[#687080]">
-              Format with subheadings (H2, H3), bold text, bullet points, and numbered lists.
-            </p>
-          </div>
-
+        {/* Row 5: Content * */}
+        <div>
+          <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+            Content <span className="text-red-500 font-semibold">*</span>
+          </label>
           <RichTextEditor
             value={content}
             onChange={(html) => setContent(html)}
             placeholder="Write the full article body, technical data, test methodology, and engineering recommendations..."
           />
-        </section>
+        </div>
 
         {/* Sticky Publishing Bar */}
         <aside
@@ -344,7 +308,7 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
             <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
               <Link
                 href="/admin/blogs"
-                className="h-[42px] px-4 rounded-lg border border-[#D9DCD1] bg-white text-xs font-medium text-[#687080] hover:text-[#111111] hover:bg-[#F1F2EA] flex items-center justify-center transition-colors shadow-2xs"
+                className="h-[42px] px-4 rounded-xl border border-[#D9DCD1] bg-white text-xs font-medium text-[#687080] hover:text-[#111111] hover:bg-[#F1F2EA] flex items-center justify-center transition-colors shadow-2xs"
               >
                 Cancel
               </Link>
@@ -352,14 +316,14 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-[42px] px-6 rounded-lg bg-[#650510] hover:bg-[#4f040c] text-white text-xs sm:text-sm font-semibold shadow-2xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="h-[42px] px-6 rounded-xl bg-[#650510] hover:bg-[#4f040c] text-white text-xs sm:text-sm font-semibold shadow-2xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 <Sparkles className="size-4" />
                 <span>
                   {isSubmitting
                     ? "Saving Article..."
                     : isEdit
-                    ? "Update Article"
+                    ? "Update Blog"
                     : "Save & Publish"}
                 </span>
               </button>

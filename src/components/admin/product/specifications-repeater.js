@@ -29,38 +29,38 @@ export function SpecificationsRepeater({ specifications = [], onChange }) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {specifications.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-[#D9DCD1] bg-[#F7F8F2]/60 p-6 text-center">
+        <div className="rounded-xl border border-dashed border-[#D9DCD1] bg-[#F7F8F2] p-5 text-center">
           <p className="text-xs text-[#687080]">
             No technical specifications added yet.
           </p>
           <button
             type="button"
             onClick={addSpec}
-            className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-[#650510] hover:underline cursor-pointer"
+            className="mt-2.5 inline-flex items-center gap-1.5 rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-1.5 text-xs font-medium text-[#111111] hover:bg-[#F1F2EA] transition-colors cursor-pointer shadow-2xs"
           >
             <Plus className="size-3.5" />
-            <span>Add first technical specification</span>
+            <span>Add First Specification</span>
           </button>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {specifications.map((spec, index) => (
             <div
               key={index}
-              className="group flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] p-3 shadow-2xs"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] p-2.5"
             >
               {/* Index & Reorder Controls */}
               <div className="flex items-center gap-1 shrink-0">
-                <span className="text-[11px] font-mono text-[#687080] w-5 text-center">
+                <span className="text-[11px] font-mono text-[#687080] w-6 text-center">
                   #{index + 1}
                 </span>
                 <button
                   type="button"
                   onClick={() => moveSpec(index, -1)}
                   disabled={index === 0}
-                  className="size-7 rounded border border-[#D9DCD1] flex items-center justify-center text-[#687080] hover:bg-[#F1F2EA] hover:text-[#111111] disabled:opacity-25 transition-colors"
+                  className="size-7 rounded-lg border border-[#D9DCD1] bg-white flex items-center justify-center text-[#687080] hover:bg-[#F1F2EA] hover:text-[#111111] disabled:opacity-25 transition-colors cursor-pointer"
                   title="Move up"
                 >
                   <ArrowUp className="size-3" />
@@ -69,7 +69,7 @@ export function SpecificationsRepeater({ specifications = [], onChange }) {
                   type="button"
                   onClick={() => moveSpec(index, 1)}
                   disabled={index === specifications.length - 1}
-                  className="size-7 rounded border border-[#D9DCD1] flex items-center justify-center text-[#687080] hover:bg-[#F1F2EA] hover:text-[#111111] disabled:opacity-25 transition-colors"
+                  className="size-7 rounded-lg border border-[#D9DCD1] bg-white flex items-center justify-center text-[#687080] hover:bg-[#F1F2EA] hover:text-[#111111] disabled:opacity-25 transition-colors cursor-pointer"
                   title="Move down"
                 >
                   <ArrowDown className="size-3" />
@@ -83,7 +83,7 @@ export function SpecificationsRepeater({ specifications = [], onChange }) {
                   value={spec.property}
                   onChange={(e) => updateSpec(index, "property", e.target.value)}
                   placeholder="Property (e.g. Tensile Strength)"
-                  className="w-full h-[46px] rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#687080]/60 focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
+                  className="w-full h-[42px] rounded-xl border border-[#D9DCD1] bg-white px-3.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
                 />
               </div>
 
@@ -94,7 +94,7 @@ export function SpecificationsRepeater({ specifications = [], onChange }) {
                   value={spec.value}
                   onChange={(e) => updateSpec(index, "value", e.target.value)}
                   placeholder="Value (e.g. 1.8 MPa / ASTM F152)"
-                  className="w-full h-[46px] rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#687080]/60 focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
+                  className="w-full h-[42px] rounded-xl border border-[#D9DCD1] bg-white px-3.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
                 />
               </div>
 
@@ -102,7 +102,7 @@ export function SpecificationsRepeater({ specifications = [], onChange }) {
               <button
                 type="button"
                 onClick={() => removeSpec(index)}
-                className="size-8 rounded-lg border border-[#D9DCD1] text-[#687080] hover:border-red-200 hover:bg-red-50 hover:text-red-600 flex items-center justify-center transition-colors cursor-pointer shrink-0 self-end sm:self-auto"
+                className="size-8 rounded-lg border border-[#D9DCD1] bg-white text-[#687080] hover:border-red-200 hover:bg-red-50 hover:text-red-600 flex items-center justify-center transition-colors cursor-pointer shrink-0 self-end sm:self-auto"
                 title="Remove specification"
               >
                 <Trash2 className="size-3.5" />
@@ -115,7 +115,7 @@ export function SpecificationsRepeater({ specifications = [], onChange }) {
       <button
         type="button"
         onClick={addSpec}
-        className="inline-flex items-center gap-1.5 h-[40px] px-3.5 rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] hover:bg-[#F1F2EA] text-xs font-semibold text-[#111111] shadow-2xs transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 rounded-xl border border-[#D9DCD1] bg-white px-4 py-2 text-xs sm:text-sm font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer"
       >
         <Plus className="size-3.5" />
         <span>Add Specification</span>
@@ -123,4 +123,3 @@ export function SpecificationsRepeater({ specifications = [], onChange }) {
     </div>
   );
 }
-

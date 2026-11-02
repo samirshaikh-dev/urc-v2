@@ -16,7 +16,7 @@ export async function createBlogAction(payload) {
     return { success: false, error: "Unauthorized. Please log in again." };
   }
 
-  const { title, excerpt, content, category, author, readTime, imageFileUri, published } = payload;
+  const { title, excerpt, content, tags, author, readTime, imageFileUri, published } = payload;
 
   if (!title || !title.trim()) {
     return { success: false, error: "Article title is required." };
@@ -43,8 +43,8 @@ export async function createBlogAction(payload) {
       title: title.trim(),
       excerpt: excerpt?.trim() || "",
       content: content.trim(),
-      category: category || "technical-guides",
-      author: author?.trim() || "URC Editorial Team",
+      tags: tags?.trim() || "",
+      author: author?.trim() || "URC Engineering Team",
       readTime: readTime?.trim() || "4 min read",
       imageUrl: finalImageUrl,
       published: published !== false,
@@ -69,7 +69,7 @@ export async function updateBlogAction(id, payload) {
     return { success: false, error: "Blog not found." };
   }
 
-  const { title, excerpt, content, category, author, readTime, imageFileUri, published } = payload;
+  const { title, excerpt, content, tags, author, readTime, imageFileUri, published } = payload;
 
   let finalImageUrl = existing.imageUrl;
   if (imageFileUri && imageFileUri.startsWith("data:image/")) {
@@ -84,7 +84,7 @@ export async function updateBlogAction(id, payload) {
       ...(title ? { title: title.trim() } : {}),
       ...(excerpt !== undefined ? { excerpt: excerpt.trim() } : {}),
       ...(content ? { content: content.trim() } : {}),
-      ...(category ? { category } : {}),
+      ...(tags !== undefined ? { tags: tags.trim() } : {}),
       ...(author ? { author: author.trim() } : {}),
       ...(readTime ? { readTime: readTime.trim() } : {}),
       ...(finalImageUrl ? { imageUrl: finalImageUrl } : {}),
@@ -132,4 +132,3 @@ export async function toggleBlogPublishAction(id) {
   revalidatePath("/admin/blogs");
   return { success: true, published: updated.published };
 }
-

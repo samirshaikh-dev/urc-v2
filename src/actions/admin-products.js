@@ -11,7 +11,7 @@ import {
   getAdminSession,
 } from "@/lib/auth";
 import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/cloudinary";
-import { slugify } from "@/lib/products-db";
+import { slugify } from "@/lib/utils";
 
 /**
  * Handle Admin Login

@@ -6,15 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   UploadCloud,
-  Check,
-  X,
-  Layers,
-  Sparkles,
   ArrowLeft,
-  FileText,
-  Sliders,
-  HelpCircle,
-  ImageIcon,
+  Sparkles,
+  ChevronDown,
 } from "lucide-react";
 import { RichTextEditor } from "@/components/admin/shared/rich-text-editor";
 import { FaqRepeater } from "./faq-repeater";
@@ -23,30 +17,14 @@ import {
   createProductAction,
   updateProductAction,
 } from "@/actions/admin-products";
+import { slugify } from "@/lib/utils";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 const FIXED_CATEGORIES = [
-  {
-    slug: "cork-products",
-    name: "Cork Products",
-    description: "Natural cork sheets, rolls, blocks, stoppers, and custom industrial shapes.",
-  },
-  {
-    slug: "rubberised-cork",
-    name: "Rubberised Cork",
-    description: "NBR, Neoprene, and synthetic elastomer composites for transformer gaskets and high-pressure seals.",
-  },
-  {
-    slug: "decorative-cork",
-    name: "Decorative Cork",
-    description: "Acoustic wall tiles, underlayment, decorative panels, and architectural surfaces.",
-  },
-  {
-    slug: "cork-gifts",
-    name: "Cork Gifts",
-    description: "Sustainable lifestyle accessories, eco-stationery, coasters, and promotional corporate items.",
-  },
+  { slug: "cork-products", name: "Cork Products" },
+  { slug: "rubberised-cork", name: "Rubberised Cork" },
+  { slug: "decorative-cork", name: "Decorative Cork" },
+  { slug: "cork-gifts", name: "Cork Gifts" },
 ];
 
 export function ProductEditorForm({ initialData = null, isEdit = false }) {
@@ -71,7 +49,9 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Handle local image file picker and convert to Data URI for Cloudinary
+  const generatedSlug = name ? slugify(name) : (initialData?.slug || "");
+
+  // Handle local image file picker
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -120,9 +100,9 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
 
     try {
       const payload = {
-        name,
+        name: name.trim(),
         categorySlug,
-        description,
+        description: description.trim(),
         imageFileUri: newImageSelected ? imagePreview : (isEdit ? null : imagePreview),
         faqs,
         specifications,
@@ -157,236 +137,171 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
 
   return (
     <div className="mx-auto max-w-[1100px] pb-32">
-      {/* 3. Page Layout: Breadcrumb, Heading, Description, Divider */}
-      <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#687080]">
+      {/* Page Header */}
+      <nav aria-label="Breadcrumb" className="flex items-center text-xs text-[#687080] mb-2">
         <Link
           href="/admin/products"
-          className="hover:text-[#111111] transition-colors"
+          className="hover:text-[#111111] transition-colors flex items-center gap-1.5 font-medium"
         >
-          Products
+          <ArrowLeft className="size-3.5" />
+          <span>Back to Products</span>
         </Link>
-        <span className="mx-2 text-[#D9DCD1]" aria-hidden="true">
-          /
-        </span>
-        <span className="font-medium text-[#111111]">
-          {isEdit ? "Edit Product" : "Create Product"}
-        </span>
       </nav>
 
-      <div className="mt-3 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
-            {isEdit ? "Edit Product" : "Create New Product"}
+            {isEdit ? "Edit Product" : "New Product"}
           </h1>
           <p className="mt-1 text-xs sm:text-sm text-[#687080]">
             {isEdit
-              ? "Update product specifications, media, or FAQs. Changes take effect across public pages instantly."
+              ? "Update product specifications, media, or FAQs. Changes take effect across public catalog routes instantly."
               : "Fill in the details below. When published, it will go live immediately on the customer-facing website."}
           </p>
         </div>
       </div>
 
-      <div className="mt-5 mb-8 h-px w-full bg-[#D9DCD1]" />
+      <div className="mt-4 mb-8 h-px w-full bg-[#D9DCD1]" />
 
       {/* Global Error Notification */}
       {errorMessage && (
-        <div className="mb-8 rounded-lg border border-red-200 bg-red-50 p-4 text-xs sm:text-sm text-red-700">
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-xs sm:text-sm text-red-700">
           {errorMessage}
         </div>
       )}
 
-      {/* Main Form */}
-      <form onSubmit={handleSubmit} className="space-y-10">
-        {/* =========================================================================
-            SECTION 01 — PRODUCT CATEGORY
-            ========================================================================= */}
-        <section className="space-y-4">
-          <div className="border-b border-[#D9DCD1] pb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-              <Layers className="size-4 text-[#650510]" />
-              <span>Section 01 — Product Category</span>
-            </h2>
-            <p className="mt-0.5 text-xs text-[#687080]">
-              Select which of the four core industrial categories this material belongs to.
-            </p>
+      {/* Single Combined Form (Clean & Unified, matching New Blog reference) */}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Row 1: Product Name & Slug in 2-Column Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+              Product Name <span className="text-red-500 font-semibold">*</span>
+            </label>
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. High-Recovery Rubberised Cork Sheet RC70C"
+              className="w-full h-[46px] rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors"
+            />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-            {FIXED_CATEGORIES.map((cat) => {
-              const isSelected = categorySlug === cat.slug;
-
-              return (
-                <button
-                  key={cat.slug}
-                  type="button"
-                  onClick={() => setCategorySlug(cat.slug)}
-                  className={cn(
-                    "flex flex-col justify-between rounded-lg border p-4 text-left transition-all duration-150 cursor-pointer",
-                    isSelected
-                      ? "border-[#650510] bg-[#650510]/[0.03] text-[#111111] ring-1 ring-[#650510]"
-                      : "border-[#D9DCD1] bg-[#FFFFFF] text-[#111111] hover:border-[#111111]/40"
-                  )}
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <span className="text-sm font-semibold tracking-tight text-[#111111]">
-                      {cat.name}
-                    </span>
-                    {isSelected && (
-                      <span className="size-5 rounded-full bg-[#650510] text-white flex items-center justify-center shrink-0">
-                        <Check className="size-3" />
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-2 text-xs leading-relaxed text-[#687080]">
-                    {cat.description}
-                  </p>
-                </button>
-              );
-            })}
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+              Slug <span className="text-red-500 font-semibold">*</span>
+            </label>
+            <input
+              type="text"
+              readOnly
+              value={generatedSlug}
+              placeholder="auto-generated-slug"
+              className="w-full h-[46px] rounded-xl border border-[#D9DCD1] bg-[#F1F2EA]/60 px-4 text-xs sm:text-sm text-[#687080] font-mono cursor-not-allowed select-none"
+            />
           </div>
-        </section>
+        </div>
 
-        {/* =========================================================================
-            SECTION 02 — PRODUCT INFORMATION
-            ========================================================================= */}
-        <section className="space-y-5">
-          <div className="border-b border-[#D9DCD1] pb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-              <FileText className="size-4 text-[#650510]" />
-              <span>Section 02 — Product Information</span>
-            </h2>
-            <p className="mt-0.5 text-xs text-[#687080]">
-              Core naming and material overview displayed on catalog listings and search engines.
-            </p>
+        {/* Row 2: Category Dropdown */}
+        <div>
+          <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+            Category <span className="text-red-500 font-semibold">*</span>
+          </label>
+          <div className="relative">
+            <select
+              value={categorySlug}
+              onChange={(e) => setCategorySlug(e.target.value)}
+              className="w-full h-[46px] appearance-none rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 pr-10 text-xs sm:text-sm font-medium text-[#111111] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors cursor-pointer"
+            >
+              {FIXED_CATEGORIES.map((cat) => (
+                <option key={cat.slug} value={cat.slug}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#687080]" />
           </div>
+        </div>
 
-          <div className="space-y-4">
-            {/* Product Name */}
-            <div>
-              <label className="block text-xs font-semibold text-[#111111] mb-1.5">
-                Product Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. High-Recovery Rubberised Cork Sheet RC70C"
-                className="w-full h-[46px] rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] px-3.5 text-sm text-[#111111] placeholder:text-[#687080]/60 focus:border-[#650510] focus:ring-1 focus:ring-[#650510] focus:outline-none transition-colors"
-              />
-              <p className="mt-1 text-[11px] text-[#687080]">
-                Official material grade, compound reference, or industrial nomenclature.
-              </p>
-            </div>
+        {/* Row 3: Product Description */}
+        <div>
+          <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+            Content &amp; Description <span className="text-red-500 font-semibold">*</span>
+          </label>
+          <RichTextEditor
+            value={description}
+            onChange={(html) => setDescription(html)}
+            placeholder="Detail composition, chemical resistance, operating temperatures, and common applications..."
+          />
+        </div>
 
-            {/* Product Description */}
-            <div>
-              <label className="block text-xs font-semibold text-[#111111] mb-1.5">
-                Product Description &amp; Material Overview <span className="text-red-500">*</span>
-              </label>
-              <RichTextEditor
-                value={description}
-                onChange={(html) => setDescription(html)}
-                placeholder="Detail composition, chemical resistance, operating temperatures, and common applications..."
-              />
-              <p className="mt-1 text-[11px] text-[#687080]">
-                Format with clear headings, bullet points, and paragraphs for high readability.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================================
-            SECTION 03 — TECHNICAL SPECIFICATIONS
-            ========================================================================= */}
-        <section className="space-y-4">
-          <div className="border-b border-[#D9DCD1] pb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-              <Sliders className="size-4 text-[#650510]" />
-              <span>Section 03 — Technical Specifications</span>
-            </h2>
-            <p className="mt-0.5 text-xs text-[#687080]">
-              Add engineering properties, dimensions, standard tolerances, or test standards (e.g. Hardness: 70 ± 5 Shore A).
-            </p>
-          </div>
-
+        {/* Row 4: Technical Specifications */}
+        <div className="space-y-2">
+          <label className="block text-xs sm:text-sm font-medium text-[#374151]">
+            Technical Specifications
+          </label>
           <SpecificationsRepeater
             specifications={specifications}
             onChange={(updated) => setSpecifications(updated)}
           />
-        </section>
+        </div>
 
-        {/* =========================================================================
-            SECTION 04 — PRODUCT IMAGES
-            ========================================================================= */}
-        <section className="space-y-4">
-          <div className="border-b border-[#D9DCD1] pb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-              <ImageIcon className="size-4 text-[#650510]" />
-              <span>Section 04 — Product Images</span>
-            </h2>
-            <p className="mt-0.5 text-xs text-[#687080]">
-              Uploaded media is stored securely and optimized automatically on Cloudinary CDN.
-            </p>
-          </div>
+        {/* Row 5: Cover Image */}
+        <div className="space-y-2">
+          <label className="block text-xs sm:text-sm font-medium text-[#374151]">
+            Cover Image <span className="text-red-500 font-semibold">*</span>
+          </label>
 
-          <div className="space-y-4">
-            {imagePreview ? (
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-lg border border-[#D9DCD1] bg-[#FFFFFF] p-4 shadow-2xs">
-                <div className="relative aspect-[16/9] w-full sm:w-56 overflow-hidden rounded-lg border border-[#D9DCD1] bg-[#F7F8F2] shrink-0">
-                  <Image
-                    src={imagePreview}
-                    alt="Product preview"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+          {imagePreview ? (
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] p-4">
+              <div className="relative aspect-[16/9] w-full sm:w-52 overflow-hidden rounded-xl border border-[#D9DCD1] bg-white shrink-0">
+                <Image
+                  src={imagePreview}
+                  alt="Product preview"
+                  fill
+                  className="object-cover"
+                />
+              </div>
 
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-[#111111]">
-                    {newImageSelected
-                      ? "New image selected (will upload on publish)"
-                      : "Current product image (stored on Cloudinary)"}
-                  </p>
-                  <p className="mt-1 text-xs text-[#687080]">
-                    Auto-served with responsive srcset and next-gen compression.
-                  </p>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-[#111111]">
+                  {newImageSelected
+                    ? "New image selected (will upload on publish)"
+                    : "Current product image (stored on Cloudinary)"}
+                </p>
+                <p className="mt-0.5 text-xs text-[#687080]">
+                  Auto-optimized with responsive srcset and next-gen compression.
+                </p>
 
-                  <div className="mt-3 flex items-center gap-2">
-                    <label className="h-[36px] px-3 rounded-lg border border-[#D9DCD1] bg-white hover:bg-[#F1F2EA] text-xs font-medium text-[#111111] flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs">
-                      <span>Replace Image</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="hidden"
-                      />
-                    </label>
+                <div className="mt-3 flex items-center gap-2">
+                  <label className="inline-flex items-center gap-1.5 rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-1.5 text-xs font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer">
+                    <span>Replace Image</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setImagePreview(null);
-                        setNewImageSelected(false);
-                      }}
-                      className="h-[36px] px-3 rounded-lg border border-[#D9DCD1] text-xs font-medium text-[#687080] hover:border-red-200 hover:bg-red-50 hover:text-red-700 transition-colors shadow-2xs cursor-pointer"
-                    >
-                      Remove
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImagePreview(null);
+                      setNewImageSelected(false);
+                    }}
+                    className="inline-flex items-center rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-1.5 text-xs font-medium text-[#687080] hover:border-red-200 hover:bg-red-50 hover:text-red-700 shadow-2xs transition-colors cursor-pointer"
+                  >
+                    Remove
+                  </button>
                 </div>
               </div>
-            ) : (
-              <label className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-[#D9DCD1] bg-[#FFFFFF] p-8 text-center cursor-pointer hover:border-[#650510]/50 hover:bg-[#650510]/[0.02] transition-colors">
-                <div className="size-11 rounded-lg border border-[#D9DCD1] bg-[#F7F8F2] flex items-center justify-center text-[#111111] shadow-2xs">
-                  <UploadCloud className="size-5 text-[#687080]" />
-                </div>
-                <p className="mt-3 text-xs sm:text-sm font-semibold text-[#111111]">
-                  Click or drag &amp; drop product photo
-                </p>
-                <p className="mt-1 text-[11px] text-[#687080]">
-                  JPG, PNG, or WebP up to 8MB
-                </p>
+            </div>
+          ) : (
+            <div className="flex items-center">
+              <label className="inline-flex items-center gap-2 rounded-xl border border-[#D9DCD1] bg-white px-4 py-2.5 text-xs sm:text-sm font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer">
+                <UploadCloud className="size-4 text-[#687080]" />
+                <span>Choose from Library</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -394,39 +309,28 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
                   className="hidden"
                 />
               </label>
-            )}
-          </div>
-        </section>
+            </div>
+          )}
+        </div>
 
-        {/* =========================================================================
-            SECTION 05 — PRODUCT FAQS
-            ========================================================================= */}
-        <section className="space-y-4">
-          <div className="border-b border-[#D9DCD1] pb-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#111111] flex items-center gap-2">
-              <HelpCircle className="size-4 text-[#650510]" />
-              <span>Section 05 — Product FAQs</span>
-            </h2>
-            <p className="mt-0.5 text-xs text-[#687080]">
-              Answers to common technical, shipping, and customization questions, formatted in an accordion.
-            </p>
-          </div>
-
+        {/* Row 6: Product FAQs */}
+        <div className="space-y-2">
+          <label className="block text-xs sm:text-sm font-medium text-[#374151]">
+            Product FAQs
+          </label>
           <FaqRepeater
             faqs={faqs}
             onChange={(updated) => setFaqs(updated)}
           />
-        </section>
+        </div>
 
-        {/* =========================================================================
-            SECTION 06 — STICKY PUBLISHING BAR
-            ========================================================================= */}
+        {/* Sticky Action Bar */}
         <aside
           aria-label="Publishing Controls"
           className="fixed bottom-0 left-0 right-0 z-30 border-t border-[#D9DCD1] bg-white/95 backdrop-blur-md py-3 px-4 sm:px-8 shadow-xs"
         >
           <div className="max-w-[1100px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-            {/* Left Info: Status & Feedback */}
+            {/* Left Info */}
             <div className="flex items-center gap-2.5 text-xs text-[#687080]">
               <span className="size-2 rounded-full bg-[#00A85A] shrink-0" aria-hidden="true" />
               <span className="font-medium text-[#111111]">
@@ -440,11 +344,11 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
               </span>
             </div>
 
-            {/* Right Buttons: Cancel & Primary Publish */}
+            {/* Right Buttons */}
             <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
               <Link
                 href="/admin/products"
-                className="h-[42px] px-4 rounded-lg border border-[#D9DCD1] bg-white text-xs font-medium text-[#687080] hover:text-[#111111] hover:bg-[#F1F2EA] flex items-center justify-center transition-colors shadow-2xs"
+                className="h-[42px] px-4 rounded-xl border border-[#D9DCD1] bg-white text-xs font-medium text-[#687080] hover:text-[#111111] hover:bg-[#F1F2EA] flex items-center justify-center transition-colors shadow-2xs"
               >
                 Cancel
               </Link>
@@ -452,7 +356,7 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-[42px] px-6 rounded-lg bg-[#650510] hover:bg-[#4f040c] text-white text-xs sm:text-sm font-semibold shadow-2xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="h-[42px] px-6 rounded-xl bg-[#650510] hover:bg-[#4f040c] text-white text-xs sm:text-sm font-semibold shadow-2xs transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 <Sparkles className="size-4" />
                 <span>
@@ -472,4 +376,3 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
     </div>
   );
 }
-

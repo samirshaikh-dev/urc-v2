@@ -1,14 +1,7 @@
 import prisma from "@/lib/prisma";
 import { PRODUCTS, CATEGORY_DETAILS } from "@/data/products";
 
-export function slugify(text) {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/[\s\W-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+export { slugify } from "@/lib/utils";
 
 /**
  * Fetch all products for a specific category slug.
@@ -146,8 +139,6 @@ export async function getAllProducts() {
     createdAt: new Date(),
   }));
 }
-
-
 
 /**
  * Fetch a single product by its database ID (or static fallback).
