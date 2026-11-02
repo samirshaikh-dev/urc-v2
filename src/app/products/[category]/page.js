@@ -89,7 +89,7 @@ export default async function CategoryPage({ params }) {
 
       {/* 06. ENQUIRY CTA */}
       <ProductsEnquiryCTA
-        headline={`Need a specific ${category.name.toLowerCase()} specification?`}
+        headline={`Need custom ${category.name} specifications?`}
         description="Contact our team for technical consultations, custom tolerances, and volume quotations."
         productName={category.name}
         buttonText="Request a Quote"
