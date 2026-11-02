@@ -127,11 +127,6 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
               {isEdit ? "Edit Blog" : "New Blog"}
             </h1>
-            <p className="mt-1 text-xs sm:text-sm text-[#687080]">
-              {isEdit
-                ? "Update article content, metadata, or publication state."
-                : "Compose and publish technical guides, application notes, and industry insights."}
-            </p>
           </div>
         </div>
 
