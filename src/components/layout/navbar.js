@@ -87,7 +87,7 @@ export function Navbar() {
           {/* Action CTAs */}
           <div className="flex items-center gap-2">
             <Button
-              href="#quote"
+              href="/contact"
               size="sm"
               className="hidden rounded-full px-4 text-xs font-medium sm:inline-flex"
             >

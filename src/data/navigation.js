@@ -24,7 +24,7 @@ export const FOOTER_NAV = {
     { label: "About Us", href: "/about" },
     { label: "Industries Overview", href: "/industries" },
     { label: "Contact & Location", href: "/contact" },
-    { label: "Request a Quote", href: "/#quote" },
+    { label: "Request a Quote", href: "/contact" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },

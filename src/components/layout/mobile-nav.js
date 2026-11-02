@@ -114,7 +114,7 @@ export function MobileNav({ isOpen, onClose }) {
       </nav>
 
       <div className="border-t border-line bg-white p-6">
-        <Button href="#quote" className="w-full" onClick={onClose}>
+        <Button href="/contact" className="w-full" onClick={onClose}>
           Request a quote
         </Button>
       </div>

@@ -42,7 +42,7 @@ export function HeroSection() {
 
               {/* Action Buttons */}
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Button href="#quote" size="md" className="rounded-full px-6 shadow-sm">
+                <Button href="/contact" size="md" className="rounded-full px-6 shadow-sm">
                   Request a quotation
                   <ArrowRight className="size-4 ml-1.5" />
                 </Button>

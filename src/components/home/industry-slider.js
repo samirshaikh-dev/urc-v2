@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
 import { INDUSTRIES } from "@/data/industries";
@@ -143,12 +144,12 @@ export function IndustrySlider() {
                   </div>
 
                   <div className="border-t border-line/70 bg-white px-6 py-3.5 text-right">
-                    <a
-                      href="#quote"
+                    <Link
+                      href="/contact"
                       className="text-xs font-semibold text-maroon hover:underline"
                     >
                       Discuss application requirements →
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

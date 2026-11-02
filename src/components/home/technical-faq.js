@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { ChevronDown, HelpCircle } from "lucide-react";
 
@@ -49,12 +50,12 @@ export function TechnicalFAQ() {
               <p className="mt-2 text-xs text-muted leading-relaxed">
                 Send your equipment specifications or fluid type directly to our engineering team for validation.
               </p>
-              <a
-                href="#quote"
+              <Link
+                href="/contact"
                 className="mt-4 inline-flex items-center justify-center rounded-full bg-maroon px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-maroon-deep"
               >
                 Discuss your application
-              </a>
+              </Link>
             </div>
           </div>
 

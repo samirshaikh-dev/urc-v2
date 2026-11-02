@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { FileText, SearchCheck, Send, Truck } from "lucide-react";
 
@@ -93,12 +94,12 @@ export function ProcessFlow() {
             <span className="font-semibold text-ink">Have a custom drawing or urgent replacement requirement?</span>{" "}
             Our technical support team reviews drawings and answers technical questions directly.
           </div>
-          <a
-            href="#quote"
+          <Link
+            href="/contact"
             className="inline-flex items-center justify-center rounded-full bg-maroon px-5 py-2 text-xs font-medium text-white transition-colors hover:bg-maroon-deep shrink-0"
           >
             Start an enquiry
-          </a>
+          </Link>
         </div>
       </Container>
     </section>

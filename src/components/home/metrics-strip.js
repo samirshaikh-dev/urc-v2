@@ -45,9 +45,6 @@ export function MetricsStrip() {
               Engineered performance verified by industry standards
             </h2>
           </div>
-          <p className="max-w-md text-xs text-muted sm:text-sm">
-            Strict batch testing ensuring chemical compatibility, tensile integrity, and dimensional consistency across every production run.
-          </p>
         </div>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

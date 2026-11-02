@@ -35,7 +35,7 @@ export function ProductBento() {
             </p>
           </div>
 
-          <Button href="#quote" variant="secondary" size="sm" className="hidden rounded-full sm:inline-flex shrink-0">
+          <Button href="/contact" variant="secondary" size="sm" className="hidden rounded-full sm:inline-flex shrink-0">
             Request custom quotation
           </Button>
         </div>
@@ -133,7 +133,7 @@ export function ProductBento() {
                 </button>
 
                 <Button
-                  href={`#quote`}
+                  href="/contact"
                   size="sm"
                   className="rounded-full px-4 text-xs"
                 >
@@ -210,7 +210,7 @@ export function ProductBento() {
                   Close
                 </button>
                 <Button
-                  href="#quote"
+                  href="/contact"
                   size="sm"
                   className="rounded-full px-5 text-xs"
                   onClick={() => setSelectedProductForModal(null)}
