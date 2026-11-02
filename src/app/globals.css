@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Design tokens — New United Rubber Cork
+ * Design tokens — United Rubber Cork
  * Single source of truth: AI_RULE.md / prompt.md / docs/color-theme.md.
  * Components must consume these utilities instead of hardcoded hex values.
  */

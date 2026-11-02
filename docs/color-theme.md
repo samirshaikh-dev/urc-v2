@@ -1,6 +1,6 @@
-# Brand Color System — New United Rubber Cork
+# Brand Color System — United Rubber Cork
 
-Confirmed brand palette and UI application system for the New United Rubber Cork website redesign.
+Confirmed brand palette and UI application system for the United Rubber Cork website redesign.
 
 ## Confirmed Brand Palette
 

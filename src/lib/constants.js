@@ -4,8 +4,8 @@
  */
 
 export const SITE_CONFIG = {
-  name: "New United Rubber Cork",
-  shortName: "NURC",
+  name: "United Rubber Cork",
+  shortName: "URC",
   tagline: "Engineered Cork Solutions for Industry",
   description:
     "Reliable cork and rubberised-cork materials and components for demanding industrial applications.",

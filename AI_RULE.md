@@ -2,9 +2,9 @@
 
 ## Project Identity
 
-This project is the website redesign for **New United Rubber Cork**.
+This project is the website redesign for **United Rubber Cork**.
 
-Use **New United Rubber Cork** as the official brand name throughout the redesigned website. Do not use the old brand name as the new identity. Preserve legacy information only when it is factually necessary and verified.
+Use **United Rubber Cork** as the official brand name throughout the redesigned website. Do not use the old brand name as the new identity. Preserve legacy information only when it is factually necessary and verified.
 
 ## Mandatory Reading
 
@@ -45,7 +45,7 @@ Our redesign direction:
 
 ## Confirmed Brand Color System
 
-Keep the existing brand palette of New United Rubber Cork rather than introducing a cork-brown palette. These colors already establish brand recognition. Our job is to make their application more sophisticated, consistent, and modern. **Do NOT use the previous cork-brown palette.**
+Keep the existing brand palette of United Rubber Cork rather than introducing a cork-brown palette. These colors already establish brand recognition. Our job is to make their application more sophisticated, consistent, and modern. **Do NOT use the previous cork-brown palette.**
 
 | Role | Color | Hex | Intended use |
 |---|---|---|---|
@@ -177,7 +177,7 @@ Before considering any page complete, ask:
 - Is the primary action clear?
 - Does it work properly on mobile and desktop?
 - Is it accessible and performant?
-- Does it feel like one coherent New United Rubber Cork website?
+- Does it feel like one coherent United Rubber Cork website?
 
 **Priority order:** accuracy and trust → clarity and usability → visual quality → decorative effects.
 

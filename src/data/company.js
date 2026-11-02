@@ -3,7 +3,7 @@
  * Source: AMCORK legacy records & verified details
  */
 export const COMPANY_INFO = {
-  name: "New United Rubber Cork",
+  name: "United Rubber Cork",
   email: "sales@amcorkindia.com", // Verify with client
   phone: "+91-XXXXXXXXXX",        // Placeholder until verified
   whatsapp: "+91-XXXXXXXXXX",     // Placeholder until verified

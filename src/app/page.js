@@ -1,183 +1,109 @@
 import { SITE_CONFIG } from "@/lib/constants";
-import { PRODUCTS } from "@/data/products";
-import { INDUSTRIES } from "@/data/industries";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
-import { TextLink } from "@/components/ui/text-link";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { ProductCard } from "@/components/products/product-card";
+import { HeroSection } from "@/components/home/hero-section";
+import { MetricsStrip } from "@/components/home/metrics-strip";
+import { ProductBento } from "@/components/home/product-bento";
+import { ProcessFlow } from "@/components/home/process-flow";
+import { IndustrySlider } from "@/components/home/industry-slider";
+import { TechnicalFAQ } from "@/components/home/technical-faq";
 import { QuoteForm } from "@/components/forms/quote-form";
-
-/*
- * Facts already present in the project data (1–25 mm thickness,
- * NBR/SBR binder matrix, 915 × 610 mm sheet). Keep this list short: it is
- * orientation for a buyer, not a second feature grid.
- */
-const MATERIAL_FACTS = [
-  { label: "Thickness range", value: "1–25 mm" },
-  { label: "Binder matrix", value: "NBR / SBR" },
-  { label: "Standard sheet", value: "915 × 610 mm" },
-];
-
-const CAPABILITIES = [
-  {
-    title: "Custom profiling",
-    detail: "Cut frames, endless rings and gaskets",
-  },
-  {
-    title: "Dielectric integrity",
-    detail: "Transformer-oil compatible sealing",
-  },
-  {
-    title: "Standard sheets",
-    detail: "915 × 610 mm and 915 × 915 mm",
-  },
-  {
-    title: "Direct factory supply",
-    detail: "Batch traceability and quality testing",
-  },
-];
+import { FileCheck, Clock, Award, Shield } from "lucide-react";
 
 export default function Home() {
   return (
     <>
-      {/* HERO — one maroon panel, typography-led, no decorative layers */}
-      <section className="pt-8 pb-14 sm:pt-12 sm:pb-20">
+      {/* 1. HERO SECTION */}
+      <HeroSection />
+
+      {/* 2. INDUSTRIAL ENGINEERING METRICS STRIP */}
+      <MetricsStrip />
+
+      {/* 3. PRODUCT CATALOGUE BENTO SHOWCASE */}
+      <ProductBento />
+
+      {/* 4. TRANSPARENT B2B PROCUREMENT WORKFLOW */}
+      <ProcessFlow />
+
+      {/* 5. INDUSTRIAL APPLICATIONS EMBLA CAROUSEL */}
+      <IndustrySlider />
+
+      {/* 6. TECHNICAL FAQ & MATERIAL SELECTION GUIDANCE */}
+      <TechnicalFAQ />
+
+      {/* 7. HIGH-CONVERSION B2B RFQ & QUOTE SECTION */}
+      <section
+        id="quote"
+        tabIndex={-1}
+        className="scroll-mt-24 border-t border-line bg-page py-16 sm:py-24 focus:outline-none"
+      >
         <Container>
-          <div className="overflow-hidden rounded-panel bg-maroon text-white">
-            <div className="grid lg:grid-cols-12">
-              <div className="px-6 py-10 sm:px-10 sm:py-14 lg:col-span-7 lg:px-14 lg:py-16">
-                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl lg:leading-[1.1]">
-                  {SITE_CONFIG.tagline}
-                </h1>
-
-                <p className="mt-5 max-w-lg text-sm leading-relaxed text-white/75 sm:text-base">
-                  {SITE_CONFIG.description}
-                </p>
-
-                <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-                  <Button href="#quote" variant="inverse">
-                    Request a quote
-                  </Button>
-                  <TextLink href="#products" onDark>
-                    Explore products
-                  </TextLink>
-                </div>
-              </div>
-
-              <div className="border-t border-white/15 px-6 py-8 sm:px-10 lg:col-span-5 lg:flex lg:flex-col lg:justify-center lg:border-t-0 lg:border-l lg:px-10">
-                <dl className="space-y-3">
-                  {MATERIAL_FACTS.map((fact) => (
-                    <div
-                      key={fact.label}
-                      className="flex items-baseline justify-between gap-6 border-b border-white/10 pb-3 last:border-0 last:pb-0"
-                    >
-                      <dt className="text-sm text-white/70">{fact.label}</dt>
-                      <dd className="text-sm font-medium text-white">{fact.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* CAPABILITIES — open definition list, no bullet icons */}
-      <section className="border-y border-line bg-white py-10 sm:py-12">
-        <Container>
-          <dl className="grid gap-6 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-4">
-            {CAPABILITIES.map((capability) => (
-              <div key={capability.title}>
-                <dt className="text-sm font-semibold text-ink">{capability.title}</dt>
-                <dd className="mt-1 text-sm leading-relaxed text-muted">
-                  {capability.detail}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Container>
-      </section>
-
-      {/* PRODUCTS — editorial rows on a hairline rule */}
-      <section id="products" tabIndex={-1} className="scroll-mt-24 py-16 focus:outline-none sm:py-24">
-        <Container>
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <SectionHeading
-              kicker="Product range"
-              title="Rubberised cork sheets and cut components"
-              description="Sheets, gaskets and precision-cut parts produced to your dimensions and operating conditions."
-            />
-            <TextLink href="#quote" className="shrink-0 sm:pb-1">
-              Request a quote
-            </TextLink>
-          </div>
-
-          <ul className="mt-10 divide-y divide-line border-t border-line sm:mt-12">
-            {PRODUCTS.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      {/* INDUSTRIES — three columns separated by rules, not cards */}
-      <section className="border-y border-line bg-white py-16 sm:py-24">
-        <Container>
-          <SectionHeading
-            kicker="Applications"
-            title="Where these materials are used"
-            description="Sealing and insulation components for equipment that runs under vibration, heat cycling and contact with industrial oils."
-          />
-
-          <div className="mt-10 grid gap-8 sm:mt-12 sm:grid-cols-3 sm:gap-10">
-            {INDUSTRIES.map((industry) => (
-              <div key={industry.id} className="border-t border-line pt-5">
-                <h3 className="text-base font-semibold text-ink sm:text-lg">
-                  {industry.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  {industry.description}
-                </p>
-                <p className="mt-4 text-sm leading-relaxed text-muted">
-                  <span className="font-medium text-ink">Typical parts:</span>{" "}
-                  {industry.typicalComponents.join(", ")}
-                </p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* QUOTE — one justified surface around the form, nothing nested */}
-      <section id="quote" tabIndex={-1} className="scroll-mt-24 py-16 focus:outline-none sm:py-24">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-14 items-start">
+            {/* Left Narrative Guidance */}
             <div className="lg:col-span-5">
+              <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">
+                Direct Manufacturing Quotation
+              </span>
               <h2
                 id="quote-title"
-                className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl"
+                className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl"
               >
-                Request a quote
+                Request a technical quotation
               </h2>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-muted sm:text-base">
-                Tell us what you are working on. Dimensions, thickness, quantity
-                and operating conditions help us recommend the right material.
+              <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
+                Whether you need standard 915 × 610 mm sheets, custom CNC transformer gasket frames, or specialized automotive seals, our team reviews your exact drawings and operating conditions.
               </p>
 
-              <h3 className="mt-8 text-sm font-semibold text-ink">
-                Useful details to include
-              </h3>
-              <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted marker:text-orange-ink">
-                <li>Product or material type</li>
-                <li>Thickness, sheet size or drawing dimensions</li>
-                <li>Quantity required</li>
-                <li>Application and operating conditions</li>
-              </ul>
+              {/* Assurance Checklist */}
+              <div className="mt-8 space-y-4 rounded-2xl border border-line bg-white p-6 shadow-2xs">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-maroon">
+                  What you can expect:
+                </h3>
+                
+                <div className="flex items-start gap-3">
+                  <Clock className="size-5 shrink-0 text-orange-ink mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-semibold text-ink sm:text-sm">24-Hour Technical Turnaround</h4>
+                    <p className="text-xs text-muted leading-tight mt-0.5">
+                      Fast engineering assessment and commercial quote delivered to your inbox.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <FileCheck className="size-5 shrink-0 text-orange-ink mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-semibold text-ink sm:text-sm">Drawing & Sample Verification</h4>
+                    <p className="text-xs text-muted leading-tight mt-0.5">
+                      Custom CAD files, PDF blueprints, or physical sample gaskets matched to exact tolerances.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Award className="size-5 shrink-0 text-orange-ink mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-semibold text-ink sm:text-sm">IS: 4253 & ASTM Test Certificates</h4>
+                    <p className="text-xs text-muted leading-tight mt-0.5">
+                      Batch test certification covering compressibility, recovery, and oil immersion behavior.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Shield className="size-5 shrink-0 text-orange-ink mt-0.5" />
+                  <div>
+                    <h4 className="text-xs font-semibold text-ink sm:text-sm">Direct Factory Supply</h4>
+                    <p className="text-xs text-muted leading-tight mt-0.5">
+                      Manufactured and dispatched from Vapi, Gujarat with nationwide transit coordination.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
+            {/* Right Form Card */}
             <div className="lg:col-span-7">
-              <div className="rounded-panel border border-line bg-white p-6 sm:p-8">
+              <div className="rounded-3xl border border-line bg-white p-6 shadow-xs sm:p-8">
                 <QuoteForm />
               </div>
             </div>

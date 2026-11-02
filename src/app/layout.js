@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Toaster } from "sonner";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { constructMetadata } from "@/lib/seo";
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
