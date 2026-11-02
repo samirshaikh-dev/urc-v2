@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { getProductById } from "@/lib/products-db";
-import { ProductEditorForm } from "@/components/admin/product-editor-form";
+import { ProductEditorForm } from "@/components/admin/product/product-editor-form";
 import { ArrowLeft } from "lucide-react";
 
 export const metadata = {

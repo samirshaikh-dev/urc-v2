@@ -13,7 +13,7 @@ import {
   Redo,
 } from "lucide-react";
 
-export function RichTextEditor({ value = "", onChange, placeholder = "Enter product description..." }) {
+export function RichTextEditor({ value = "", onChange, placeholder = "Enter content..." }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -140,3 +140,4 @@ export function RichTextEditor({ value = "", onChange, placeholder = "Enter prod
     </div>
   );
 }
+

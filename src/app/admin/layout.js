@@ -1,4 +1,4 @@
-import { AdminLayoutWrapper } from "@/components/admin/admin-layout-wrapper";
+import { AdminLayoutWrapper } from "@/components/admin/layout/admin-layout-wrapper";
 
 export const metadata = {
   title: "Admin Portal | United Rubber Cork",

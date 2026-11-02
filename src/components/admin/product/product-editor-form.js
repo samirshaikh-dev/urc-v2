@@ -16,9 +16,9 @@ import {
   HelpCircle,
   ImageIcon,
 } from "lucide-react";
-import { RichTextEditor } from "@/components/admin/rich-text-editor";
-import { FaqRepeater } from "@/components/admin/faq-repeater";
-import { SpecificationsRepeater } from "@/components/admin/specifications-repeater";
+import { RichTextEditor } from "@/components/admin/shared/rich-text-editor";
+import { FaqRepeater } from "./faq-repeater";
+import { SpecificationsRepeater } from "./specifications-repeater";
 import {
   createProductAction,
   updateProductAction,

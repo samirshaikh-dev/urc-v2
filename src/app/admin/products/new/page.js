@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { ProductEditorForm } from "@/components/admin/product-editor-form";
+import { ProductEditorForm } from "@/components/admin/product/product-editor-form";
 
 export const metadata = {
   title: "Create Product | URC Admin",

@@ -11,8 +11,6 @@ import {
   Edit2,
   Search,
   Package,
-  Layers,
-  CheckCircle2,
 } from "lucide-react";
 import { deleteProductAction } from "@/actions/admin-products";
 import { toast } from "sonner";
@@ -88,18 +86,15 @@ export function ProductsListView({ initialProducts = [] }) {
 
   return (
     <div className="space-y-6">
-      {/* Page Header (Matching the Reference UI: Title on Left, '+' Button on Right) */}
+      {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]">
             Products
           </h1>
-          {/* <p className="mt-1 text-xs text-[#687080]">
-            {products.length} {products.length === 1 ? "product" : "products"} published across 4 industrial categories.
-          </p> */}
         </div>
 
-        {/* '+' Add Button — Exact Style from Reference Screenshot */}
+        {/* '+' Add Button */}
         <Link
           href="/admin/products/new"
           className="size-9 sm:size-10 rounded-xl border border-[#D9DCD1] bg-[#F1F2EA] hover:bg-[#E9EAE1] flex items-center justify-center text-[#111111] transition-colors shadow-2xs group"
@@ -162,7 +157,7 @@ export function ProductsListView({ initialProducts = [] }) {
         </div>
       </div>
 
-      {/* Data Table (Faithful to Reference Layout) */}
+      {/* Data Table */}
       <div className="overflow-x-auto rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] shadow-2xs">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -264,7 +259,7 @@ export function ProductsListView({ initialProducts = [] }) {
                       </span>
                     </td>
 
-                    {/* Status Column (Green dot + "Published" exactly as in screenshot) */}
+                    {/* Status Column */}
                     <td className="py-3.5 px-4 whitespace-nowrap">
                       <div className="inline-flex items-center gap-1.5">
                         <span
@@ -277,7 +272,7 @@ export function ProductsListView({ initialProducts = [] }) {
                       </div>
                     </td>
 
-                    {/* Action Buttons — Matching Reference Screenshot Square Buttons */}
+                    {/* Action Buttons */}
                     <td className="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap">
                       <div className="inline-flex items-center justify-end gap-1.5">
                         {/* View on Public Site Button */}
@@ -322,3 +317,4 @@ export function ProductsListView({ initialProducts = [] }) {
     </div>
   );
 }
+

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { getAllProducts } from "@/lib/products-db";
-import { ProductsListView } from "@/components/admin/products-list-view";
+import { ProductsListView } from "@/components/admin/product/products-list-view";
 
 export const metadata = {
   title: "Products Catalog | URC Admin",
