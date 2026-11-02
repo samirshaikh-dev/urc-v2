@@ -20,6 +20,12 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Database
+
+The application uses Neon PostgreSQL with Drizzle ORM. Configure the Neon
+connection strings and follow the migration and data-transfer notes in
+[docs/database.md](./docs/database.md).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

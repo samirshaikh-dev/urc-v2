@@ -30,7 +30,7 @@ The client is **non-technical**. The admin portal must be radically simple, fool
 
 ---
 
-## 3. Database Schema (Supabase PostgreSQL + Drizzle ORM)
+## 3. Database Schema (Neon PostgreSQL + Drizzle ORM)
 
 The Drizzle schema is maintained in `src/db/schema.js`; generated migrations are
 stored in `drizzle/`. It defines `products`, `product_faqs`, and
@@ -100,7 +100,7 @@ Single-page, uncluttered form designed for non-technical users:
 
 6. **Publish Button**:
    - Large, prominent primary CTA: **"Publish Product"**.
-   - On click: shows a loading spinner (*"Publishing..."*), uploads image, writes to Supabase, triggers revalidation, and redirects to `/admin/products` with a green toast notification: *"Product published successfully! It is now live on the website."*
+   - On click: shows a loading spinner (*"Publishing..."*), uploads image, writes to Neon through Drizzle, triggers revalidation, and redirects to `/admin/products` with a green toast notification: *"Product published successfully! It is now live on the website."*
 
 ---
 
@@ -152,8 +152,9 @@ When "Publish" is clicked:
 ## 7. Required Environment Variables (.env)
 
 ```env
-# Database (Supabase PostgreSQL)
-DATABASE_URL="postgresql://postgres:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true"
+# Database (Neon PostgreSQL)
+DATABASE_URL=
+DATABASE_URL_POOLED=
 
 # Media Storage (Cloudinary URL format)
 CLOUDINARY_URL="cloudinary://api_key:api_secret@cloud_name"
@@ -169,10 +170,10 @@ ADMIN_SESSION_SECRET="a-random-32-character-secret-key"
 ## 8. Implementation Checklist & Order of Execution
 
 1. **Step 1: Install Required Dependencies**
-   - Runtime: `npm install drizzle-orm pg cloudinary jose @tiptap/react @tiptap/starter-kit`
+   - Runtime: `npm install @neondatabase/serverless ws drizzle-orm pg cloudinary jose @tiptap/react @tiptap/starter-kit`
    - Development: `npm install -D drizzle-kit`
 2. **Step 2: Database Initialization & Seeding**
-   - Set `DATABASE_URL` and run `npm run db:push` to synchronize the Drizzle schema.
+   - Set the Neon direct `DATABASE_URL` and pooled `DATABASE_URL_POOLED` connection strings, then run `npm run db:migrate`.
    - Run `npm run db:seed` to upsert the initial product catalog and related FAQs/specifications.
    - The public catalog keeps its existing static fallback when the database is unavailable.
 3. **Step 3: Restructure Category Page (`/products/[category]`)**

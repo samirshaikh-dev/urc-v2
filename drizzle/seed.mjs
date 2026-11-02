@@ -1,9 +1,12 @@
 import "dotenv/config";
 import { randomUUID } from "node:crypto";
-import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
 import { eq } from "drizzle-orm";
-import { Pool } from "pg";
+import ws from "ws";
 import { productFaqs, productSpecifications, products } from "../src/db/schema.js";
+
+neonConfig.webSocketConstructor = ws;
 
 const INITIAL_PRODUCTS = [
   {
@@ -128,9 +131,12 @@ const INITIAL_PRODUCTS = [
 
 
 async function main() {
-  const connectionString = process.env.DATABASE_URL?.trim();
+  const connectionString =
+    process.env.DATABASE_URL_POOLED?.trim() || process.env.DATABASE_URL?.trim();
   if (!connectionString) {
-    throw new Error("DATABASE_URL must be configured before seeding the database.");
+    throw new Error(
+      "DATABASE_URL_POOLED or DATABASE_URL must be configured before seeding the database."
+    );
   }
 
   const pool = new Pool({ connectionString });
