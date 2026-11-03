@@ -3,11 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { getAdminSession } from "@/lib/auth";
 import {
-  updateLeadStatus,
   addLeadNote,
-  deleteLead,
-  getLeadById,
-} from "@/lib/leads-db";
+  updateLeadStatus,
+} from "@/services/contacts/admin/update-lead";
+import {
+  validateAddLeadNote,
+  validateUpdateLeadStatus,
+} from "@/validation/contacts";
 
 export async function updateLeadStatusAction(id, status) {
   const session = await getAdminSession();
@@ -15,8 +17,13 @@ export async function updateLeadStatusAction(id, status) {
     return { success: false, error: "Unauthorized. Please log in again." };
   }
 
+  const validation = validateUpdateLeadStatus(id, status);
+  if (!validation.success) {
+    return { success: false, error: validation.error };
+  }
+
   try {
-    const updated = await updateLeadStatus(id, status);
+    const updated = await updateLeadStatus(id, validation.data.status);
     if (!updated) {
       return { success: false, error: "Lead not found." };
     }
@@ -33,12 +40,13 @@ export async function addLeadNoteAction(id, noteText) {
     return { success: false, error: "Unauthorized. Please log in again." };
   }
 
-  if (!noteText || !noteText.trim()) {
-    return { success: false, error: "Note cannot be empty." };
+  const validation = validateAddLeadNote(id, noteText);
+  if (!validation.success) {
+    return { success: false, error: validation.error };
   }
 
   try {
-    const updated = await addLeadNote(id, noteText.trim());
+    const updated = await addLeadNote(id, validation.data.noteText);
     if (!updated) {
       return { success: false, error: "Lead not found." };
     }
@@ -46,24 +54,6 @@ export async function addLeadNoteAction(id, noteText) {
     return { success: true, lead: updated };
   } catch (err) {
     return { success: false, error: err.message || "Failed to add note." };
-  }
-}
-
-export async function deleteLeadAction(id) {
-  const session = await getAdminSession();
-  if (!session) {
-    return { success: false, error: "Unauthorized. Please log in again." };
-  }
-
-  try {
-    const success = await deleteLead(id);
-    if (!success) {
-      return { success: false, error: "Lead not found." };
-    }
-    revalidatePath("/admin/leads");
-    return { success: true };
-  } catch (err) {
-    return { success: false, error: err.message || "Failed to delete lead." };
   }
 }
 

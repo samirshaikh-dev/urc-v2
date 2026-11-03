@@ -12,7 +12,7 @@ import {
   Plus,
   MessageSquare,
 } from "lucide-react";
-import { addLeadNoteAction } from "@/actions/admin-leads";
+import { addLeadNoteAction } from "@/api/contacts/admin/update-lead";
 import { toast } from "sonner";
 
 export function LeadDetailModal({ lead, onClose, onUpdate }) {

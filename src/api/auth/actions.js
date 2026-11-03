@@ -29,3 +29,4 @@ export async function logoutAdminAction() {
   await clearAdminSessionCookie();
   redirect("/admin/login");
 }
+

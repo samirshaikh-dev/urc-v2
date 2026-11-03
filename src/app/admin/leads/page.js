@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { getAllLeads } from "@/lib/leads-db";
+import { getAllLeads } from "@/services/contacts/admin/get-leads";
 import { LeadsListView } from "@/components/admin/contact/leads-list-view";
 
 export const metadata = {

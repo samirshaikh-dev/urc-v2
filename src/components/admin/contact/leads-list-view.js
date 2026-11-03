@@ -11,7 +11,7 @@ import {
   Building,
   Calendar,
 } from "lucide-react";
-import { deleteLeadAction } from "@/actions/admin-leads";
+import { deleteLeadAction } from "@/api/contacts/admin/delete-lead";
 import { LeadDetailModal } from "./lead-detail-modal";
 import { toast } from "sonner";
 
