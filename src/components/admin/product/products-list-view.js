@@ -12,7 +12,7 @@ import {
   Search,
   Package,
 } from "lucide-react";
-import { deleteProductAction } from "@/actions/admin-products";
+import { deleteProductAction } from "@/api/products/admin/delete-product";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 

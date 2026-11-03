@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Lock, Mail, ArrowRight } from "lucide-react";
-import { loginAdminAction } from "@/actions/admin-products";
+import { loginAdminAction } from "@/api/auth/actions";
 
 export default function AdminLoginPage() {
   const [state, formAction, isPending] = useActionState(loginAdminAction, null);

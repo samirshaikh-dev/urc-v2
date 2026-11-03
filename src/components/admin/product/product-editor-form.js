@@ -13,10 +13,8 @@ import {
 import { RichTextEditor } from "@/components/admin/shared/rich-text-editor";
 import { FaqRepeater } from "./faq-repeater";
 import { SpecificationsRepeater } from "./specifications-repeater";
-import {
-  createProductAction,
-  updateProductAction,
-} from "@/actions/admin-products";
+import { createProductAction } from "@/api/products/admin/create-product";
+import { updateProductAction } from "@/api/products/admin/update-product";
 import { slugify } from "@/lib/utils";
 import { toast } from "sonner";
 

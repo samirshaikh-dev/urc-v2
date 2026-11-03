@@ -14,7 +14,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { logoutAdminAction } from "@/actions/admin-products";
+import { logoutAdminAction } from "@/api/auth/actions";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [

@@ -8,10 +8,6 @@ import {
   validateAdminCredentials,
 } from "@/lib/auth";
 
-export { createProductAction } from "@/api/products/admin/create-product";
-export { updateProductAction } from "@/api/products/admin/update-product";
-export { deleteProductAction } from "@/api/products/admin/delete-product";
-
 export async function loginAdminAction(prevState, formData) {
   const email = formData.get("email")?.toString().trim();
   const password = formData.get("password")?.toString();
