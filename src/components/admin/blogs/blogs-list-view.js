@@ -12,7 +12,8 @@ import {
   Clock,
   User,
 } from "lucide-react";
-import { deleteBlogAction, toggleBlogPublishAction } from "@/actions/admin-blogs";
+import { deleteBlogAction } from "@/api/blogs/admin/delete-blog";
+import { toggleBlogPublishAction } from "@/api/blogs/admin/update-blog";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 

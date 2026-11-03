@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { getAllBlogs } from "@/lib/blogs-db";
+import { getAllBlogs } from "@/services/blogs/admin/get-blog";
 import { BlogsListView } from "@/components/admin/blogs/blogs-list-view";
 
 export const metadata = {

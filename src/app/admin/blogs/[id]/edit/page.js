@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { connection } from "next/server";
-import { getBlogById } from "@/lib/blogs-db";
+import { getBlogById } from "@/services/blogs/admin/get-blog";
 import { BlogEditorForm } from "@/components/admin/blogs/blog-editor-form";
 import { ArrowLeft } from "lucide-react";
 

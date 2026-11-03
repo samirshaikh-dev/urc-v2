@@ -10,7 +10,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { RichTextEditor } from "@/components/admin/shared/rich-text-editor";
-import { createBlogAction, updateBlogAction } from "@/actions/admin-blogs";
+import { createBlogAction } from "@/api/blogs/admin/create-blog";
+import { updateBlogAction } from "@/api/blogs/admin/update-blog";
 import { slugify } from "@/lib/utils";
 import { toast } from "sonner";
 
