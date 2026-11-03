@@ -18,9 +18,6 @@ export default function AdminLoginPage() {
           <h1 className="mt-4 text-2xl font-bold tracking-tight text-[#111111]">
             Admin Portal
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-[#687080]">
-            United Rubber Cork &bull; Product Catalog CMS
-          </p>
         </div>
 
         {/* Error Notification */}
