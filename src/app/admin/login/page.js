@@ -41,7 +41,6 @@ export default function AdminLoginPage() {
                 type="email"
                 name="email"
                 required
-                defaultValue="admin@unitedrubbercork.com"
                 placeholder="admin@unitedrubbercork.com"
                 className="w-full rounded-xl border border-[#D9DCD1] bg-[#F1F2EA]/50 px-3.5 py-2.5 pl-10 text-xs sm:text-sm text-[#111111] placeholder:text-[#687080] focus:border-[#111111] focus:bg-white focus:outline-none transition-colors"
               />
