@@ -21,7 +21,7 @@ export const CATEGORY_DETAILS = {
     slug: "cork-products",
     name: "Cork Products",
     tagline: "Natural Cork Materials & Solutions",
-    heroImage: "/images/carousel-images/industrial-cork-granules-processing-manufacturer-vapi-gujarat-01.jpg",
+    heroImage: "/images/cork-category-images/cork-products.png",
     badge: "100% Natural Raw Material",
     standard: "Conforms to IS: 4253 / ASTM Standards",
     shortDescription:
@@ -76,7 +76,7 @@ export const CATEGORY_DETAILS = {
     slug: "rubberised-cork",
     name: "Rubberised Cork",
     tagline: "Cork and Rubber Composite Materials",
-    heroImage: "/images/carousel-images/custom-molded-cork-components-manufacturing-vapi-gujarat-02.jpg",
+    heroImage: "/images/cork-category-images/rubberised-cork.png",
     badge: "Industrial Sealing Matrix",
     standard: "Conforms to IS: 4253 (Part II) / ASTM F104",
     shortDescription:
@@ -131,7 +131,7 @@ export const CATEGORY_DETAILS = {
     slug: "decorative-cork",
     name: "Decorative Cork",
     tagline: "Decorative & Acoustic Cork Materials",
-    heroImage: "/images/industries-serve-images/cork-expansion-joints-construction-insulation-vapi-gujarat.jpeg",
+    heroImage: "/images/cork-category-images/decorative-cork.png",
     badge: "Architectural & Interior Design",
     standard: "Eco-Friendly Renewable Material",
     shortDescription:
@@ -186,7 +186,7 @@ export const CATEGORY_DETAILS = {
     slug: "cork-gifts",
     name: "Cork Gifts",
     tagline: "Cork-Based Gift & Lifestyle Products",
-    heroImage: "/images/industries-serve-images/orthopedic-cork-shoe-soles-footwear-manufacturer-vapi-gujarat.jpeg",
+    heroImage: "/images/cork-category-images/cork-gifts.png",
     badge: "Eco-Friendly Corporate Gifting",
     standard: "100% Vegan & Recyclable",
     shortDescription:
