@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createLead } from "@/services/contacts/public/create-lead";
 import { validateCreateLead } from "@/validation/contacts";
+import { sendContactInquiryEmails } from "@/services/mail";
 
 export async function createLeadAction(payload) {
   const validation = validateCreateLead(payload);
@@ -12,6 +13,12 @@ export async function createLeadAction(payload) {
 
   try {
     const lead = await createLead(validation.data);
+
+    // Fire email notifications to customer and admin asynchronously
+    sendContactInquiryEmails(lead).catch((err) => {
+      console.error("[createLeadAction] Email dispatch background error:", err);
+    });
+
     revalidatePath("/admin/leads");
     return { success: true, lead };
   } catch (err) {
@@ -19,4 +26,3 @@ export async function createLeadAction(payload) {
     return { success: false, error: err.message || "Failed to submit enquiry." };
   }
 }
-

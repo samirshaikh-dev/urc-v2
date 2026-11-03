@@ -2,9 +2,10 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, Check, Mail } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { COMPANY_INFO } from "@/data/company";
+import { createLeadAction } from "@/api/contacts/public/create-lead";
+import { toast } from "sonner";
 
 const BASE_PRODUCT_OPTIONS = [
   "Select product or material...",
@@ -83,32 +84,11 @@ function validate(values) {
 
   if (!values.message.trim()) {
     errors.message = "Please describe your material or application requirement.";
-  } else if (values.message.trim().length < 15) {
-    errors.message = "Please provide at least 15 characters describing your requirement.";
+  } else if (values.message.trim().length < 10) {
+    errors.message = "Please provide at least 10 characters describing your requirement.";
   }
 
   return errors;
-}
-
-function buildMailto(values) {
-  const subject = `B2B Enquiry — ${values.product && values.product !== BASE_PRODUCT_OPTIONS[0] ? values.product : "Industrial Cork Solution"}`;
-
-  const lines = [
-    `Full Name: ${values.name.trim()}`,
-    `Company Name: ${values.company.trim()}`,
-    `Business Email: ${values.email.trim()}`,
-    values.phone.trim() ? `Phone: ${values.phone.trim()}` : null,
-    values.product && values.product !== BASE_PRODUCT_OPTIONS[0]
-      ? `Product / Material: ${values.product}`
-      : null,
-    "",
-    "Requirement Details:",
-    values.message.trim(),
-  ].filter((line) => line !== null);
-
-  return `mailto:${COMPANY_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-    lines.join("\n")
-  )}`;
 }
 
 function ContactFormInner() {
@@ -121,8 +101,11 @@ function ContactFormInner() {
   }));
   const [productOptions, setProductOptions] = useState(BASE_PRODUCT_OPTIONS);
   const [errors, setErrors] = useState({});
-  const [preparedHref, setPreparedHref] = useState("");
-  const preparedHeadingRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedData, setSubmittedData] = useState(null);
+  const [submitError, setSubmitError] = useState("");
+  const successHeadingRef = useRef(null);
 
   // Sync query parameter with selected material if passed
   useEffect(() => {
@@ -135,10 +118,10 @@ function ContactFormInner() {
   }, [queryProduct]);
 
   useEffect(() => {
-    if (preparedHref) {
-      preparedHeadingRef.current?.focus();
+    if (isSubmitted) {
+      successHeadingRef.current?.focus();
     }
-  }, [preparedHref]);
+  }, [isSubmitted]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -154,7 +137,7 @@ function ContactFormInner() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Honeypot spam detection
@@ -171,104 +154,118 @@ function ContactFormInner() {
       return;
     }
 
-    const href = buildMailto(values);
-    setPreparedHref(href);
-    window.location.href = href;
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const res = await createLeadAction({
+        name: values.name,
+        company: values.company,
+        email: values.email,
+        phone: values.phone,
+        product:
+          values.product && values.product !== BASE_PRODUCT_OPTIONS[0]
+            ? values.product
+            : "General Inquiry / Other",
+        message: values.message,
+      });
+
+      if (res.success && res.lead) {
+        setIsSubmitted(true);
+        setSubmittedData(res.lead);
+        toast.success("Enquiry submitted successfully! A confirmation email has been sent.");
+      } else {
+        setSubmitError(res.error || "Failed to submit enquiry. Please try again.");
+        toast.error(res.error || "Failed to submit enquiry.");
+      }
+    } catch (err) {
+      console.error("Submission error:", err);
+      setSubmitError("An unexpected error occurred. Please try again or email us directly.");
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleEdit = () => {
-    setPreparedHref("");
-    window.requestAnimationFrame(() => {
-      document.getElementById(FIELD_IDS.name)?.focus();
-    });
+  const handleReset = () => {
+    setIsSubmitted(false);
+    setSubmittedData(null);
+    setValues(INITIAL_VALUES);
   };
 
-  if (preparedHref) {
+  if (isSubmitted && submittedData) {
     return (
-      <div className="rounded-2xl border border-line bg-page/50 p-6 sm:p-8">
-        <div className="flex items-start gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-maroon/20 bg-maroon/5 text-maroon">
-            <Check className="size-5" aria-hidden="true" />
+      <div className="rounded-2xl border border-line bg-page/50 p-6 sm:p-8 animate-in fade-in duration-200">
+        <div className="flex items-start gap-4">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-maroon/20 bg-maroon/5 text-maroon shadow-2xs">
+            <Check className="size-6 text-maroon" aria-hidden="true" />
           </span>
           <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-orange-ink">
+              Enquiry Received
+            </span>
             <h3
-              ref={preparedHeadingRef}
+              ref={successHeadingRef}
               tabIndex={-1}
-              className="text-lg font-semibold tracking-tight text-ink sm:text-xl"
+              className="mt-1 text-xl font-bold tracking-tight text-ink sm:text-2xl"
             >
-              Enquiry draft prepared
+              Thank you, {submittedData.name}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Your details have been assembled into an email addressed to{" "}
-              <strong className="text-ink">{COMPANY_INFO.email}</strong>. Send it directly from your email client to complete your submission.
+              Your inquiry for <strong className="text-ink">{submittedData.company}</strong> has been saved in our system and routed to our technical sales team in GIDC Vapi. A confirmation email has been dispatched to <strong className="text-ink">{submittedData.email}</strong>.
             </p>
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Button href={preparedHref} size="md" className="rounded-full px-6">
-            <Mail className="size-4 mr-2" aria-hidden="true" />
-            Open email draft
-          </Button>
-          <Button type="button" variant="secondary" size="md" className="rounded-full px-6" onClick={handleEdit}>
-            Edit details
-          </Button>
+        <div className="mt-6 rounded-xl border border-line bg-white p-5 text-xs sm:text-sm space-y-2.5">
+          <div className="flex justify-between border-b border-line/60 pb-2">
+            <span className="text-muted">Product / Requirement:</span>
+            <span className="font-semibold text-ink">{submittedData.product}</span>
+          </div>
+          <div className="flex justify-between border-b border-line/60 pb-2">
+            <span className="text-muted">Company:</span>
+            <span className="font-semibold text-ink">{submittedData.company}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted">Expected Response:</span>
+            <span className="font-medium text-orange-ink">Within 24 business hours</span>
+          </div>
         </div>
 
-        <p className="mt-4 text-xs leading-relaxed text-muted">
-          Did your email app not open? Send your details manually to{" "}
-          <a
-            href={`mailto:${COMPANY_INFO.email}`}
-            className="font-medium text-maroon hover:underline"
-          >
-            {COMPANY_INFO.email}
-          </a>
-          .
-        </p>
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <Button type="button" size="md" className="rounded-full px-6" onClick={handleReset}>
+            Submit another enquiry
+          </Button>
+          <Button href="/" variant="secondary" size="md" className="rounded-full px-6">
+            Back to Home
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-      {/* Honeypot field for bot spam prevention */}
-      <input
-        type="text"
-        name="_hp"
-        tabIndex={-1}
-        autoComplete="off"
-        className="hidden"
-        aria-hidden="true"
-        value={values._hp}
-        onChange={handleChange}
-      />
+    <form onSubmit={handleSubmit} noValidate className="space-y-5">
+      {/* Honeypot Spam Protection Field */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="contact-hp">Do not fill this field</label>
+        <input
+          id="contact-hp"
+          name="_hp"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={values._hp}
+          onChange={handleChange}
+        />
+      </div>
 
-      {Object.keys(errors).length > 0 && (
-        <div className="rounded-xl border border-maroon/20 bg-maroon/5 p-3.5 text-xs text-maroon">
-          Please correct the highlighted fields below before submitting.
-        </div>
-      )}
-
-      {/* Product Highlight Banner if preselected */}
-      {values.product && values.product !== BASE_PRODUCT_OPTIONS[0] && (
-        <div className="rounded-xl border border-line bg-page px-3.5 py-2 text-xs text-ink/80 flex items-center justify-between">
-          <span>Inquiring about: <strong className="text-maroon">{values.product}</strong></span>
-          <button
-            type="button"
-            onClick={() => setValues((prev) => ({ ...prev, product: "" }))}
-            className="text-[11px] text-muted hover:text-maroon underline cursor-pointer"
-          >
-            Clear selection
-          </button>
-        </div>
-      )}
-
-      <div className="grid gap-4 sm:grid-cols-2">
+      {/* Row 1: Full Name & Company Name */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {/* Full Name */}
         <div>
           <label htmlFor={FIELD_IDS.name} className={labelClasses}>
-            Full name
-            <RequiredMark />
+            Full name <RequiredMark />
           </label>
           <input
             id={FIELD_IDS.name}
@@ -293,8 +290,7 @@ function ContactFormInner() {
         {/* Company Name */}
         <div>
           <label htmlFor={FIELD_IDS.company} className={labelClasses}>
-            Company name
-            <RequiredMark />
+            Company name <RequiredMark />
           </label>
           <input
             id={FIELD_IDS.company}
@@ -302,7 +298,7 @@ function ContactFormInner() {
             type="text"
             required
             autoComplete="organization"
-            placeholder="e.g. Premier Transformers Ltd."
+            placeholder="e.g. VoltPower Transformers Pvt Ltd"
             value={values.company}
             onChange={handleChange}
             aria-invalid={errors.company ? "true" : undefined}
@@ -315,12 +311,14 @@ function ContactFormInner() {
             </p>
           )}
         </div>
+      </div>
 
-        {/* Business Email */}
+      {/* Row 2: Email & Phone */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        {/* Email Address */}
         <div>
           <label htmlFor={FIELD_IDS.email} className={labelClasses}>
-            Business email
-            <RequiredMark />
+            Business email <RequiredMark />
           </label>
           <input
             id={FIELD_IDS.email}
@@ -379,21 +377,20 @@ function ContactFormInner() {
           name="product"
           value={values.product}
           onChange={handleChange}
-          className={`${fieldClasses} border-line bg-field cursor-pointer`}
+          className={`${fieldClasses} border-line cursor-pointer`}
         >
-          {productOptions.map((opt, i) => (
-            <option key={opt} value={i === 0 && !queryProduct ? "" : opt}>
-              {opt}
+          {productOptions.map((option, index) => (
+            <option key={index} value={index === 0 ? "" : option}>
+              {option}
             </option>
           ))}
         </select>
       </div>
 
-      {/* Message */}
+      {/* Message / Requirement */}
       <div>
         <label htmlFor={FIELD_IDS.message} className={labelClasses}>
-          Message &amp; technical specifications
-          <RequiredMark />
+          Requirement details <RequiredMark />
         </label>
         <textarea
           id={FIELD_IDS.message}
@@ -415,14 +412,22 @@ function ContactFormInner() {
         )}
       </div>
 
+      {/* Error Message if server failure */}
+      {submitError && (
+        <div className="rounded-xl border border-maroon/20 bg-maroon/5 p-3.5 text-xs text-maroon">
+          {submitError}
+        </div>
+      )}
+
       {/* Submit Button */}
       <div className="pt-2">
         <Button
           type="submit"
           size="md"
-          className="w-full sm:w-auto rounded-full px-8 shadow-sm group"
+          disabled={isSubmitting}
+          className="w-full sm:w-auto rounded-full px-8 shadow-sm group disabled:opacity-60"
         >
-          <span>Submit Enquiry</span>
+          <span>{isSubmitting ? "Submitting Enquiry..." : "Submit Enquiry"}</span>
           <ArrowRight className="size-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
         </Button>
       </div>
