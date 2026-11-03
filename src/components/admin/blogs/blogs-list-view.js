@@ -16,6 +16,7 @@ import { deleteBlogAction } from "@/api/blogs/admin/delete-blog";
 import { toggleBlogPublishAction } from "@/api/blogs/admin/update-blog";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 export function BlogsListView({ initialBlogs = [] }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -184,7 +185,10 @@ export function BlogsListView({ initialBlogs = [] }) {
                       <div className="flex items-center gap-3">
                         <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-[#D9DCD1] bg-white">
                           <Image
-                            src={blog.imageUrl || "/images/placeholder-product.jpg"}
+                            src={
+                              optimizeCloudinaryUrl(blog.imageUrl, { width: 160 }) ||
+                              "/images/placeholder-product.jpg"
+                            }
                             alt={blog.title}
                             fill
                             className="object-cover"

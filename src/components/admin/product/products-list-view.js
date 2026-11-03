@@ -15,6 +15,7 @@ import {
 import { deleteProductAction } from "@/api/products/admin/delete-product";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 const CATEGORIES = [
   { id: "all", name: "All Products" },
@@ -221,7 +222,12 @@ export function ProductsListView({ initialProducts = [] }) {
                       <div className="flex items-center gap-3">
                         <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-[#D9DCD1] bg-white">
                           <Image
-                            src={product.imageUrl || product.image || "/images/placeholder-product.jpg"}
+                            src={
+                              optimizeCloudinaryUrl(
+                                product.imageUrl || product.image,
+                                { width: 160 }
+                              ) || "/images/placeholder-product.jpg"
+                            }
                             alt={product.name}
                             fill
                             className="object-cover"

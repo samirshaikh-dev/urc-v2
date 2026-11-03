@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 export function CategoryProductCard({ product }) {
   const detailUrl = `/products/${product.category}/${product.slug}`;
@@ -22,7 +23,10 @@ export function CategoryProductCard({ product }) {
         aria-hidden="true"
       >
         <Image
-          src={product.image || "/images/placeholder-product.jpg"}
+          src={
+            optimizeCloudinaryUrl(product.image, { width: 1000 }) ||
+            "/images/placeholder-product.jpg"
+          }
           alt={product.name}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"

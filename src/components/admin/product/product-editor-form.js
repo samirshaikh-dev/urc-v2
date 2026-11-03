@@ -16,6 +16,7 @@ import { SpecificationsRepeater } from "./specifications-repeater";
 import { createProductAction } from "@/api/products/admin/create-product";
 import { updateProductAction } from "@/api/products/admin/update-product";
 import { slugify } from "@/lib/utils";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 import { toast } from "sonner";
 
 const FIXED_CATEGORIES = [
@@ -252,7 +253,7 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] p-4">
               <div className="relative aspect-[16/9] w-full sm:w-52 overflow-hidden rounded-xl border border-[#D9DCD1] bg-white shrink-0">
                 <Image
-                  src={imagePreview}
+                  src={optimizeCloudinaryUrl(imagePreview, { width: 640 })}
                   alt="Product preview"
                   fill
                   className="object-cover"

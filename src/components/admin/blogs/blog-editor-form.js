@@ -13,6 +13,7 @@ import { RichTextEditor } from "@/components/admin/shared/rich-text-editor";
 import { createBlogAction } from "@/api/blogs/admin/create-blog";
 import { updateBlogAction } from "@/api/blogs/admin/update-blog";
 import { slugify } from "@/lib/utils";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 import { toast } from "sonner";
 
 export function BlogEditorForm({ initialData = null, isEdit = false }) {
@@ -212,7 +213,7 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] p-4">
               <div className="relative aspect-[16/9] w-full sm:w-52 overflow-hidden rounded-xl border border-[#D9DCD1] bg-white shrink-0">
                 <Image
-                  src={imagePreview}
+                  src={optimizeCloudinaryUrl(imagePreview, { width: 640 })}
                   alt="Cover preview"
                   fill
                   className="object-cover"

@@ -23,6 +23,7 @@ import { ProductSpecTable } from "@/components/products/product-spec-table";
 import { ProductFaqAccordion } from "@/components/products/product-faq-accordion";
 import { ProductsEnquiryCTA } from "@/components/products/products-enquiry-cta";
 import { constructMetadata } from "@/lib/seo";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 export async function generateStaticParams() {
   return PRODUCTS.map((p) => ({
@@ -95,7 +96,10 @@ async function RelatedProductsSection({ category, currentSlug }) {
             >
               <div className="relative aspect-[16/10] sm:aspect-square w-full sm:w-40 shrink-0 bg-field">
                 <Image
-                  src={rel.image || "/images/placeholder-product.jpg"}
+                  src={
+                    optimizeCloudinaryUrl(rel.image, { width: 800 }) ||
+                    "/images/placeholder-product.jpg"
+                  }
                   alt={rel.name}
                   fill
                   sizes="160px"
@@ -210,7 +214,10 @@ export default async function ProductDetailPage({ params }) {
               {/* Product Imagery */}
               <div className="relative min-h-[340px] w-full bg-field lg:col-span-6 lg:min-h-full">
                 <Image
-                  src={product.image || "/images/placeholder-product.jpg"}
+                  src={
+                    optimizeCloudinaryUrl(product.image, { width: 1600 }) ||
+                    "/images/placeholder-product.jpg"
+                  }
                   alt={product.name}
                   fill
                   priority
