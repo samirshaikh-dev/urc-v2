@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { getAllProducts } from "@/lib/products-db";
+import { getAllProducts } from "@/services/products/admin/get-product";
 import { ProductsListView } from "@/components/admin/product/products-list-view";
 
 export const metadata = {
@@ -41,6 +41,18 @@ export default function AdminProductsPage() {
 
 async function ProductsCatalog() {
   await connection();
-  const products = await getAllProducts();
-  return <ProductsListView initialProducts={products} />;
+  try {
+    const products = await getAllProducts();
+    return <ProductsListView initialProducts={products} />;
+  } catch (err) {
+    return (
+      <div className="rounded-2xl border border-dashed border-[#D9DCD1] bg-[#F7F8F2] p-8 text-center sm:p-12">
+        <h2 className="text-base font-semibold text-[#1F241D]">Product Catalog Unavailable</h2>
+        <p className="mt-2 text-sm text-[#555E50]">
+          {err?.message ||
+            "Database connection is currently unavailable. Please verify your connection or try again in a few moments."}
+        </p>
+      </div>
+    );
+  }
 }

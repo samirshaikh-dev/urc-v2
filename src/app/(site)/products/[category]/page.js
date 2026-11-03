@@ -5,13 +5,14 @@ import {
   CATEGORY_DETAILS,
   getCategoryBySlug,
 } from "@/data/products";
-import { getProductsByCategory } from "@/lib/products-db";
+import { getProductsByCategory } from "@/services/products/public/get-product";
 import { CategoryHero } from "@/components/products/category-hero";
 import { CategoryProductCard } from "@/components/products/category-product-card";
 import { CategorySelectionGuide } from "@/components/products/category-selection-guide";
 import { ProductsCustomTooling } from "@/components/products/products-custom-tooling";
 import { ProductsEnquiryCTA } from "@/components/products/products-enquiry-cta";
 import { Container } from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
 import { constructMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
@@ -81,7 +82,27 @@ function CategoryProductSkeleton({ categoryName }) {
 }
 
 async function CategoryProductList({ category }) {
-  const products = await getProductsByCategory(category.id);
+  let products;
+  try {
+    products = await getProductsByCategory(category.id);
+  } catch (error) {
+    return (
+      <div className="mt-8 rounded-2xl border border-line bg-white p-8 text-center sm:p-12 shadow-2xs">
+        <h3 className="text-base font-semibold text-ink sm:text-lg">
+          Product Catalog Temporarily Unavailable
+        </h3>
+        <p className="mt-2 text-xs sm:text-sm text-muted max-w-lg mx-auto">
+          {error?.message ||
+            "Our product catalog is temporarily undergoing updates. Please check back shortly or contact our team directly for product availability and quotes."}
+        </p>
+        <div className="mt-6 flex justify-center">
+          <Button href="/contact" size="sm" className="rounded-full px-6">
+            Contact Sales Team
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

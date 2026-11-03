@@ -16,7 +16,7 @@ import {
   CATEGORY_DETAILS,
   getCategoryBySlug,
 } from "@/data/products";
-import { getProductBySlug, getProductsByCategory } from "@/lib/products-db";
+import { getProductBySlug, getProductsByCategory } from "@/services/products/public/get-product";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { ProductSpecTable } from "@/components/products/product-spec-table";
@@ -54,7 +54,12 @@ export async function generateMetadata({ params }) {
 }
 
 async function RelatedProductsSection({ category, currentSlug }) {
-  const categoryProducts = await getProductsByCategory(category.slug || category.id);
+  let categoryProducts = [];
+  try {
+    categoryProducts = await getProductsByCategory(category.slug || category.id);
+  } catch {
+    return null;
+  }
   const relatedProducts = (categoryProducts || []).filter((p) => p.slug !== currentSlug);
 
   if (!relatedProducts || relatedProducts.length === 0) {
@@ -128,10 +133,48 @@ async function RelatedProductsSection({ category, currentSlug }) {
 
 export default async function ProductDetailPage({ params }) {
   const { category: categorySlug, slug: productSlug } = await params;
-  const product = await getProductBySlug(productSlug, categorySlug);
+  let product = null;
+  let dbError = null;
+
+  try {
+    product = await getProductBySlug(productSlug, categorySlug);
+  } catch (err) {
+    dbError = err;
+  }
+
   const category = getCategoryBySlug(categorySlug);
 
-  if (!product || !category) {
+  if (!category) {
+    notFound();
+  }
+
+  if (dbError) {
+    return (
+      <section className="py-16 sm:py-24">
+        <Container>
+          <div className="rounded-3xl border border-line bg-white p-8 text-center sm:p-14 shadow-xs">
+            <h1 className="text-xl font-semibold text-ink sm:text-2xl">
+              Product Details Temporarily Unavailable
+            </h1>
+            <p className="mt-3 text-sm text-muted max-w-md mx-auto">
+              {dbError.message ||
+                "We are currently updating our product catalog. Please reach out to our team directly for material specifications and quotations."}
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <Button href={`/products/${categorySlug}`} variant="secondary" size="sm" className="rounded-full">
+                View Category
+              </Button>
+              <Button href={`/contact?product=${encodeURIComponent(productSlug)}`} size="sm" className="rounded-full">
+                Request Quote Directly
+              </Button>
+            </div>
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
+  if (!product) {
     notFound();
   }
 
