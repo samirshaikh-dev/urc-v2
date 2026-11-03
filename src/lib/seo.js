@@ -6,7 +6,7 @@ import { SITE_CONFIG } from "./constants";
 export function constructMetadata({
   title,
   description = SITE_CONFIG.description,
-  image = "/og-image.jpg",
+  image = "/og-image.png",
   path = "",
   noIndex = false,
 } = {}) {
@@ -22,6 +22,9 @@ export function constructMetadata({
     metadataBase: new URL(SITE_CONFIG.url),
     alternates: {
       canonical: canonicalUrl,
+    },
+    icons: {
+      icon: "/favicon.ico",
     },
     openGraph: {
       title: fullTitle,
