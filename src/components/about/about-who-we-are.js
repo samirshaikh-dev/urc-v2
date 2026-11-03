@@ -47,11 +47,11 @@ export function AboutWhoWeAre() {
             <div className="group relative overflow-hidden rounded-3xl border border-line bg-white p-2 shadow-xs transition-all duration-300 hover:shadow-md">
               <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-field sm:aspect-5/4">
                 <Image
-                  src="/images/carousel-images/industrial-cork-granules-processing-manufacturer-vapi-gujarat-01.jpg"
-                  alt="Industrial cork granule processing and compounding at United Rubber Cork plant in Vapi, Gujarat"
+                  src="/united-rubber-cork-logo.png"
+                  alt="United Rubber Cork – Industrial Cork and Rubberised Cork Manufacturer"
                   fill
                   sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-contain p-6 transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <div className="p-4">
