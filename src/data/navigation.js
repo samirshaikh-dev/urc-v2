@@ -41,20 +41,21 @@ export const FOOTER_NAV = {
     { label: "Cork Gifts", href: "/products/cork-gifts" },
   ],
   industries: [
-    { label: "Transformers & Power", href: "/industries#electrical" },
+    { label: "Transformers & Switchgear", href: "/industries#electrical" },
     { label: "Automotive & Engines", href: "/industries#automotive" },
     { label: "Railways & Transit", href: "/industries#railway" },
     { label: "Aerospace & Defense", href: "/industries#aerospace" },
-    { label: "Marine & Construction", href: "/industries#marine" },
+    { label: "Marine & Shipbuilding", href: "/industries#marine" },
+    { label: "Construction & Expansion", href: "/industries#construction" },
   ],
   company: [
     { label: "About Us", href: "/about" },
     { label: "Industries Overview", href: "/industries" },
     { label: "Contact & Location", href: "/contact" },
-    { label: "Request a Quote", href: "/contact" },
+    { label: "Request a Quote", href: "/contact#enquiry-form" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Supply", href: "/terms" },
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms & Conditions", href: "/terms-and-conditions" },
   ],
 };

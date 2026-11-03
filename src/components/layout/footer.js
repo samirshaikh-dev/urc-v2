@@ -7,9 +7,8 @@ import {
   MapPin,
   Mail,
   Clock,
-  ShieldCheck,
-  Factory,
   Phone,
+  ExternalLink,
 } from "lucide-react";
 
 const linkClasses =
@@ -65,6 +64,10 @@ const SOCIAL_LINKS = [
 
 export function Footer({ currentYear }) {
   const year = currentYear ?? 2026;
+  const encodedAddress = encodeURIComponent(
+    `${COMPANY_INFO.name}, ${COMPANY_INFO.address.street}, ${COMPANY_INFO.address.city}, ${COMPANY_INFO.address.state} ${COMPANY_INFO.address.pincode}, ${COMPANY_INFO.address.country}`
+  );
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
 
   return (
     <footer className="relative overflow-hidden bg-maroon text-white border-t border-maroon-deep">
@@ -83,7 +86,7 @@ export function Footer({ currentYear }) {
           <div className="md:col-span-12 lg:col-span-4">
             <Link
               href="/"
-              className="inline-flex items-center text-xl font-semibold tracking-tight text-white hover:text-yellow transition-colors"
+              className="inline-flex items-center text-xl font-semibold tracking-tight text-white hover:text-yellow transition-colors focus-visible:outline-2 focus-visible:outline-white"
             >
               <span>{SITE_CONFIG.name}</span>
             </Link>
@@ -100,8 +103,8 @@ export function Footer({ currentYear }) {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={item.name}
-                  className="flex size-8 sm:size-9 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-150 hover:bg-white hover:text-maroon shadow-xs"
+                  aria-label={`${item.name} (opens in new tab)`}
+                  className="flex size-8 sm:size-9 items-center justify-center rounded-full bg-white/10 text-white transition-all duration-150 hover:bg-white hover:text-maroon shadow-xs focus-visible:outline-2 focus-visible:outline-white"
                 >
                   <item.icon className="size-4" />
                 </a>
@@ -164,14 +167,22 @@ export function Footer({ currentYear }) {
             </h4>
             <ul className="mt-4 space-y-3.5 text-xs text-white/75">
               <li className="flex items-start gap-2.5">
-                <MapPin className="size-4 shrink-0 text-yellow mt-0.5" />
+                <MapPin className="size-4 shrink-0 text-yellow mt-0.5" aria-hidden="true" />
                 <div className="leading-snug">
                   <span className="font-semibold text-white block">Works &amp; Facility:</span>
-                  <span>No. 5, Balaji Complex, 2nd Phase, GIDC, Vapi — 396195</span>
+                  <a
+                    href={mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="View United Rubber Cork works facility on Google Maps"
+                    className="hover:text-white underline-offset-2 hover:underline transition-colors block"
+                  >
+                    No. 5, Balaji Complex, 2nd Phase, GIDC, Vapi — 396195
+                  </a>
                 </div>
               </li>
               <li className="flex items-start gap-2.5">
-                <Mail className="size-4 shrink-0 text-yellow mt-0.5" />
+                <Mail className="size-4 shrink-0 text-yellow mt-0.5" aria-hidden="true" />
                 <div className="leading-snug">
                   <span className="font-semibold text-white block">Email:</span>
                   <a
@@ -183,7 +194,7 @@ export function Footer({ currentYear }) {
                 </div>
               </li>
               <li className="flex items-start gap-2.5">
-                <Phone className="size-4 shrink-0 text-yellow mt-0.5" />
+                <Phone className="size-4 shrink-0 text-yellow mt-0.5" aria-hidden="true" />
                 <div className="leading-snug">
                   <span className="font-semibold text-white block">Phone:</span>
                   <a
@@ -195,7 +206,7 @@ export function Footer({ currentYear }) {
                 </div>
               </li>
               <li className="flex items-center gap-2.5">
-                <Clock className="size-4 shrink-0 text-yellow" />
+                <Clock className="size-4 shrink-0 text-yellow" aria-hidden="true" />
                 <span>Mon–Sat: 9:00 AM – 6:30 PM</span>
               </li>
             </ul>
@@ -230,14 +241,13 @@ export function Footer({ currentYear }) {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="hover:text-white transition-colors duration-150"
+                    className="hover:text-white transition-colors duration-150 rounded-control focus-visible:outline-2 focus-visible:outline-white"
                   >
                     {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
-
           </div>
         </div>
       </Container>
