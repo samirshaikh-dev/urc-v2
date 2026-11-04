@@ -39,7 +39,7 @@ const STEPS = [
 
 export function ProcessFlow() {
   return (
-    <section className="border-t border-line bg-page py-16 sm:py-24">
+    <section className="border-t border-line bg-page pt-10 pb-16 sm:pt-14 sm:pb-20">
       <Container>
         <div className="max-w-2xl">
           <span className="text-xs font-semibold uppercase tracking-wider text-orange-ink">

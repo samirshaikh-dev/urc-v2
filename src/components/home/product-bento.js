@@ -10,7 +10,7 @@ export function ProductBento() {
       id="products"
       tabIndex={-1}
       aria-labelledby="product-catalogue-heading"
-      className="scroll-mt-24 py-16 sm:py-24 focus:outline-none"
+      className="scroll-mt-24 pt-12 pb-6 sm:pt-16 sm:pb-8 focus:outline-none"
     >
       <Container>
         {/* Section Header */}

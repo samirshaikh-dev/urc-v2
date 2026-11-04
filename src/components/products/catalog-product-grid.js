@@ -106,9 +106,8 @@ export function CatalogProductGrid() {
 
   return (
     <div className="w-full">
-
       {/* 2. Main Content: Single Row of 3 Cards */}
-      <div className="mt-8">
+      <div className="mt-10">
         {/* Error State */}
         {error && !loading && (
           <div
@@ -175,7 +174,7 @@ export function CatalogProductGrid() {
             </div>
 
             {/* Bottom Actions Bar */}
-            <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-line pt-6 sm:flex-row">
+            <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-line pt-4 sm:flex-row">
               <div className="flex items-center gap-2 text-xs text-muted sm:text-sm">
                 <span>
                   Showing{" "}

@@ -17,9 +17,6 @@ export function ContactMain() {
               <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                 Send your requirement
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                Fill in your project specifications below. Our technical sales team reviews every submission and responds promptly with guidance and commercial pricing.
-              </p>
 
               <div className="mt-8">
                 <ContactForm />
