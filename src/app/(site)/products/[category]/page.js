@@ -1,9 +1,10 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   PRODUCT_CATEGORIES,
   CATEGORY_DETAILS,
   getCategoryBySlug,
+  getProductBySlug,
 } from "@/data/products";
 import { getProductsByCategory } from "@/services/products/public/get-product";
 import { CategoryHero } from "@/components/products/category-hero";
@@ -30,6 +31,15 @@ export async function generateMetadata({ params }) {
   const category = getCategoryBySlug(categorySlug);
 
   if (!category) {
+    const product = getProductBySlug(categorySlug);
+    if (product) {
+      return constructMetadata({
+        title: `${product.name} | United Rubber Cork`,
+        description: product.shortDescription,
+        path: `/products/${product.category}/${product.slug}`,
+      });
+    }
+
     return constructMetadata({
       title: "Product Category Not Found",
       path: `/products/${categorySlug}`,
@@ -145,6 +155,10 @@ export default async function CategoryPage({ params }) {
   const category = getCategoryBySlug(categorySlug);
 
   if (!category) {
+    const product = getProductBySlug(categorySlug);
+    if (product) {
+      redirect(`/products/${product.category}/${product.slug}`);
+    }
     notFound();
   }
 

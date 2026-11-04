@@ -129,7 +129,6 @@ const INITIAL_PRODUCTS = [
   },
 ];
 
-
 async function main() {
   const connectionString =
     process.env.DATABASE_URL_POOLED?.trim() || process.env.DATABASE_URL?.trim();
