@@ -48,9 +48,6 @@ export function ProcessFlow() {
           <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
             From technical requirement to dependable dispatch
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">
-            We make industrial component procurement predictable, technically grounded, and straightforward for engineers and purchasing managers.
-          </p>
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

@@ -54,9 +54,6 @@ export function IndustrySlider() {
             <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
               Where our materials solve critical sealing challenges
             </h2>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
-              Engineered for demanding equipment subject to continuous vibration, high temperatures, and hot oil exposure.
-            </p>
           </div>
 
           {/* Carousel Arrows */}
