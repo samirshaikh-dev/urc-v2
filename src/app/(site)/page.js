@@ -3,12 +3,28 @@ import { MetricsStrip } from "@/components/home/metrics-strip";
 import { ProductBento } from "@/components/home/product-bento";
 import { ProcessFlow } from "@/components/home/process-flow";
 import { IndustrySlider } from "@/components/home/industry-slider";
-import { TechnicalFAQ } from "@/components/home/technical-faq";
+import { TechnicalFAQ, HOME_FAQS } from "@/components/home/technical-faq";
 import { FinalCTA } from "@/components/home/final-cta";
+import { constructMetadata, getFaqPageJsonLd } from "@/lib/seo";
+
+export const metadata = constructMetadata({
+  title: "Rubberised Cork Manufacturer in Vapi, Gujarat | United Rubber Cork",
+  description:
+    "Leading manufacturer of IS: 4253 & ASTM certified rubberised cork sheets, transformer gaskets, clutch wads, foundation slabs, and acoustic cork in GIDC Vapi, Gujarat.",
+  path: "",
+});
 
 export default function Home() {
+  const faqJsonLd = getFaqPageJsonLd(HOME_FAQS);
+
   return (
     <>
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       {/* 1. HERO SECTION */}
       <HeroSection />
 

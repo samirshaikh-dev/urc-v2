@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { ChevronDown, HelpCircle } from "lucide-react";
 
-const FAQS = [
+export const HOME_FAQS = [
   {
     q: "How do I choose between Nitrile (NBR), Neoprene, and SBR binder matrices?",
     a: "Binder matrix selection depends strictly on contact fluids and operating temperature. NBR (Nitrile) provides optimal resistance against hot transformer mineral oils, synthetic ester liquids, kerosene, and diesel. Neoprene provides superior weather, ozone, and moderate oil resistance, making it suitable for outdoor electrical switchgear and marine environments. SBR is economical for general-purpose anti-vibration and dry mechanical flange seals where direct hydrocarbon immersion is not present.",
@@ -61,7 +61,7 @@ export function TechnicalFAQ() {
 
           {/* Right Accordion List */}
           <div className="lg:col-span-7 space-y-4">
-            {FAQS.map((faq, idx) => (
+            {HOME_FAQS.map((faq, idx) => (
               <details
                 key={idx}
                 className="group rounded-2xl border border-line bg-white p-5 transition-all duration-200 open:shadow-xs open:border-maroon/30"

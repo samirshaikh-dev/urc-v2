@@ -22,7 +22,12 @@ import { Button } from "@/components/ui/button";
 import { ProductSpecTable } from "@/components/products/product-spec-table";
 import { ProductFaqAccordion } from "@/components/products/product-faq-accordion";
 import { ProductsEnquiryCTA } from "@/components/products/products-enquiry-cta";
-import { constructMetadata } from "@/lib/seo";
+import {
+  constructMetadata,
+  getProductJsonLd,
+  getBreadcrumbJsonLd,
+  getFaqPageJsonLd,
+} from "@/lib/seo";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
 export async function generateStaticParams() {
@@ -183,10 +188,28 @@ export default async function ProductDetailPage({ params }) {
   }
 
   const quoteUrl = `/contact?product=${encodeURIComponent(product.name)}`;
+  const productJsonLd = getProductJsonLd(product);
+  const breadcrumbJsonLd = getBreadcrumbJsonLd([
+    { name: "Home", url: "/" },
+    { name: "Products", url: "/products" },
+    { name: category.name, url: `/products/${category.slug}` },
+    { name: product.name, url: `/products/${product.category}/${product.slug}` },
+  ]);
+  const faqJsonLd =
+    Array.isArray(product.faqs) && product.faqs.length > 0
+      ? getFaqPageJsonLd(product.faqs)
+      : null;
+  const schemas = [productJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])].filter(Boolean);
   const hasHtml = typeof product.fullDescription === "string" && /<[a-z][\s\S]*>/i.test(product.fullDescription);
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(schemas),
+        }}
+      />
       {/* 01. BREADCRUMBS & PRODUCT OVERVIEW HERO */}
       <section className="relative overflow-hidden pt-4 pb-12 sm:pt-8 sm:pb-16">
         <Container>

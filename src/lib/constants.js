@@ -2,6 +2,7 @@
  * Site-wide constants and configuration
  * Source of truth: AI_RULE.md, prompt.md, psychology.md
  */
+const SITE_URL = process.env.SITE_URL;
 
 export const SITE_CONFIG = {
   name: "United Rubber Cork",
@@ -9,7 +10,7 @@ export const SITE_CONFIG = {
   tagline: "Engineered Cork Solutions for Industry",
   description:
     "Reliable cork and rubberised-cork materials and components for demanding industrial applications.",
-  url: "https://amcorkindia.com", // Base URL (update when custom domain is deployed)
+  url: SITE_URL,
   locale: "en_IN",
   brandColors: {
     maroon: "#650510",      // Primary: Logo, primary buttons, hero panels, footer, active navigation

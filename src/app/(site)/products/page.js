@@ -6,12 +6,17 @@ import { ProductsProcess } from "@/components/products/products-process";
 import { ProductsCustomTooling } from "@/components/products/products-custom-tooling";
 import { ProductsEnquiryCTA } from "@/components/products/products-enquiry-cta";
 import { Container } from "@/components/ui/container";
-import { constructMetadata } from "@/lib/seo";
+import {
+  constructMetadata,
+  getCollectionPageJsonLd,
+  getBreadcrumbJsonLd,
+} from "@/lib/seo";
+import { CATEGORY_DETAILS } from "@/data/products";
 
 export const metadata = constructMetadata({
-  title: "Industrial Materials for Diverse Applications | United Rubber Cork",
+  title: "Industrial Cork & Rubberised Cork Products | United Rubber Cork",
   description:
-    "Explore United Rubber Cork's full range of natural cork sheets, rubberised cork gaskets, transformer frames, acoustic tiles, and eco-friendly cork gifts. Conforming to IS: 4253 / ASTM F104.",
+    "Explore United Rubber Cork's full range of natural cork sheets, rubberised cork gaskets, transformer frames, acoustic tiles, and eco-friendly cork gifts manufactured in GIDC Vapi. Conforms to IS: 4253 / ASTM F104.",
   path: "/products",
 });
 
@@ -22,8 +27,30 @@ const GENERAL_SELECTION_GUIDE = {
 };
 
 export default function ProductsPage() {
+  const collectionJsonLd = getCollectionPageJsonLd({
+    name: "Industrial Cork & Rubberised Cork Materials",
+    description:
+      "Full catalog of natural cork and rubberised cork composite materials engineered for thermal insulation, vibration damping, and fluid sealing.",
+    path: "/products",
+    items: Object.values(CATEGORY_DETAILS).map((cat) => ({
+      name: cat.name,
+      url: `/products/${cat.slug}`,
+    })),
+  });
+
+  const breadcrumbJsonLd = getBreadcrumbJsonLd([
+    { name: "Home", url: "/" },
+    { name: "Products", url: "/products" },
+  ]);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([collectionJsonLd, breadcrumbJsonLd]),
+        }}
+      />
       {/* 01. PRODUCTS HERO */}
       <ProductsHero />
 

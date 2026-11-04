@@ -13,7 +13,11 @@ import { ProductsCustomTooling } from "@/components/products/products-custom-too
 import { ProductsEnquiryCTA } from "@/components/products/products-enquiry-cta";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { constructMetadata } from "@/lib/seo";
+import {
+  constructMetadata,
+  getCollectionPageJsonLd,
+  getBreadcrumbJsonLd,
+} from "@/lib/seo";
 
 export async function generateStaticParams() {
   return Object.keys(CATEGORY_DETAILS).map((categorySlug) => ({
@@ -144,8 +148,28 @@ export default async function CategoryPage({ params }) {
     notFound();
   }
 
+  const breadcrumbJsonLd = getBreadcrumbJsonLd([
+    { name: "Home", url: "/" },
+    { name: "Products", url: "/products" },
+    { name: category.name, url: `/products/${category.slug}` },
+  ]);
+
+  const collectionJsonLd = getCollectionPageJsonLd({
+    name: `${category.name} Range`,
+    description: category.metaDescription || category.shortDescription,
+    path: `/products/${category.slug}`,
+    items: [],
+  });
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([collectionJsonLd, breadcrumbJsonLd]),
+        }}
+      />
+
       {/* 01. CATEGORY HERO */}
       <CategoryHero category={category} />
 
