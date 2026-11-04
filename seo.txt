@@ -1,0 +1,326 @@
+Here’s a more professional, detailed, and implementation-focused prompt. It instructs your AI coding agent to build a location-first SEO, AEO, GEO, and AIO strategy, starting from GIDC Vapi and gradually expanding to regional and national visibility.
+
+# SEO, AEO, GEO & AIO Strategy — Location-First Optimization
+
+Act as a **Senior Technical SEO Specialist, Local SEO Strategist, AEO/GEO Expert, and AI Search Optimization Consultant**.
+
+Your task is to implement a comprehensive SEO, AEO (Answer Engine Optimization), GEO (Generative Engine Optimization), and AIO (AI Optimization) strategy for the **New United Rubber Cork (URC)** website.
+
+The primary objective is to establish the company as a trusted manufacturer and supplier of rubberised cork products, starting with its actual manufacturing location and progressively expanding its search visibility across India.
+
+## 1. Location-First SEO Strategy
+
+Follow a three-level geographical targeting strategy. Do not target the entire country equally from the beginning.
+
+### Level 1 — Primary Target: GIDC Vapi
+
+\<priority>Highest priority\</priority>
+
+Establish strong local search visibility around the actual manufacturing facility.
+
+Target:
+
+- GIDC Vapi
+- Vapi
+- Vapi Industrial Estate
+- Vapi GIDC
+- Nearby industrial and manufacturing search queries
+
+Focus on searches such as:
+
+- Rubberised cork manufacturer in Vapi
+- Rubber cork sheet manufacturer in GIDC Vapi
+- Rubberised cork gasket supplier in Vapi
+- Industrial cork gasket manufacturer near Vapi
+
+### Level 2 — Regional Target: Nearby Areas
+
+Expand organic visibility into the surrounding geographical markets.
+
+**Geographical coverage:**
+
+1. Gujarat
+   - Vapi
+   - Valsad
+   - Pardi
+   - Daman-adjacent industrial markets
+   - Surat
+   - Bharuch
+   - Ankleshwar
+   - Vadodara
+   - Ahmedabad
+   - Rajkot
+   - Other relevant industrial locations
+2. Daman
+3. Dadra and Nagar Haveli
+
+Focus on regional manufacturer, supplier, industrial product, and bulk-order search intent.
+
+Examples:
+
+- Rubberised cork sheet manufacturer in Gujarat
+- Industrial gasket supplier in Daman
+- Rubber cork gasket manufacturer near Silvassa
+- Rubberised cork products supplier in South Gujarat
+
+Do not create unnecessary location pages with duplicated content. Every regional page must provide genuine geographical relevance and unique value.
+
+### Level 3 — National Target: India
+
+After establishing strong local and regional foundations, expand visibility across India.
+
+Target:
+
+- Rubberised cork sheet manufacturer in India
+- Rubber cork gasket manufacturer in India
+- Industrial rubber cork supplier India
+- Automotive rubber cork gasket manufacturer
+- Transformer gasket manufacturer in India
+- Bulk rubberised cork sheet supplier
+
+Focus on attracting:
+
+- Industrial procurement managers
+- OEM manufacturers
+- Automotive manufacturers
+- Transformer manufacturers
+- Industrial distributors
+- B2B buyers
+- Bulk and wholesale customers
+
+## 2. SEO — Search Engine Optimization
+
+Implement a complete technical, on-page, off-page, and local SEO strategy.
+
+### Technical SEO
+
+- Optimize website architecture and URL structure.
+- Implement canonical URLs.
+- Generate XML sitemap and robots.txt.
+- Ensure proper indexing and crawlability.
+- Optimize Core Web Vitals and page performance.
+- Implement mobile-first optimization.
+- Add appropriate redirects and error handling.
+- Optimize image formats, sizes, filenames, and alt attributes.
+- Prevent duplicate content and keyword cannibalization.
+- Implement internal linking between relevant pages.
+- Verify metadata and structured HTML semantics.
+
+### On-Page SEO
+
+Optimize every important page:
+
+- Homepage
+- About Us
+- Contact Us
+- Product category pages
+- Individual product pages
+- Privacy Policy
+- Terms and Conditions
+
+For every indexable page, optimize:
+
+- SEO title
+- Meta description
+- H1, H2, and H3 hierarchy
+- Primary and secondary keywords
+- Search intent
+- Semantic keywords and related entities
+- Image alt text
+- Internal links
+- Breadcrumbs
+
+Write natural, professional, industry-specific content. Avoid keyword stuffing.
+
+## 3. AEO — Answer Engine Optimization
+
+Optimize website content to appear in direct answers and answer-oriented search results.
+
+Implement:
+
+- Clear question-and-answer sections.
+- FAQ sections on relevant product pages.
+- Concise answers to common industrial buyer questions.
+- Descriptive product specifications.
+- Manufacturing and application explanations.
+- Material compatibility information where verified.
+- Product sizing, thickness, and customization information.
+- Clear answers about bulk orders and enquiries.
+
+Structure content so search engines can easily understand and extract accurate answers.
+
+## 4. GEO — Generative Engine Optimization
+
+Improve the company's visibility and representation in AI-generated search answers.
+
+Target platforms:
+
+- Google AI Overviews and AI Mode
+- ChatGPT Search
+- Perplexity
+- Gemini
+- Other emerging AI-powered search engines
+
+Implement:
+
+- Clear and consistent company information.
+- Strong topical authority around rubberised cork products.
+- Detailed product descriptions.
+- Fact-based technical content.
+- Consistent brand and business entity information.
+- Relevant internal and external references.
+- Authoritative industry content.
+- Descriptive headings and easily extractable answers.
+
+Ensure the company is clearly identified as a manufacturer based in GIDC Vapi, Gujarat, India.
+
+Never create artificial claims about authority, certifications, manufacturing capacity, or market leadership.
+
+## 5. AIO — AI Optimization
+
+Make the website's content and technical structure easy for AI systems and search engines to understand.
+
+Focus on:
+
+- Semantic HTML.
+- Structured content and logical page hierarchy.
+- Schema.org structured data.
+- Consistent company identity and product entities.
+- Descriptive URLs.
+- Machine-readable product specifications.
+- Accurate business contact information.
+- Clear relationships between the company, its products, applications, and manufacturing location.
+
+Implement appropriate structured data:
+
+- Organization
+- LocalBusiness, only if the specific subtype is accurate
+- WebSite
+- WebPage
+- BreadcrumbList
+- Product
+- Service, where applicable
+- Article
+- FAQPage, only when eligible under current Google guidelines
+
+Ensure all structured data accurately reflects visible website content. Validate the schema before deployment.
+
+## 6. Keyword and Content Strategy
+
+Build a keyword map organized by:
+
+1. Location
+2. Product category
+3. Product type
+4. Industry/application
+5. Search intent
+6. Buyer stage
+
+Prioritize high-intent B2B keywords instead of chasing irrelevant traffic.
+
+Create a content strategy around:
+
+- Rubberised cork sheets
+- Rubberised cork gaskets
+- Automotive applications
+- Transformer applications
+- Industrial sealing applications
+- Product specifications
+- Manufacturing processes
+- Material selection guides
+- Technical FAQs
+- Buyer guides
+
+Do not invent technical specifications. Use verified company and product information.
+
+## 7. Local SEO and Business Identity
+
+Establish consistent business information across relevant platforms.
+
+Optimize:
+
+- Google Business Profile, if eligible.
+- Google Maps presence.
+- Business name, address, phone number, and website consistency.
+- Relevant industrial directories.
+- Local business citations.
+- Genuine customer reviews.
+- Relevant regional business listings.
+
+Use the actual manufacturing address and verified business details. Never fabricate addresses or locations.
+
+## 8. Implementation Requirements
+
+Before making changes:
+
+1. Audit the existing website and its current SEO implementation.
+2. Inspect the Next.js App Router structure.
+3. Identify existing metadata, schema, sitemap, robots.txt, and content.
+4. Identify technical SEO issues and missing opportunities.
+5. Prepare a prioritized implementation plan.
+
+Then implement the strategy directly into the existing project.
+
+Technical requirements:
+
+- Follow the existing Next.js App Router architecture.
+- Use Next.js metadata APIs appropriately.
+- Use reusable metadata utilities where beneficial.
+- Implement dynamic metadata for product category and product detail pages.
+- Generate dynamic sitemap entries for published products.
+- Ensure correct canonical URLs.
+- Add JSON-LD structured data using reusable utilities.
+- Keep metadata server-rendered and accessible to crawlers.
+- Avoid unnecessary dependencies.
+- Do not break existing functionality or design.
+
+## 9. Important SEO Rules
+
+- Location-first targeting: GIDC Vapi → Regional Markets → India.
+- Never create doorway pages or mass-generated location pages.
+- Never stuff location names into every heading.
+- Never use fake business addresses or fake local presence.
+- Never fabricate reviews, certifications, technical specifications, or backlinks.
+- Never promise guaranteed Google rankings or AI search visibility.
+- Prioritize genuine expertise, accurate information, and user experience.
+- Preserve the existing brand identity and professional industrial design.
+- Keep website content minimal, readable, and conversion-focused.
+
+## 10. Expected Deliverables
+
+Complete the following:
+
+1. Existing website SEO audit.
+2. Location-based keyword research and keyword mapping.
+3. Three-level geographical SEO strategy.
+4. Technical SEO implementation.
+5. On-page SEO implementation.
+6. AEO and GEO content optimization.
+7. AI-friendly structured data implementation.
+8. Local SEO recommendations.
+9. Product page SEO optimization.
+10. Internal linking strategy.
+11. Content and blog opportunity roadmap.
+12. Post-implementation validation checklist.
+
+### Final Objective
+
+Build New United Rubber Cork's digital presence progressively:
+
+**GIDC Vapi → Gujarat + Daman + Dadra and Nagar Haveli → All India**
+
+The website should first become highly relevant to buyers searching for rubberised cork products around its actual manufacturing location, then establish regional authority, and finally compete for relevant national B2B searches.
+
+Focus on qualified industrial enquiries, manufacturer discovery, product visibility, and long-term organic growth — not just increasing website traffic.
+
+My recommendation: Implement this in phases rather than asking your coding agent to optimize everything simultaneously.
+
+| Phase | Priority | Main objective                           |
+| ----- | -------- | ---------------------------------------- |
+| 1     | Highest  | Technical SEO + GIDC Vapi                |
+| 2     | High     | Gujarat, Daman, Silvassa                 |
+| 3     | High     | Product-level AEO + GEO                  |
+| 4     | Medium   | Pan-India SEO                            |
+| 5     | Ongoing  | Content authority + AI search visibility |
+
+One important distinction: GEO and AIO are not separate ranking switches. They depend heavily on crawlable content, entity consistency, technical accessibility, and credible industry information.

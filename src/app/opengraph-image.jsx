@@ -2,8 +2,6 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export const runtime = "nodejs";
-
 export const alt = "United Rubber Cork — Engineered Cork Solutions for Industry";
 
 export const size = {
