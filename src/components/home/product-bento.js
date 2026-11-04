@@ -35,33 +35,11 @@ export function ProductBento() {
             <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
               Engineered cork materials &amp; cut components
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-              Standard sheets and precision-fabricated parts manufactured to your technical drawings, dimensions, and operational media.
-            </p>
           </div>
 
           <Button href="/contact" variant="secondary" size="sm" className="hidden rounded-full sm:inline-flex shrink-0">
             Request custom quotation
           </Button>
-        </div>
-
-        {/* Category Filters */}
-        <div className="mt-8 flex flex-wrap items-center gap-2 border-b border-line pb-4">
-          {PRODUCT_CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              type="button"
-              onClick={() => setActiveCategory(cat.id)}
-              className={cn(
-                "rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-150 sm:text-sm cursor-pointer",
-                activeCategory === cat.id
-                  ? "bg-maroon text-white shadow-xs"
-                  : "bg-white text-muted border border-line hover:border-maroon/40 hover:text-ink"
-              )}
-            >
-              {cat.name}
-            </button>
-          ))}
         </div>
 
         {/* Product Bento Grid */}
