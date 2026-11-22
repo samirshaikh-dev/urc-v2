@@ -8,24 +8,6 @@ import { createLeadAction } from "@/api/contacts/public/create-lead";
 import { toast } from "sonner";
 import { COMPANY_INFO } from "@/data/company";
 
-const BASE_PRODUCT_OPTIONS = [
-  "Select product or material...",
-  "Rubberised Cork Sheets (RC Sheets)",
-  "Transformer Gaskets, Strips & Endless Rings",
-  "Continuous Rubber Cork Rolls",
-  "Plain Natural Cork Sheets & Rolls",
-  "Industrial Cork Granules & Graded Cork",
-  "Cork Expansion Joint Filler Boards",
-  "Acoustic Cork Wall Tiles",
-  "Architectural Decorative Cork Panels",
-  "Bulletin Board & Pinning Cork Sheets",
-  "Cork Desk Organizers & Office Accessories",
-  "Eco-Friendly Lifestyle Cork Gifts",
-  "Custom OEM Corporate Cork Merchandise",
-  "Custom CNC Drawing-Based Gaskets & Dovetails",
-  "General Inquiry / Other",
-];
-
 const INITIAL_VALUES = {
   name: "",
   company: "",
@@ -100,7 +82,6 @@ function ContactFormInner() {
     ...INITIAL_VALUES,
     product: queryProduct || "",
   }));
-  const [productOptions, setProductOptions] = useState(BASE_PRODUCT_OPTIONS);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -108,12 +89,9 @@ function ContactFormInner() {
   const [submitError, setSubmitError] = useState("");
   const successHeadingRef = useRef(null);
 
-  // Sync query parameter with selected material if passed
+  // Sync query parameter with open text field if passed
   useEffect(() => {
     if (queryProduct) {
-      if (!productOptions.includes(queryProduct)) {
-        setProductOptions([BASE_PRODUCT_OPTIONS[0], queryProduct, ...BASE_PRODUCT_OPTIONS.slice(1)]);
-      }
       setValues((prev) => ({ ...prev, product: queryProduct }));
     }
   }, [queryProduct]);
@@ -164,10 +142,7 @@ function ContactFormInner() {
         company: values.company,
         email: values.email,
         phone: values.phone,
-        product:
-          values.product && values.product !== BASE_PRODUCT_OPTIONS[0]
-            ? values.product
-            : "General Inquiry / Other",
+        product: values.product?.trim() || "General Inquiry / Other",
         message: values.message,
       });
 
@@ -345,7 +320,7 @@ function ContactFormInner() {
         {/* Phone Number */}
         <div>
           <label htmlFor={FIELD_IDS.phone} className={labelClasses}>
-            Phone number <span className="font-normal text-muted lowercase">(optional)</span>
+            Phone number <RequiredMark />
           </label>
           <input
             id={FIELD_IDS.phone}
@@ -368,24 +343,20 @@ function ContactFormInner() {
         </div>
       </div>
 
-      {/* Product / Material Interested In Dropdown */}
+      {/* Product / Material Interested In (Open Text Input) */}
       <div>
         <label htmlFor={FIELD_IDS.product} className={labelClasses}>
           Product / material interested in
         </label>
-        <select
+        <input
+          type="text"
           id={FIELD_IDS.product}
           name="product"
           value={values.product}
           onChange={handleChange}
-          className={`${fieldClasses} border-line cursor-pointer`}
-        >
-          {productOptions.map((option, index) => (
-            <option key={index} value={index === 0 ? "" : option}>
-              {option}
-            </option>
-          ))}
-        </select>
+          placeholder="e.g. Rubberised cork sheets, transformer gaskets, RC70-C..."
+          className={`${fieldClasses} border-line`}
+        />
       </div>
 
       {/* Message / Requirement */}

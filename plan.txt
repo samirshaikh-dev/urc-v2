@@ -160,7 +160,7 @@ DATABASE_URL_POOLED=
 CLOUDINARY_URL="cloudinary://api_key:api_secret@cloud_name"
 
 # Admin Authentication (.env based)
-ADMIN_EMAIL="admin@unitedrubbercork.com"
+ADMIN_EMAIL="unitedrubcork@gmail.com"
 ADMIN_PASSWORD="a-strong-secure-password"
 ADMIN_SESSION_SECRET="a-random-32-character-secret-key"
 ```

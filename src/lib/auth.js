@@ -47,7 +47,7 @@ export async function clearAdminSessionCookie() {
 }
 
 export function validateAdminCredentials(email, password) {
-  const configuredEmail = process.env.ADMIN_EMAIL || "admin@unitedrubbercork.com";
+  const configuredEmail = process.env.ADMIN_EMAIL || "unitedrubcork@gmail.com";
   const configuredPassword = process.env.ADMIN_PASSWORD || "admin123";
   return email === configuredEmail && password === configuredPassword;
 }

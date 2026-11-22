@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 const CONTACT_INDEX = [
   { label: "Request a Quotation", href: "#enquiry-form" },
   { label: "+91 9924304617", href: "tel:+919924304617" },
-  { label: "admin@amcorkindia.com", href: "mailto:admin@amcorkindia.com" },
+  { label: "unitedrubcork@gmail.com", href: "mailto:unitedrubcork@gmail.com" },
   { label: "GIDC Vapi Plant", href: "#locations" },
 ];
 
