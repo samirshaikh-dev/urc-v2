@@ -19,6 +19,10 @@ export async function createBlogAction(payload) {
   try {
     const blog = await createBlogService(validation.data);
     revalidatePath("/admin/blogs");
+    revalidatePath("/blog");
+    if (blog?.slug) {
+      revalidatePath(`/blog/${blog.slug}`);
+    }
     return { success: true, blog };
   } catch (err) {
     console.error("createBlogAction error:", err);

@@ -1,6 +1,8 @@
-import { SITE_CONFIG } from "@/lib/constants";
+import { getSiteUrl } from "@/lib/seo/url";
 
 export default function robots() {
+  const siteUrl = getSiteUrl();
+
   return {
     rules: [
       {
@@ -9,7 +11,6 @@ export default function robots() {
         disallow: ["/admin/", "/api/"],
       },
     ],
-    sitemap: `${SITE_CONFIG.url}/sitemap.xml`,
+    sitemap: `${siteUrl}/sitemap.xml`,
   };
 }
-

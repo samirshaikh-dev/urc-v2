@@ -1,6 +1,6 @@
 import "./globals.css";
 import { Toaster } from "sonner";
-import { rootMetadata, getRootJsonLd } from "@/lib/seo";
+import { rootMetadata, getRootJsonLd, getJsonLdScriptProps } from "@/lib/seo";
 
 export const metadata = rootMetadata;
 
@@ -10,10 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className="h-full antialiased">
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(rootJsonLd) }}
-        />
+        <script {...getJsonLdScriptProps(rootJsonLd)} />
       </head>
       <body className="flex min-h-full flex-col bg-page font-sans text-ink">
         {children}

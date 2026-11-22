@@ -1,326 +1,269 @@
 import { SITE_CONFIG } from "@/lib/constants";
-import { COMPANY_INFO, HERITAGE_DATA } from "@/data/company";
+import { COMPANY_INFO } from "@/data/company";
 import {
-  ALL_KEYWORDS,
-  VOICE_QUERIES,
-  INDUSTRIES_SERVED,
-  AREA_SERVED,
-} from "./keywords";
-import { CATEGORY_DETAILS, PRODUCTS } from "@/data/products";
+  buildAbsoluteUrl,
+  getSiteUrl,
+  sanitizeSeoText,
+} from "./url";
 
-const BASE_URL = SITE_CONFIG.url;
+function postalAddress(address = COMPANY_INFO.address) {
+  if (!address) return undefined;
 
-/**
- * Reusable Product / Category Offer nodes for OfferCatalog
- */
-const CATEGORY_OFFERS = Object.values(CATEGORY_DETAILS).map((cat) => ({
-  "@type": "Offer",
-  url: `${BASE_URL}/products/${cat.slug}`,
-  availability: "https://schema.org/InStock",
-  itemOffered: {
-    "@type": "Service",
-    name: `${cat.name} Manufacturing & Fabrication`,
-    description: cat.shortDescription,
-    url: `${BASE_URL}/products/${cat.slug}`,
-    provider: {
-      "@type": "Organization",
-      name: SITE_CONFIG.name,
-      url: BASE_URL,
-    },
-    areaServed: AREA_SERVED,
-  },
-}));
+  return {
+    "@type": "PostalAddress",
+    streetAddress: address.street || undefined,
+    addressLocality: address.city || undefined,
+    addressRegion: address.state || undefined,
+    postalCode: address.pincode || undefined,
+    addressCountry: address.country || "IN",
+  };
+}
 
 /**
- * Generate Root JSON-LD for LocalBusiness/ManufacturingBusiness, Organization, and WebSite
- * Establishes strong entity grounding in GIDC Vapi, Gujarat for Google Search & AI engines (AEO/GEO/AIO)
+ * Root organization and website schema using only verified company details.
+ * No pricing, availability, certifications, ratings, or performance claims.
  */
 export function getRootJsonLd() {
+  const siteUrl = getSiteUrl();
+
   return [
     {
       "@context": "https://schema.org",
-      "@type": ["LocalBusiness", "ManufacturingBusiness"],
-      "@id": `${BASE_URL}/#manufacturer`,
-      name: SITE_CONFIG.name,
-      legalName: "United Rubber Cork",
-      alternateName: ["URC", "United Rubber Cork Vapi"],
-      url: BASE_URL,
-      logo: `${BASE_URL}/united-rubber-cork-logo.png`,
-      image: `${BASE_URL}/og-image.png`,
-      description: SITE_CONFIG.description,
-      telephone: COMPANY_INFO.phone,
-      email: COMPANY_INFO.email,
-      currenciesAccepted: "INR, USD",
-      paymentAccepted: "Bank Transfer, NEFT, RTGS, Letter of Credit (LC)",
-      priceRange: "₹₹ - ₹₹₹",
-      foundingDate: "2013",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: COMPANY_INFO.address.street,
-        addressLocality: COMPANY_INFO.address.city,
-        addressRegion: COMPANY_INFO.address.state,
-        postalCode: COMPANY_INFO.address.pincode,
-        addressCountry: "IN",
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: 20.3703,
-        longitude: 72.9106,
-      },
-      openingHoursSpecification: [
-        {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-          ],
-          opens: "09:00",
-          closes: "18:30",
-        },
-      ],
-      areaServed: AREA_SERVED.map((area) => ({
-        "@type": "AdministrativeArea",
-        name: area,
-      })),
-      knowsAbout: [
-        ...INDUSTRIES_SERVED,
-        "IS: 4253 Standards",
-        "ASTM F104 Gaskets",
-        "Rubberised Cork Sheets",
-        "Transformer Gaskets & Strips",
-        "Agglomerated Natural Cork",
-        "Hot Transformer Mineral Oil Resistance",
-        "Foundation Vibration Damping Pads",
-        "CNC Gasket Dovetail Fabrication",
-      ],
-      keywords: ALL_KEYWORDS.join(", "),
-      hasOfferCatalog: {
-        "@type": "OfferCatalog",
-        name: "Industrial Cork & Rubberised Cork Product Families",
-        itemListElement: CATEGORY_OFFERS,
-      },
-    },
-    {
-      "@context": "https://schema.org",
       "@type": "Organization",
-      "@id": `${BASE_URL}/#organization`,
+      "@id": `${siteUrl}/#organization`,
       name: SITE_CONFIG.name,
-      url: BASE_URL,
-      logo: `${BASE_URL}/united-rubber-cork-logo.png`,
-      contactPoint: [
-        {
-          "@type": "ContactPoint",
-          telephone: COMPANY_INFO.phone,
-          contactType: "sales & technical support",
-          areaServed: "IN",
-          availableLanguage: ["English", "Hindi", "Gujarati"],
-        },
-      ],
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: COMPANY_INFO.address.street,
-        addressLocality: COMPANY_INFO.address.city,
-        addressRegion: COMPANY_INFO.address.state,
-        postalCode: COMPANY_INFO.address.pincode,
-        addressCountry: "IN",
-      },
+      url: siteUrl,
+      description: sanitizeSeoText(SITE_CONFIG.description),
+      address: postalAddress(),
+      contactPoint: COMPANY_INFO.phone
+        ? {
+            "@type": "ContactPoint",
+            telephone: COMPANY_INFO.phone,
+            contactType: "sales",
+            areaServed: "IN",
+          }
+        : undefined,
     },
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "@id": `${BASE_URL}/#website`,
+      "@id": `${siteUrl}/#website`,
       name: SITE_CONFIG.name,
-      url: BASE_URL,
-      description: SITE_CONFIG.description,
+      url: siteUrl,
+      description: sanitizeSeoText(SITE_CONFIG.description),
       inLanguage: "en-IN",
-      keywords: ALL_KEYWORDS.join(", "),
-      publisher: {
-        "@id": `${BASE_URL}/#organization`,
-      },
-      speakable: {
-        "@type": "SpeakableSpecification",
-        cssSelector: ["h1", "h2", ".speakable"],
-      },
+      publisher: { "@id": `${siteUrl}/#organization` },
     },
   ];
 }
 
 /**
- * Generate Product structured data (JSON-LD) for Level 3 product detail pages
+ * Generate CollectionPage + ItemList for category pages.
  */
-export function getProductJsonLd(product) {
-  if (!product) return null;
+export function getCollectionPageJsonLd({ name, description, path, items = [] } = {}) {
+  const siteUrl = getSiteUrl();
+  const listItems = (Array.isArray(items) ? items : [])
+    .filter((item) => item && sanitizeSeoText(item.name) && sanitizeSeoText(item.url))
+    .map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: sanitizeSeoText(item.name),
+      url: buildAbsoluteUrl(item.url, siteUrl),
+    }));
 
-  const productUrl = `${BASE_URL}/products/${product.category}/${product.slug}`;
-  const imageUrl = product.image
-    ? product.image.startsWith("http")
-      ? product.image
-      : `${BASE_URL}${product.image}`
-    : `${BASE_URL}/og-image.png`;
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "@id": `${productUrl}#product`,
-    name: product.name,
-    description:
-      product.shortDescription ||
-      product.fullDescription?.replace(/<[^>]*>/g, " ").slice(0, 200) ||
-      `${product.name} manufactured by United Rubber Cork in GIDC Vapi, Gujarat.`,
-    image: imageUrl,
-    url: productUrl,
-    brand: {
-      "@type": "Brand",
-      name: SITE_CONFIG.name,
-    },
-    manufacturer: {
-      "@type": "Organization",
-      name: SITE_CONFIG.name,
-      url: BASE_URL,
-    },
-    category: product.category,
-    offers: {
-      "@type": "Offer",
-      url: productUrl,
-      priceCurrency: "INR",
-      price: "0",
-      priceSpecification: {
-        "@type": "UnitPriceSpecification",
-        price: "0",
-        priceCurrency: "INR",
-        unitText: "Custom Quote / Wholesale B2B Batch",
-      },
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition",
-      seller: {
-        "@type": "Organization",
-        name: SITE_CONFIG.name,
-      },
-    },
-  };
-}
-
-/**
- * Generate CollectionPage + ItemList for Product Listing & Category Pages
- */
-export function getCollectionPageJsonLd({ name, description, path, items = [] }) {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name,
-    description,
-    url: `${BASE_URL}${path}`,
+    name: sanitizeSeoText(name),
+    description: sanitizeSeoText(description),
+    url: buildAbsoluteUrl(path, siteUrl),
     isPartOf: {
       "@type": "WebSite",
       name: SITE_CONFIG.name,
-      url: BASE_URL,
+      url: siteUrl,
     },
     mainEntity: {
       "@type": "ItemList",
-      numberOfItems: items.length,
-      itemListElement: items.map((item, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name: item.name,
-        url: item.url.startsWith("http") ? item.url : `${BASE_URL}${item.url}`,
-      })),
+      numberOfItems: listItems.length,
+      itemListElement: listItems,
     },
   };
 }
 
 /**
- * BreadcrumbList structured data for hierarchical navigation & Google SERP breadcrumbs
+ * BreadcrumbList structured data for hierarchical navigation.
  */
 export function getBreadcrumbJsonLd(breadcrumbs = []) {
+  const siteUrl = getSiteUrl();
+
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: breadcrumbs.map((crumb, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: crumb.name,
-      item: crumb.url.startsWith("http") ? crumb.url : `${BASE_URL}${crumb.url}`,
-    })),
+    itemListElement: (Array.isArray(breadcrumbs) ? breadcrumbs : [])
+      .filter((crumb) => crumb && sanitizeSeoText(crumb.name) && sanitizeSeoText(crumb.url))
+      .map((crumb, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: sanitizeSeoText(crumb.name),
+        item: buildAbsoluteUrl(crumb.url, siteUrl),
+      })),
   };
 }
 
 /**
- * FAQPage structured data for Google rich snippets and AEO extraction
+ * FAQPage schema. Only questions and answers that are actually rendered may
+ * be included; hidden or empty entries are filtered out.
  */
 export function getFaqPageJsonLd(faqs = []) {
-  if (!faqs || faqs.length === 0) return null;
+  const visibleFaqs = (Array.isArray(faqs) ? faqs : []).filter((faq) => {
+    if (!faq || faq.visible === false || faq.isHidden === true) return false;
+    if (faq.status && String(faq.status).toLowerCase() === "hidden") return false;
+    return Boolean(sanitizeSeoText(faq.question) && sanitizeSeoText(faq.answer));
+  });
+
+  if (visibleFaqs.length === 0) return null;
 
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
+    mainEntity: visibleFaqs.map((faq) => ({
       "@type": "Question",
-      name: faq.question || faq.q,
+      name: sanitizeSeoText(faq.question),
       acceptedAnswer: {
         "@type": "Answer",
-        text: faq.answer || faq.a,
+        text: sanitizeSeoText(faq.answer),
       },
     })),
   };
 }
 
 /**
- * AboutPage structured data for /about
+ * AboutPage structured data. Kept factual: no unverified history or claims.
  */
 export function getAboutPageJsonLd() {
+  const siteUrl = getSiteUrl();
+
   return {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     name: `About ${SITE_CONFIG.name}`,
-    url: `${BASE_URL}/about`,
-    description: HERITAGE_DATA.statement,
+    url: buildAbsoluteUrl("/about", siteUrl),
+    description: sanitizeSeoText(SITE_CONFIG.description),
     mainEntity: {
-      "@type": "Organization",
-      name: SITE_CONFIG.name,
-      foundingDate: "2013",
-      description: HERITAGE_DATA.statement,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: COMPANY_INFO.address.street,
-        addressLocality: COMPANY_INFO.address.city,
-        addressRegion: COMPANY_INFO.address.state,
-        postalCode: COMPANY_INFO.address.pincode,
-        addressCountry: "IN",
-      },
-      knowsAbout: HERITAGE_DATA.coreGrades,
+      "@id": `${siteUrl}/#organization`,
     },
   };
 }
 
 /**
- * ContactPage structured data for /contact
+ * ContactPage structured data using verified contact details only.
  */
 export function getContactPageJsonLd() {
+  const siteUrl = getSiteUrl();
+
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    name: `Contact ${SITE_CONFIG.name} — Technical Sales & Quotations`,
-    url: `${BASE_URL}/contact`,
-    description:
-      "Get in touch with United Rubber Cork in GIDC Vapi, Gujarat for technical guidance, material specifications, and wholesale B2B quotations.",
+    name: `Contact ${SITE_CONFIG.name}`,
+    url: buildAbsoluteUrl("/contact", siteUrl),
+    description: `Contact ${SITE_CONFIG.name} for product enquiries and quotations.`,
     mainEntity: {
-      "@type": "LocalBusiness",
+      "@type": "Organization",
       name: SITE_CONFIG.name,
+      url: siteUrl,
       telephone: COMPANY_INFO.phone,
       email: COMPANY_INFO.email,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: COMPANY_INFO.address.street,
-        addressLocality: COMPANY_INFO.address.city,
-        addressRegion: COMPANY_INFO.address.state,
-        postalCode: COMPANY_INFO.address.pincode,
-        addressCountry: "IN",
-      },
+      address: postalAddress(),
     },
   };
 }
 
+/**
+ * Blog Listing / CollectionPage structured data for /blog
+ */
+export function getBlogListJsonLd(blogs = []) {
+  const siteUrl = getSiteUrl();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${siteUrl}/blog#blog`,
+    name: `Technical Blog & Engineering Guides | ${SITE_CONFIG.name}`,
+    description:
+      "Authoritative technical insights, material selection guides, and industry standards (IS 4253, ASTM F104) for rubberised cork and precision sealing materials.",
+    url: buildAbsoluteUrl("/blog", siteUrl),
+    publisher: {
+      "@type": "Organization",
+      name: SITE_CONFIG.name,
+      url: siteUrl,
+      logo: buildAbsoluteUrl("/united-rubber-cork-logo.png", siteUrl),
+    },
+    blogPost: blogs.map((blog) => ({
+      "@type": "BlogPosting",
+      headline: sanitizeSeoText(blog.title),
+      description: sanitizeSeoText(blog.excerpt),
+      url: buildAbsoluteUrl(`/blog/${blog.slug}`, siteUrl),
+      datePublished: new Date(blog.createdAt).toISOString(),
+      dateModified: new Date(blog.updatedAt || blog.createdAt).toISOString(),
+      author: {
+        "@type": "Organization",
+        name: blog.author || `${SITE_CONFIG.name} Engineering Team`,
+      },
+      image: blog.imageUrl?.startsWith("http")
+        ? blog.imageUrl
+        : buildAbsoluteUrl(blog.imageUrl || "/og-image.png", siteUrl),
+    })),
+  };
+}
+
+/**
+ * Single Blog Article structured data for /blog/[slug]
+ */
+export function getBlogArticleJsonLd(blog) {
+  if (!blog) return null;
+
+  const siteUrl = getSiteUrl();
+  const articleUrl = buildAbsoluteUrl(`/blog/${blog.slug}`, siteUrl);
+  const imageUrl = blog.imageUrl
+    ? blog.imageUrl.startsWith("http")
+      ? blog.imageUrl
+      : buildAbsoluteUrl(blog.imageUrl, siteUrl)
+    : buildAbsoluteUrl("/og-image.png", siteUrl);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": ["BlogPosting", "TechArticle"],
+    "@id": `${articleUrl}#article`,
+    headline: sanitizeSeoText(blog.title),
+    description: sanitizeSeoText(blog.excerpt),
+    url: articleUrl,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": articleUrl,
+    },
+    image: [imageUrl],
+    datePublished: new Date(blog.createdAt).toISOString(),
+    dateModified: new Date(blog.updatedAt || blog.createdAt).toISOString(),
+    author: {
+      "@type": "Organization",
+      name: blog.author || `${SITE_CONFIG.name} Engineering Team`,
+      url: siteUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_CONFIG.name,
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: buildAbsoluteUrl("/united-rubber-cork-logo.png", siteUrl),
+      },
+    },
+    keywords: blog.tags,
+    articleSection: "Industrial Cork & Sealing Engineering",
+    inLanguage: "en-IN",
+    about: {
+      "@type": "Thing",
+      name: "Rubberised Cork and Industrial Gaskets",
+    },
+  };
+}

@@ -5,6 +5,30 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
+const CATEGORY_LABELS = {
+  "cork-products": "Cork Products",
+  "rubberised-cork": "Rubberised Cork",
+  "decorative-cork": "Decorative Cork",
+  "cork-gifts": "Cork Gifts",
+};
+
+function getProductImageAlt(product) {
+  const suppliedAlt =
+    typeof product.imageAlt === "string" ? product.imageAlt.trim() : "";
+  if (suppliedAlt) return suppliedAlt;
+
+  const name = typeof product.name === "string" ? product.name.trim() : "";
+  const categoryValue = product.category || product.categorySlug;
+  const category =
+    typeof categoryValue === "string"
+      ? CATEGORY_LABELS[categoryValue] || categoryValue.replace(/-/g, " ").trim()
+      : "";
+
+  if (name && category) return `${name} (${category}) from United Rubber Cork`;
+  if (name) return `${name} from United Rubber Cork`;
+  return "United Rubber Cork product";
+}
+
 /**
  * Clean compact vertical product card:
  * - 4:3 Image with badge overlay
@@ -13,10 +37,13 @@ import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
  * - Footer with "Detailed specs" and "Request quote"
  */
 export function CatalogProductCard({ product, onRequestQuote }) {
-  const detailUrl = product.url || `/products/${product.categorySlug || "cork-products"}/${product.slug}`;
+  const detailUrl =
+    product.url ||
+    `/products/${product.category || product.categorySlug || "cork-products"}/${product.slug}`;
   const imageSrc = product.imageUrl
     ? optimizeCloudinaryUrl(product.imageUrl, { width: 800 })
     : "/images/placeholder-product.jpg";
+  const productImageAlt = getProductImageAlt(product);
 
   return (
     <article className="group flex flex-col justify-between h-full overflow-hidden rounded-2xl border border-line bg-white transition-all duration-300 hover:-translate-y-1 hover:border-maroon/30 hover:shadow-lg focus-within:ring-2 focus-within:ring-maroon/20">
@@ -30,7 +57,7 @@ export function CatalogProductCard({ product, onRequestQuote }) {
         >
           <Image
             src={imageSrc}
-            alt={product.name || "United Rubber Cork Product"}
+            alt={productImageAlt}
             fill
             sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
             loading="lazy"

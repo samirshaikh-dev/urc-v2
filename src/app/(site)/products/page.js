@@ -10,6 +10,7 @@ import {
   constructMetadata,
   getCollectionPageJsonLd,
   getBreadcrumbJsonLd,
+  getJsonLdScriptProps,
 } from "@/lib/seo";
 import { CATEGORY_DETAILS } from "@/data/products";
 
@@ -45,12 +46,7 @@ export default function ProductsPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([collectionJsonLd, breadcrumbJsonLd]),
-        }}
-      />
+      <script {...getJsonLdScriptProps([collectionJsonLd, breadcrumbJsonLd])} />
       {/* 01. PRODUCTS HERO */}
       <ProductsHero />
 

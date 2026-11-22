@@ -22,6 +22,7 @@ export async function createProductAction(payload) {
     revalidatePath("/products");
     revalidatePath(`/products/${result.categorySlug}`);
     revalidatePath(`/products/${result.categorySlug}/${result.slug}`);
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/products");
 
     return {

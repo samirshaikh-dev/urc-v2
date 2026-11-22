@@ -20,6 +20,7 @@ export async function deleteBlogAction(id) {
       return { success: false, error: "Article not found or could not be removed." };
     }
     revalidatePath("/admin/blogs");
+    revalidatePath("/blog");
     return { success: true };
   } catch (err) {
     console.error("deleteBlogAction error:", err);

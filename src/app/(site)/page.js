@@ -5,7 +5,11 @@ import { ProcessFlow } from "@/components/home/process-flow";
 import { IndustrySlider } from "@/components/home/industry-slider";
 import { TechnicalFAQ, HOME_FAQS } from "@/components/home/technical-faq";
 import { FinalCTA } from "@/components/home/final-cta";
-import { constructMetadata, getFaqPageJsonLd } from "@/lib/seo";
+import {
+  constructMetadata,
+  getFaqPageJsonLd,
+  getJsonLdScriptProps,
+} from "@/lib/seo";
 
 export const metadata = constructMetadata({
   title: "Rubberised Cork Manufacturer in Vapi, Gujarat | United Rubber Cork",
@@ -20,10 +24,7 @@ export default function Home() {
   return (
     <>
       {faqJsonLd && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-        />
+        <script {...getJsonLdScriptProps(faqJsonLd)} />
       )}
       {/* 1. HERO SECTION */}
       <HeroSection />

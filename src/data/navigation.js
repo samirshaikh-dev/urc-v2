@@ -29,6 +29,7 @@ export const MAIN_NAV = [
     children: PRODUCT_NAV_ITEMS,
   },
   { label: "Industries", href: "/industries" },
+  { label: "Blog", href: "/blog" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -50,6 +51,7 @@ export const FOOTER_NAV = {
   ],
   company: [
     { label: "About Us", href: "/about" },
+    { label: "Technical Blog", href: "/blog" },
     { label: "Industries Overview", href: "/industries" },
     { label: "Contact & Location", href: "/contact" },
     { label: "Request a Quote", href: "/contact#enquiry-form" },

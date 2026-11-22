@@ -15,6 +15,23 @@ const INITIAL_PRODUCTS = [
     categorySlug: "cork-products",
     badge: "Natural Agglomerated",
     imageUrl: "/images/carousel-images/industrial-cork-granules-processing-manufacturer-vapi-gujarat-01.jpg",
+    seoDescription:
+      "Pure natural agglomerated cork sheets and continuous rolls engineered for thermal barriers, acoustic underlayment, and foundation expansion joints.",
+    imageAlt: "Plain Natural Cork Sheets & Rolls from United Rubber Cork",
+    introduction:
+      "Pure natural agglomerated cork sheets and continuous rolls engineered for thermal barriers, acoustic underlayment, and foundation expansion joints.",
+    features: [
+      "Naturally cellular structure dampens high-frequency mechanical vibration and impact noise",
+      "Low thermal conductivity (0.040 W/m·K) provides reliable thermal insulation",
+      "Sustainably harvested raw material conforming to IS: 4253 and international standards",
+      "Available in standard rectangular sheets or continuous rolls up to 10 meters",
+    ],
+    applications: [
+      "Thermal Barrier & Acoustic Floor Underlayment",
+      "Civil Engineering Foundation Pads & Dampproofing",
+      "Industrial Friction Discs & Polish Wheels",
+      "Laboratory Stoppers, Floats & Level Indicators",
+    ],
     description:
       "<p>Manufactured from carefully selected natural raw cork granules bonded with food-grade polyurethane binders under controlled heat and hydraulic pressure. Conforming to IS: 4253 standards, these sheets exhibit outstanding acoustic dampening, low thermal conductivity, and superior dimensional stability under compression.</p><ul><li>Naturally cellular structure dampens high-frequency mechanical vibration and impact noise</li><li>Low thermal conductivity (0.040 W/m·K) provides reliable thermal insulation</li><li>Sustainably harvested raw material conforming to IS: 4253 and international standards</li><li>Available in standard rectangular sheets or continuous rolls up to 10 meters</li></ul>",
     faqs: [
@@ -48,6 +65,23 @@ const INITIAL_PRODUCTS = [
     categorySlug: "rubberised-cork",
     badge: "IS: 4253 (Part II) Conformance",
     imageUrl: "/images/carousel-images/custom-molded-cork-components-manufacturing-vapi-gujarat-02.jpg",
+    seoDescription:
+      "NBR, Neoprene, and SBR bonded composite sheets engineered for hot oil sealing, power transformer covers, and automotive flange gaskets.",
+    imageAlt: "Rubberised Cork Sheets (RC Sheets) from United Rubber Cork",
+    introduction:
+      "NBR, Neoprene, and SBR bonded composite sheets engineered for hot oil sealing, power transformer covers, and automotive flange gaskets.",
+    features: [
+      "Zero fluid seepage under continuous exposure to transformer mineral oils (-30°C to +120°C)",
+      "Controlled compressibility (25%–40%) provides positive hermetic seal at low bolt torque",
+      "High recovery (> 75%) prevents gasket stress relaxation and subsequent flange leaks",
+      "Formulated strictly in conformance with IS: 4253 (Part II) Grade RC70C & RC80C",
+    ],
+    applications: [
+      "Power & Distribution Transformer Tank Covers & Flanges",
+      "Automotive Crankcases, Oil Pans & Valve Covers",
+      "Industrial Gas Pipeline Flanges & Fuel Pumps",
+      "Electric Motor End Shields & Fluid Pumps",
+    ],
     description:
       "<p>Formulated by compounding prime granulated cork with specialized synthetic elastomer matrices (Nitrile NBR, Neoprene, or SBR) under high-tonnage hydraulic curing. These sheets combine the high compressibility of natural cork with the chemical resistance, mechanical resilience, and fluid impermeability of synthetic rubbers.</p><ul><li>Zero fluid seepage under continuous exposure to transformer mineral oils (-30°C to +120°C)</li><li>Controlled compressibility (25%–40%) provides positive hermetic seal at low bolt torque</li><li>Superior recovery (> 75%) accommodates continuous thermal expansion and contraction</li><li>Available in standard sheets, continuous rolls, and CNC-cut finished gasket profiles</li></ul>",
     faqs: [
@@ -81,6 +115,23 @@ const INITIAL_PRODUCTS = [
     categorySlug: "decorative-cork",
     badge: "Architectural & Interior Design",
     imageUrl: "/images/industries-serve-images/cork-expansion-joints-construction-insulation-vapi-gujarat.jpeg",
+    seoDescription:
+      "Textured natural cork tiles providing superior acoustic absorption, reverberation reduction, and organic warmth for modern interiors.",
+    imageAlt: "Acoustic Decorative Cork Wall Tiles from United Rubber Cork",
+    introduction:
+      "Textured natural cork tiles providing superior acoustic absorption, reverberation reduction, and organic warmth for modern interiors.",
+    features: [
+      "Significantly reduces ambient conversational reverberation and room echo",
+      "Natural warm texture introduces biophilic design into corporate and residential spaces",
+      "Modular square and rectangular formats allow creative tessellation and layout designs",
+      "Simple surface installation using water-based contact adhesives directly on drywall",
+    ],
+    applications: [
+      "Corporate Conference Rooms & Collaborative Workspaces",
+      "Recording Studios, Podcast Rooms & Home Theaters",
+      "Hotel Lobbies, Executive Suites & Restaurant Dining Areas",
+      "Educational Classrooms & Library Quiet Zones",
+    ],
     description:
       "<p>Transform commercial and residential spaces with tactile, sound-dampening natural cork tiles. Harvested sustainably from Quercus suber cork bark, these wall coverings bring organic warmth, biophilic elegance, and noticeable acoustic reverberation control to offices, boardrooms, and listening studios.</p><ul><li>Effective acoustic absorption (NRC 0.25 to 0.45) dampening voice reverberation</li><li>Self-healing fine-grain texture closes naturally after pin removal</li><li>Hypoallergenic, anti-static surface that naturally repels airborne dust</li><li>Available in natural sanded, bevelled, and geometric embossed textures</li></ul>",
     faqs: [
@@ -107,6 +158,23 @@ const INITIAL_PRODUCTS = [
     categorySlug: "cork-gifts",
     badge: "Eco-Friendly Corporate Gifting",
     imageUrl: "/images/industries-serve-images/orthopedic-cork-shoe-soles-footwear-manufacturer-vapi-gujarat.jpeg",
+    seoDescription:
+      "Sustainable desk pads, mousepads, pen holders, and docking trays crafted from fine-grain natural cork.",
+    imageAlt: "Custom Cork Desk Mats & Office Accessories from United Rubber Cork",
+    introduction:
+      "Sustainable desk pads, mousepads, pen holders, and docking trays crafted from fine-grain natural cork.",
+    features: [
+      "Silky-smooth, water-resistant surface compatible with optical and laser computer mice",
+      "Naturally non-slip underside stays firmly positioned on glass, wood, and metal desks",
+      "Supports precision corporate branding via laser engraving, debossing, or screen printing",
+      "Crafted with rounded beveled edges and durable perimeter stitching or edge sealing",
+    ],
+    applications: [
+      "Corporate Employee Onboarding Welcome Kits",
+      "Sustainable Executive Desktop Upgrades",
+      "Tech Company Conference Giveaways & PR Kits",
+      "Retail Lifestyle & Co-working Space Merchandise",
+    ],
     description:
       "<p>Crafted for organizations committed to sustainability, our premium cork desk accessories and executive gift sets showcase natural materials in modern corporate workspaces. Every piece is precision laser-cut and can be custom branded with debossed or engraved company logos.</p><ul><li>100% vegan, water-repellent, and naturally stain-resistant</li><li>Smooth precision mouse tracking surface with anti-slip backing</li><li>Custom logo laser engraving, debossing, and bespoke gift packaging</li><li>Lightweight, durable, and biodegradable at end of lifecycle</li></ul>",
     faqs: [

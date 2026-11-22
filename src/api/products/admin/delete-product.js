@@ -21,6 +21,7 @@ export async function deleteProductAction(productId) {
     if (result.categorySlug) {
       revalidatePath(`/products/${result.categorySlug}`);
     }
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/products");
 
     return { success: true };

@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { LegalPageHeader } from "@/components/legal/legal-page-header";
 import { LegalSidebar } from "@/components/legal/legal-sidebar";
 import { PrivacyPolicyContent, PRIVACY_TOC } from "@/components/legal/privacy-policy-content";
-import { constructMetadata } from "@/lib/seo";
+import { constructMetadata, getJsonLdScriptProps } from "@/lib/seo";
 import { SITE_CONFIG } from "@/lib/constants";
 import { COMPANY_INFO } from "@/data/company";
 
@@ -40,10 +40,7 @@ export default function PrivacyPolicyPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script {...getJsonLdScriptProps(jsonLd)} />
 
       {/* Header Banner */}
       <LegalPageHeader

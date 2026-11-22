@@ -8,6 +8,7 @@ import {
   cleanFaqs,
   cleanSpecifications,
   createRelatedRows,
+  getProductSeoValues,
 } from "../helpers";
 
 export async function createProductService(payload) {
@@ -72,6 +73,7 @@ export async function createProductService(payload) {
         categorySlug,
         imageUrl,
         imagePublicId,
+        ...getProductSeoValues(payload),
       })
       .returning();
 

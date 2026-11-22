@@ -7,6 +7,7 @@ import {
   constructMetadata,
   getAboutPageJsonLd,
   getBreadcrumbJsonLd,
+  getJsonLdScriptProps,
 } from "@/lib/seo";
 
 export const metadata = constructMetadata({
@@ -25,12 +26,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([aboutJsonLd, breadcrumbJsonLd]),
-        }}
-      />
+      <script {...getJsonLdScriptProps([aboutJsonLd, breadcrumbJsonLd])} />
       {/* 01. HERO – ABOUT UNITED RUBBER CORK */}
       <AboutHero />
 

@@ -2,7 +2,10 @@
  * Site-wide constants and configuration
  * Source of truth: AI_RULE.md, prompt.md, psychology.md
  */
-const SITE_URL = process.env.SITE_URL;
+// Keep metadata generation deterministic in local/dev environments where
+// SITE_URL is not configured. Production still supplies the canonical origin
+// through the environment.
+const SITE_URL = process.env.SITE_URL?.trim();
 
 export const SITE_CONFIG = {
   name: "United Rubber Cork",

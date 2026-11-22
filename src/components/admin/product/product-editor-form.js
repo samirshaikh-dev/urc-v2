@@ -26,6 +26,65 @@ const FIXED_CATEGORIES = [
   { slug: "cork-gifts", name: "Cork Gifts" },
 ];
 
+const SEO_TITLE_LIMIT = 60;
+const SEO_DESCRIPTION_LIMIT = 160;
+
+const LIFECYCLE_OPTIONS = [
+  { value: "active", label: "Active" },
+  { value: "out_of_stock", label: "Out of stock" },
+  { value: "discontinued", label: "Discontinued" },
+];
+
+const VISIBILITY_OPTIONS = [
+  { value: "public", label: "Public" },
+  { value: "private", label: "Private" },
+];
+
+const INDEXING_OPTIONS = [
+  { value: "auto", label: "Automatic" },
+  { value: "index", label: "Force index" },
+  { value: "noindex", label: "Do not index" },
+];
+
+const INPUT_CLASS =
+  "w-full h-[46px] rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors";
+const TEXTAREA_CLASS =
+  "w-full rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 py-2.5 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors";
+const SELECT_CLASS =
+  "w-full h-[46px] appearance-none rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 pr-10 text-xs sm:text-sm font-medium text-[#111111] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors cursor-pointer";
+const HELP_TEXT_CLASS = "mt-1 text-[11px] leading-relaxed text-[#687080]";
+const LABEL_CLASS = "block text-xs sm:text-sm font-medium text-[#374151] mb-2";
+
+function initialText(value) {
+  if (typeof value === "string") return value;
+  return value === undefined || value === null ? "" : String(value);
+}
+
+function multilineFromArray(value) {
+  if (Array.isArray(value)) {
+    return value.filter((item) => typeof item === "string" && item.trim()).join("\n");
+  }
+  return initialText(value);
+}
+
+function arrayFromMultiline(value) {
+  return initialText(value)
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function selectedOption(value, options, fallback) {
+  return options.some((option) => option.value === value) ? value : fallback;
+}
+
+function characterHint(value, limit) {
+  const remaining = limit - value.length;
+  return remaining >= 0
+    ? `${remaining} characters remaining`
+    : `${Math.abs(remaining)} characters over the suggested length`;
+}
+
 export function ProductEditorForm({ initialData = null, isEdit = false }) {
   const router = useRouter();
 
@@ -47,6 +106,30 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
   const [newImageSelected, setNewImageSelected] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [seoTitle, setSeoTitle] = useState(initialText(initialData?.seoTitle));
+  const [seoDescription, setSeoDescription] = useState(
+    initialText(initialData?.seoDescription)
+  );
+  const [seoImageUrl, setSeoImageUrl] = useState(initialText(initialData?.seoImageUrl));
+  const [imageAlt, setImageAlt] = useState(initialText(initialData?.imageAlt));
+  const [introduction, setIntroduction] = useState(initialText(initialData?.introduction));
+  const [features, setFeatures] = useState(multilineFromArray(initialData?.features));
+  const [applications, setApplications] = useState(
+    multilineFromArray(initialData?.applications)
+  );
+  const [benefits, setBenefits] = useState(multilineFromArray(initialData?.benefits));
+  const [sku, setSku] = useState(initialText(initialData?.sku));
+  const [mpn, setMpn] = useState(initialText(initialData?.mpn));
+  const [lifecycleStatus, setLifecycleStatus] = useState(
+    selectedOption(initialData?.lifecycleStatus, LIFECYCLE_OPTIONS, "active")
+  );
+  const [visibility, setVisibility] = useState(
+    selectedOption(initialData?.visibility, VISIBILITY_OPTIONS, "public")
+  );
+  const [indexingStatus, setIndexingStatus] = useState(
+    selectedOption(initialData?.indexingStatus, INDEXING_OPTIONS, "auto")
+  );
 
   const generatedSlug = name ? slugify(name) : (initialData?.slug || "");
 
@@ -105,6 +188,22 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
         imageFileUri: newImageSelected ? imagePreview : (isEdit ? null : imagePreview),
         faqs,
         specifications,
+        seoTitle: seoTitle.trim(),
+        seoDescription: seoDescription.trim(),
+        seoImageUrl: seoImageUrl.trim(),
+        imageAlt: imageAlt.trim(),
+        introduction: introduction.trim(),
+        features: arrayFromMultiline(features),
+        applications: arrayFromMultiline(applications),
+        benefits: arrayFromMultiline(benefits),
+        sku: sku.trim(),
+        mpn: mpn.trim(),
+        lifecycleStatus,
+        visibility,
+        indexingStatus,
+        relatedProductIds: Array.isArray(initialData?.relatedProductIds)
+          ? initialData.relatedProductIds
+          : [],
       };
 
       let res;
@@ -160,7 +259,7 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
 
         {/* Global Error Notification */}
         {errorMessage && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-xs sm:text-sm text-red-700">
+          <div role="alert" className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-xs sm:text-sm text-red-700">
             {errorMessage}
           </div>
         )}
@@ -172,24 +271,26 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
           {/* Row 1: Product Name & Slug in 2-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+            <label htmlFor="product-name" className={LABEL_CLASS}>
               Product Name <span className="text-red-500 font-semibold">*</span>
             </label>
             <input
+              id="product-name"
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. High-Recovery Rubberised Cork Sheet RC70C"
-              className="w-full h-[46px] rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors"
+              className={INPUT_CLASS}
             />
           </div>
 
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+            <label htmlFor="product-slug" className={LABEL_CLASS}>
               Slug <span className="text-red-500 font-semibold">*</span>
             </label>
             <input
+              id="product-slug"
               type="text"
               readOnly
               value={generatedSlug}
@@ -201,14 +302,15 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
 
         {/* Row 2: Category Dropdown */}
         <div>
-          <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+          <label htmlFor="product-category" className={LABEL_CLASS}>
             Category <span className="text-red-500 font-semibold">*</span>
           </label>
           <div className="relative">
             <select
+              id="product-category"
               value={categorySlug}
               onChange={(e) => setCategorySlug(e.target.value)}
-              className="w-full h-[46px] appearance-none rounded-xl border border-[#D9DCD1] bg-[#F7F8F2] px-4 pr-10 text-xs sm:text-sm font-medium text-[#111111] focus:border-[#650510] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#650510] transition-colors cursor-pointer"
+              className={SELECT_CLASS}
             >
               {FIXED_CATEGORIES.map((cat) => (
                 <option key={cat.slug} value={cat.slug}>
@@ -216,13 +318,13 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
                 </option>
               ))}
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#687080]" />
+            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#687080]" aria-hidden="true" />
           </div>
         </div>
 
         {/* Row 3: Product Description */}
-        <div>
-          <label className="block text-xs sm:text-sm font-medium text-[#374151] mb-2">
+        <div role="group" aria-labelledby="product-description-label">
+          <label id="product-description-label" className={LABEL_CLASS}>
             Content &amp; Description <span className="text-red-500 font-semibold">*</span>
           </label>
           <RichTextEditor
@@ -233,8 +335,8 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
         </div>
 
         {/* Row 4: Technical Specifications */}
-        <div className="space-y-2">
-          <label className="block text-xs sm:text-sm font-medium text-[#374151]">
+        <div className="space-y-2" role="group" aria-labelledby="product-specifications-label">
+          <label id="product-specifications-label" className="block text-xs sm:text-sm font-medium text-[#374151]">
             Technical Specifications
           </label>
           <SpecificationsRepeater
@@ -254,7 +356,7 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
               <div className="relative aspect-[16/9] w-full sm:w-52 overflow-hidden rounded-xl border border-[#D9DCD1] bg-white shrink-0">
                 <Image
                   src={optimizeCloudinaryUrl(imagePreview, { width: 640 })}
-                  alt="Product preview"
+                  alt={imageAlt.trim() || "Product preview"}
                   fill
                   className="object-cover"
                 />
@@ -271,13 +373,13 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
                 </p>
 
                 <div className="mt-3 flex items-center gap-2">
-                  <label className="inline-flex items-center gap-1.5 rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-1.5 text-xs font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer">
+                  <label className="inline-flex items-center gap-1.5 rounded-xl border border-[#D9DCD1] bg-white px-3.5 py-1.5 text-xs font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer focus-within:border-[#650510] focus-within:ring-1 focus-within:ring-[#650510]">
                     <span>Replace Image</span>
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
-                      className="hidden"
+                      className="sr-only"
                     />
                   </label>
 
@@ -296,14 +398,14 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
             </div>
           ) : (
             <div className="flex items-center">
-              <label className="inline-flex items-center gap-2 rounded-xl border border-[#D9DCD1] bg-white px-4 py-2.5 text-xs sm:text-sm font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer">
+              <label className="inline-flex items-center gap-2 rounded-xl border border-[#D9DCD1] bg-white px-4 py-2.5 text-xs sm:text-sm font-medium text-[#111111] hover:bg-[#F1F2EA] shadow-2xs transition-colors cursor-pointer focus-within:border-[#650510] focus-within:ring-1 focus-within:ring-[#650510]">
                 <UploadCloud className="size-4 text-[#687080]" />
                 <span>Choose from Library</span>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="hidden"
+                  className="sr-only"
                 />
               </label>
             </div>
@@ -311,8 +413,8 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
         </div>
 
         {/* Row 6: Product FAQs */}
-        <div className="space-y-2">
-          <label className="block text-xs sm:text-sm font-medium text-[#374151]">
+        <div className="space-y-2" role="group" aria-labelledby="product-faqs-label">
+          <label id="product-faqs-label" className="block text-xs sm:text-sm font-medium text-[#374151]">
             Product FAQs
           </label>
           <FaqRepeater
@@ -320,6 +422,280 @@ export function ProductEditorForm({ initialData = null, isEdit = false }) {
             onChange={(updated) => setFaqs(updated)}
           />
         </div>
+
+        {/* Optional search and indexing details, kept out of the primary flow */}
+        <details className="group mt-8 border-t border-[#D9DCD1] pt-5">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xs py-1.5 text-sm font-semibold text-[#111111] hover:text-[#650510] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#650510] focus-visible:ring-offset-2 [&::-webkit-details-marker]:hidden">
+            <span>
+              Search engine settings
+              <span className="ml-2 text-xs font-normal text-[#687080]">Optional</span>
+            </span>
+            <ChevronDown
+              className="size-4 shrink-0 text-[#687080] group-open:rotate-180"
+              aria-hidden="true"
+            />
+          </summary>
+          <p className="mt-1 max-w-2xl text-xs leading-relaxed text-[#687080]">
+            Add details that help search results and shared links describe this product accurately. Leave any field blank to use the product information above.
+          </p>
+
+          <div className="mt-6 space-y-6">
+            <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2">
+              <div>
+                <label htmlFor="seo-title" className={LABEL_CLASS}>
+                  Search page title
+                </label>
+                <input
+                  id="seo-title"
+                  type="text"
+                  value={seoTitle}
+                  onChange={(e) => setSeoTitle(e.target.value)}
+                  placeholder="Short title for search results"
+                  aria-describedby="seo-title-hint"
+                  className={INPUT_CLASS}
+                />
+                <p id="seo-title-hint" className={HELP_TEXT_CLASS}>
+                  {characterHint(seoTitle, SEO_TITLE_LIMIT)}
+                </p>
+              </div>
+
+              <div>
+                <label htmlFor="seo-image-url" className={LABEL_CLASS}>
+                  Social sharing image URL
+                </label>
+                <input
+                  id="seo-image-url"
+                  type="url"
+                  value={seoImageUrl}
+                  onChange={(e) => setSeoImageUrl(e.target.value)}
+                  placeholder="https://example.com/product-image.jpg"
+                  aria-describedby="seo-image-url-hint"
+                  className={INPUT_CLASS}
+                />
+                <p id="seo-image-url-hint" className={HELP_TEXT_CLASS}>
+                  Use a direct image link for previews when this product is shared.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="seo-description" className={LABEL_CLASS}>
+                Search description
+              </label>
+              <textarea
+                id="seo-description"
+                rows={3}
+                value={seoDescription}
+                onChange={(e) => setSeoDescription(e.target.value)}
+                placeholder="Short, factual summary for search results"
+                aria-describedby="seo-description-hint"
+                className={TEXTAREA_CLASS}
+              />
+              <p id="seo-description-hint" className={HELP_TEXT_CLASS}>
+                {characterHint(seoDescription, SEO_DESCRIPTION_LIMIT)}
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="image-alt" className={LABEL_CLASS}>
+                Image alt text
+              </label>
+              <input
+                id="image-alt"
+                type="text"
+                value={imageAlt}
+                onChange={(e) => setImageAlt(e.target.value)}
+                placeholder="Describe the product image"
+                aria-describedby="image-alt-hint"
+                className={INPUT_CLASS}
+              />
+              <p id="image-alt-hint" className={HELP_TEXT_CLASS}>
+                Describe what the product image shows for people using screen readers.
+              </p>
+            </div>
+
+            <div>
+              <label htmlFor="product-introduction" className={LABEL_CLASS}>
+                Product introduction
+              </label>
+              <textarea
+                id="product-introduction"
+                rows={3}
+                value={introduction}
+                onChange={(e) => setIntroduction(e.target.value)}
+                placeholder="Add a short factual introduction"
+                aria-describedby="product-introduction-hint"
+                className={TEXTAREA_CLASS}
+              />
+              <p id="product-introduction-hint" className={HELP_TEXT_CLASS}>
+                Keep it to verified facts about the product.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
+              <div>
+                <label htmlFor="product-features" className={LABEL_CLASS}>
+                  Features
+                </label>
+                <textarea
+                  id="product-features"
+                  rows={6}
+                  value={features}
+                  onChange={(e) => setFeatures(e.target.value)}
+                  placeholder="One feature per line"
+                  aria-describedby="product-features-hint"
+                  className={TEXTAREA_CLASS}
+                />
+                <p id="product-features-hint" className={HELP_TEXT_CLASS}>
+                  Add one feature per line.
+                </p>
+              </div>
+
+              <div>
+                <label htmlFor="product-applications" className={LABEL_CLASS}>
+                  Applications
+                </label>
+                <textarea
+                  id="product-applications"
+                  rows={6}
+                  value={applications}
+                  onChange={(e) => setApplications(e.target.value)}
+                  placeholder="One application per line"
+                  aria-describedby="product-applications-hint"
+                  className={TEXTAREA_CLASS}
+                />
+                <p id="product-applications-hint" className={HELP_TEXT_CLASS}>
+                  Add one application per line.
+                </p>
+              </div>
+
+              <div>
+                <label htmlFor="product-benefits" className={LABEL_CLASS}>
+                  Benefits
+                </label>
+                <textarea
+                  id="product-benefits"
+                  rows={6}
+                  value={benefits}
+                  onChange={(e) => setBenefits(e.target.value)}
+                  placeholder="One benefit per line"
+                  aria-describedby="product-benefits-hint"
+                  className={TEXTAREA_CLASS}
+                />
+                <p id="product-benefits-hint" className={HELP_TEXT_CLASS}>
+                  Add one benefit per line.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2">
+              <div>
+                <label htmlFor="product-sku" className={LABEL_CLASS}>
+                  SKU
+                </label>
+                <input
+                  id="product-sku"
+                  type="text"
+                  value={sku}
+                  onChange={(e) => setSku(e.target.value)}
+                  placeholder="Optional stock keeping unit"
+                  className={INPUT_CLASS}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="product-mpn" className={LABEL_CLASS}>
+                  MPN
+                </label>
+                <input
+                  id="product-mpn"
+                  type="text"
+                  value={mpn}
+                  onChange={(e) => setMpn(e.target.value)}
+                  placeholder="Optional manufacturer part number"
+                  className={INPUT_CLASS}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
+              <div>
+                <label htmlFor="lifecycle-status" className={LABEL_CLASS}>
+                  Lifecycle status
+                </label>
+                <div className="relative">
+                  <select
+                    id="lifecycle-status"
+                    value={lifecycleStatus}
+                    onChange={(e) => setLifecycleStatus(e.target.value)}
+                    aria-describedby="lifecycle-status-hint"
+                    className={SELECT_CLASS}
+                  >
+                    {LIFECYCLE_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#687080]" aria-hidden="true" />
+                </div>
+                <p id="lifecycle-status-hint" className={HELP_TEXT_CLASS}>
+                  Out-of-stock products stay visible and can still appear in search results.
+                </p>
+              </div>
+
+              <div>
+                <label htmlFor="visibility" className={LABEL_CLASS}>
+                  Visibility
+                </label>
+                <div className="relative">
+                  <select
+                    id="visibility"
+                    value={visibility}
+                    onChange={(e) => setVisibility(e.target.value)}
+                    aria-describedby="visibility-hint"
+                    className={SELECT_CLASS}
+                  >
+                    {VISIBILITY_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#687080]" aria-hidden="true" />
+                </div>
+                <p id="visibility-hint" className={HELP_TEXT_CLASS}>
+                  Private products are hidden from the public catalog and excluded from search.
+                </p>
+              </div>
+
+              <div>
+                <label htmlFor="indexing-status" className={LABEL_CLASS}>
+                  Indexing
+                </label>
+                <div className="relative">
+                  <select
+                    id="indexing-status"
+                    value={indexingStatus}
+                    onChange={(e) => setIndexingStatus(e.target.value)}
+                    aria-describedby="indexing-status-hint"
+                    className={SELECT_CLASS}
+                  >
+                    {INDEXING_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#687080]" aria-hidden="true" />
+                </div>
+                <p id="indexing-status-hint" className={HELP_TEXT_CLASS}>
+                  Automatic follows the visibility and lifecycle settings. The other options ask search engines to include or skip this page.
+                </p>
+              </div>
+            </div>
+          </div>
+        </details>
       </div>
 
       {/* Sticky Action Bar */}

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { VALID_PRODUCT_CATEGORIES } from "./create-product.js";
+import { VALID_PRODUCT_CATEGORIES, seoProductFields } from "./create-product.js";
 
 export const updateProductSchema = z.object({
   productId: z
@@ -36,6 +36,7 @@ export const updateProductSchema = z.object({
     )
     .optional()
     .default([]),
+  ...seoProductFields,
 });
 
 export function validateUpdateProduct(productId, payload) {

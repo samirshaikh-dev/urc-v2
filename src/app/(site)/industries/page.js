@@ -2,7 +2,11 @@ import { IndustriesHero } from "@/components/industries/industries-hero";
 import { IndustriesList } from "@/components/industries/industries-list";
 import { IndustriesGuidance } from "@/components/industries/industries-guidance";
 import { FinalCTA } from "@/components/home/final-cta";
-import { constructMetadata, getBreadcrumbJsonLd } from "@/lib/seo";
+import {
+  constructMetadata,
+  getBreadcrumbJsonLd,
+  getJsonLdScriptProps,
+} from "@/lib/seo";
 
 export const metadata = constructMetadata({
   title: "Industries We Serve",
@@ -19,12 +23,7 @@ export default function IndustriesPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd),
-        }}
-      />
+      <script {...getJsonLdScriptProps(breadcrumbJsonLd)} />
       {/* 1. INDUSTRIES HERO */}
       <IndustriesHero />
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { AlertCircle, ArrowRight, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
+import { AlertCircle, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { CatalogProductCard } from "./catalog-product-card";
 import { QuoteModal } from "./quote-modal";
 import { cn } from "@/lib/utils";
@@ -79,7 +79,9 @@ export function CatalogProductGrid() {
         setTotalPages(json.totalPages || 1);
       } catch (err) {
         console.error("Failed to load products:", err);
-        setError("Unable to connect to the product database. Please try again.");
+        setError(
+          "We're having trouble loading our products right now. Please try again in a moment."
+        );
       } finally {
         setLoading(false);
       }
@@ -116,19 +118,17 @@ export function CatalogProductGrid() {
           >
             <AlertCircle className="size-8 text-maroon" />
             <h3 className="mt-3 text-base font-semibold text-ink sm:text-lg">
-              Failed to load product catalogue
+              We couldn't load our products
             </h3>
             <p className="mt-1 max-w-md text-xs sm:text-sm text-muted">
               {error}
             </p>
-            <button
-              type="button"
-              onClick={handleRetry}
+            <Link
+              href="/contact"
               className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-maroon px-5 py-2 text-xs font-semibold text-white hover:bg-maroon-deep transition-colors cursor-pointer"
             >
-              <RefreshCw className="size-3.5" />
-              <span>Retry connection</span>
-            </button>
+              <span>Contact Us</span>
+            </Link>
           </div>
         )}
 

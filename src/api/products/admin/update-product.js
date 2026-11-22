@@ -22,6 +22,10 @@ export async function updateProductAction(productId, payload) {
     revalidatePath("/products");
     revalidatePath(`/products/${result.categorySlug}`);
     revalidatePath(`/products/${result.categorySlug}/${result.slug}`);
+    if (result.previousCategorySlug && result.previousCategorySlug !== result.categorySlug) {
+      revalidatePath(`/products/${result.previousCategorySlug}`);
+    }
+    revalidatePath("/sitemap.xml");
     revalidatePath("/admin/products");
 
     return {

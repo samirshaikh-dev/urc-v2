@@ -6,6 +6,7 @@ import {
   cleanFaqs,
   cleanSpecifications,
   createRelatedRows,
+  getProductSeoValues,
 } from "../helpers";
 
 export async function updateProductService(productId, payload) {
@@ -67,6 +68,7 @@ export async function updateProductService(productId, payload) {
         description,
         imageUrl,
         imagePublicId,
+        ...getProductSeoValues(payload),
         updatedAt: new Date(),
       })
       .where(eq(products.id, productId));
@@ -82,6 +84,7 @@ export async function updateProductService(productId, payload) {
   return {
     slug: existing.slug,
     categorySlug,
+    previousCategorySlug: existing.categorySlug,
     productName: name.trim(),
   };
 }

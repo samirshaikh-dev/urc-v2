@@ -19,8 +19,8 @@ export function ProductCard({ product }) {
           {category && <p className="text-xs text-muted">{category.name}</p>}
           <h3 className="mt-1.5 text-xl font-semibold tracking-tight text-ink sm:text-2xl">
             <Link
-              href={`/products/${product.slug}`}
-              className="transition-colors duration-150 after:absolute after:inset-0 after:content-[''] group-hover:text-maroon"
+              href={`/products/${product.category}/${product.slug}`}
+              className="rounded-xs transition-colors duration-150 after:absolute after:inset-0 after:content-[''] group-hover:text-maroon focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon focus-visible:ring-offset-2"
             >
               {product.name}
             </Link>

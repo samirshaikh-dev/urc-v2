@@ -6,6 +6,7 @@ import {
   constructMetadata,
   getContactPageJsonLd,
   getBreadcrumbJsonLd,
+  getJsonLdScriptProps,
 } from "@/lib/seo";
 
 export const metadata = constructMetadata({
@@ -24,12 +25,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([contactJsonLd, breadcrumbJsonLd]),
-        }}
-      />
+      <script {...getJsonLdScriptProps([contactJsonLd, breadcrumbJsonLd])} />
       {/* 01. CONTACT HERO */}
       <ContactHero />
 

@@ -1,23 +1,40 @@
 import { SITE_CONFIG } from "./constants";
 import { ALL_KEYWORDS } from "./seo/keywords";
+import {
+  buildAbsoluteUrl,
+  getSiteUrl,
+  normalizeSeoPath,
+  resolveSeoUrl,
+  sanitizeSeoText,
+} from "./seo/url";
 
 export * from "./seo/keywords";
+export * from "./seo/url";
+export * from "./seo/jsonld";
 export * from "./seo/structured-data";
+export * from "./seo/product-seo";
+
+const DEFAULT_DESCRIPTION = sanitizeSeoText(SITE_CONFIG.description);
+const DEFAULT_TITLE = `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`;
+
+function titleIncludesBrand(title) {
+  const normalized = sanitizeSeoText(title).toLocaleLowerCase();
+  return normalized.includes(SITE_CONFIG.name.toLocaleLowerCase());
+}
 
 /**
- * Standard Root Metadata for Next.js App Router (RootLayout)
- * Modeled after reference/seo/metadata.ts
+ * Standard Root Metadata for Next.js App Router (RootLayout).
+ * Uses only verified site-level facts from SITE_CONFIG.
  */
 export const rootMetadata = {
-  metadataBase: new URL(SITE_CONFIG.url),
+  metadataBase: new URL(getSiteUrl()),
   title: {
-    default: `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`,
+    default: DEFAULT_TITLE,
     template: `%s | ${SITE_CONFIG.name}`,
   },
-  description:
-    "Leading manufacturer & supplier of rubberised cork sheets, transformer gaskets, clutch wads, foundation slabs, and acoustic cork materials based in GIDC Vapi, Gujarat. Conforming to IS: 4253 / ASTM F104.",
+  description: DEFAULT_DESCRIPTION,
   keywords: ALL_KEYWORDS,
-  authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
+  authors: [{ name: SITE_CONFIG.name, url: getSiteUrl() }],
   creator: SITE_CONFIG.name,
   publisher: SITE_CONFIG.name,
   formatDetection: {
@@ -29,16 +46,13 @@ export const rootMetadata = {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`,
-    description:
-      "Precision-engineered rubberised cork sheets, transformer gaskets, and industrial components manufactured in GIDC Vapi, Gujarat. Conforms to IS: 4253 and ASTM standards.",
-    url: SITE_CONFIG.url,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    url: getSiteUrl(),
     siteName: SITE_CONFIG.name,
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: resolveSeoUrl("/og-image.png"),
         alt: `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`,
       },
     ],
@@ -47,10 +61,9 @@ export const rootMetadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`,
-    description:
-      "Precision-engineered rubberised cork sheets, transformer gaskets, and industrial components manufactured in GIDC Vapi, Gujarat.",
-    images: ["/og-image.png"],
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [resolveSeoUrl("/og-image.png")],
   },
   robots: {
     index: true,
@@ -64,32 +77,66 @@ export const rootMetadata = {
     },
   },
   alternates: {
-    canonical: SITE_CONFIG.url,
+    canonical: getSiteUrl(),
   },
 };
 
 /**
- * Generate standard page-level metadata
+ * Generate page-level metadata with a single canonical URL and no duplicated
+ * brand suffix. `title.absolute` bypasses the root title template on purpose.
  */
 export function constructMetadata({
   title,
-  description = SITE_CONFIG.description,
-  image = "/og-image.png",
+  description,
+  image,
+  imageAlt,
   path = "",
   noIndex = false,
+  index,
+  follow,
   keywords = ALL_KEYWORDS,
+  openGraphTitle,
+  openGraphDescription,
+  openGraphImage,
+  openGraphImageAlt,
+  twitterTitle,
+  twitterDescription,
+  twitterImage,
+  twitterImageAlt,
+  twitterCard = "summary_large_image",
 } = {}) {
-  const fullTitle = title
-    ? `${title} | ${SITE_CONFIG.name}`
-    : `${SITE_CONFIG.name} — ${SITE_CONFIG.tagline}`;
+  const siteUrl = getSiteUrl();
+  const canonicalPath = normalizeSeoPath(path);
+  const canonicalUrl = buildAbsoluteUrl(canonicalPath, siteUrl);
 
-  const canonicalUrl = `${SITE_CONFIG.url}${path}`;
+  const cleanTitle = sanitizeSeoText(title) || DEFAULT_TITLE;
+  const finalTitle = titleIncludesBrand(cleanTitle)
+    ? cleanTitle
+    : `${cleanTitle} | ${SITE_CONFIG.name}`;
+
+  const finalDescription =
+    sanitizeSeoText(description) || DEFAULT_DESCRIPTION || "";
+
+  const ogTitle = sanitizeSeoText(openGraphTitle) || finalTitle;
+  const ogDescription =
+    sanitizeSeoText(openGraphDescription) || finalDescription;
+  const ogImage = resolveSeoUrl(openGraphImage || image || "/og-image.png");
+  const ogImageAlt =
+    sanitizeSeoText(openGraphImageAlt || imageAlt) || finalTitle;
+
+  const twTitle = sanitizeSeoText(twitterTitle) || ogTitle;
+  const twDescription =
+    sanitizeSeoText(twitterDescription) || ogDescription;
+  const twImage = resolveSeoUrl(twitterImage || openGraphImage || image || "/og-image.png");
+
+  const shouldIndex = noIndex ? false : typeof index === "boolean" ? index : true;
+  const shouldFollow = noIndex ? false : typeof follow === "boolean" ? follow : true;
 
   return {
-    title: fullTitle,
-    description,
+    title: { absolute: finalTitle },
+    description: finalDescription,
     keywords,
-    metadataBase: new URL(SITE_CONFIG.url),
+    metadataBase: new URL(siteUrl),
     alternates: {
       canonical: canonicalUrl,
     },
@@ -97,33 +144,38 @@ export function constructMetadata({
       icon: "/favicon.ico",
     },
     openGraph: {
-      title: fullTitle,
-      description,
+      title: ogTitle,
+      description: ogDescription,
       url: canonicalUrl,
       siteName: SITE_CONFIG.name,
       images: [
         {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: fullTitle,
+          url: ogImage,
+          alt: ogImageAlt,
         },
       ],
       locale: SITE_CONFIG.locale,
       type: "website",
     },
     twitter: {
-      card: "summary_large_image",
-      title: fullTitle,
-      description,
-      images: [image],
+      card: twitterCard,
+      title: twTitle,
+      description: twDescription,
+      images: [
+        {
+          url: twImage,
+          ...(sanitizeSeoText(twitterImageAlt || openGraphImageAlt || imageAlt)
+            ? { alt: sanitizeSeoText(twitterImageAlt || openGraphImageAlt || imageAlt) }
+            : {}),
+        },
+      ],
     },
     robots: {
-      index: !noIndex,
-      follow: !noIndex,
+      index: shouldIndex,
+      follow: shouldFollow,
       googleBot: {
-        index: !noIndex,
-        follow: !noIndex,
+        index: shouldIndex,
+        follow: shouldFollow,
         "max-video-preview": -1,
         "max-image-preview": "large",
         "max-snippet": -1,
@@ -133,15 +185,15 @@ export function constructMetadata({
 }
 
 /**
- * Legacy Organization schema compatibility
+ * Legacy Organization schema compatibility.
  */
 export function generateOrganizationSchema({ companyInfo } = {}) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: SITE_CONFIG.name,
-    url: SITE_CONFIG.url,
-    description: SITE_CONFIG.description,
+    url: getSiteUrl(),
+    description: DEFAULT_DESCRIPTION,
     address: companyInfo?.address
       ? {
           "@type": "PostalAddress",
@@ -157,7 +209,6 @@ export function generateOrganizationSchema({ companyInfo } = {}) {
           "@type": "ContactPoint",
           telephone: companyInfo.phone,
           contactType: "sales",
-          availableLanguage: ["English", "Hindi", "Gujarati"],
         }
       : undefined,
   };

@@ -3,8 +3,33 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary-url";
 
+const CATEGORY_LABELS = {
+  "cork-products": "Cork Products",
+  "rubberised-cork": "Rubberised Cork",
+  "decorative-cork": "Decorative Cork",
+  "cork-gifts": "Cork Gifts",
+};
+
+function getProductImageAlt(product) {
+  const suppliedAlt =
+    typeof product.imageAlt === "string" ? product.imageAlt.trim() : "";
+  if (suppliedAlt) return suppliedAlt;
+
+  const name = typeof product.name === "string" ? product.name.trim() : "";
+  const categoryValue = product.category || product.categorySlug;
+  const category =
+    typeof categoryValue === "string"
+      ? CATEGORY_LABELS[categoryValue] || categoryValue.replace(/-/g, " ").trim()
+      : "";
+
+  if (name && category) return `${name} (${category}) from United Rubber Cork`;
+  if (name) return `${name} from United Rubber Cork`;
+  return "United Rubber Cork product";
+}
+
 export function CategoryProductCard({ product }) {
   const detailUrl = `/products/${product.category}/${product.slug}`;
+  const productImageAlt = getProductImageAlt(product);
   
   // Clean description snippet by removing any HTML tags
   const rawDescription = product.fullDescription || product.description || product.shortDescription || "";
@@ -27,8 +52,9 @@ export function CategoryProductCard({ product }) {
             optimizeCloudinaryUrl(product.image, { width: 1000 }) ||
             "/images/placeholder-product.jpg"
           }
-          alt={product.name}
+          alt={productImageAlt}
           fill
+          loading="lazy"
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
@@ -45,7 +71,10 @@ export function CategoryProductCard({ product }) {
       <div className="flex flex-1 flex-col justify-between p-6 sm:p-7">
         <div>
           <h3 className="text-lg font-semibold tracking-tight text-ink sm:text-xl group-hover:text-maroon transition-colors duration-150">
-            <Link href={detailUrl} className="focus:outline-none focus:underline">
+            <Link
+              href={detailUrl}
+              className="rounded-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon focus-visible:ring-offset-2 focus-visible:underline"
+            >
               {product.name}
             </Link>
           </h3>

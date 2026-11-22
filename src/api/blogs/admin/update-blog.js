@@ -23,6 +23,10 @@ export async function updateBlogAction(id, payload) {
     const updated = await updateBlogService(id, validation.data);
     revalidatePath("/admin/blogs");
     revalidatePath(`/admin/blogs/${id}/edit`);
+    revalidatePath("/blog");
+    if (updated?.slug) {
+      revalidatePath(`/blog/${updated.slug}`);
+    }
     return { success: true, blog: updated };
   } catch (err) {
     console.error("updateBlogAction error:", err);
@@ -43,6 +47,10 @@ export async function toggleBlogPublishAction(id) {
   try {
     const updated = await toggleBlogPublishService(id);
     revalidatePath("/admin/blogs");
+    revalidatePath("/blog");
+    if (updated?.slug) {
+      revalidatePath(`/blog/${updated.slug}`);
+    }
     return { success: true, published: updated.published };
   } catch (err) {
     return { success: false, error: err.message || "Failed to toggle publish state." };

@@ -63,6 +63,37 @@ export function createRelatedRows(records, productId, fields) {
   }));
 }
 
+const PRODUCT_SEO_FIELDS = [
+  "seoTitle",
+  "seoDescription",
+  "seoImageUrl",
+  "imageAlt",
+  "introduction",
+  "features",
+  "applications",
+  "benefits",
+  "relatedProductIds",
+  "sku",
+  "mpn",
+  "visibility",
+  "lifecycleStatus",
+  "indexingStatus",
+];
+
+/**
+ * Extracts only the optional SEO/content columns from a validated admin
+ * payload. Values are intentionally passed through as-is so clearing a field
+ * in the editor writes an empty value instead of leaving stale metadata.
+ */
+export function getProductSeoValues(payload = {}) {
+  return Object.fromEntries(
+    PRODUCT_SEO_FIELDS.filter((field) => payload[field] !== undefined).map((field) => [
+      field,
+      payload[field],
+    ])
+  );
+}
+
 export async function loadRelatedRows(db, rows, { faqs = false, specifications = false } = {}) {
   if (!rows.length) {
     return rows;

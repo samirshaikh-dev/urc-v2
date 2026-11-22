@@ -3,6 +3,7 @@ import { products } from "@/db/schema";
 import {
   ADMIN_FRIENDLY_DB_ERROR,
   getDatabase,
+  getProductSeoValues,
   handleDatabaseFailure,
   loadRelatedRows,
   markDatabaseAvailable,
@@ -28,8 +29,10 @@ export async function getAllProductsAdmin() {
       imagePublicId: product.imagePublicId,
       badge: product.badge || "",
       description: product.description,
+      ...getProductSeoValues(product),
       faqs: product.faqs || [],
       createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
     }));
   } catch (error) {
     handleDatabaseFailure(error);
@@ -62,6 +65,7 @@ export async function getProductByIdAdmin(id) {
       imagePublicId: product.imagePublicId,
       badge: product.badge || "",
       description: product.description,
+      ...getProductSeoValues(product),
       faqs: product.faqs || [],
       specifications: product.specifications || [],
     };

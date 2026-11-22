@@ -7,6 +7,41 @@ export const VALID_PRODUCT_CATEGORIES = [
   "cork-gifts",
 ];
 
+export const seoProductFields = {
+  seoTitle: z.string().trim().max(120).optional().default(""),
+  seoDescription: z.string().trim().max(320).optional().default(""),
+  seoImageUrl: z.string().trim().max(2048).optional().default(""),
+  imageAlt: z.string().trim().max(300).optional().default(""),
+  introduction: z.string().trim().max(1200).optional().default(""),
+  features: z
+    .array(z.string().trim().max(300))
+    .max(30)
+    .optional()
+    .default([]),
+  applications: z
+    .array(z.string().trim().max(300))
+    .max(30)
+    .optional()
+    .default([]),
+  benefits: z
+    .array(z.string().trim().max(300))
+    .max(30)
+    .optional()
+    .default([]),
+  sku: z.string().trim().max(120).optional().default(""),
+  mpn: z.string().trim().max(120).optional().default(""),
+  visibility: z.enum(["public", "private", "draft"]).optional().default("public"),
+  lifecycleStatus: z
+    .enum(["active", "out_of_stock", "discontinued"])
+    .optional()
+    .default("active"),
+  indexingStatus: z
+    .enum(["auto", "index", "noindex"])
+    .optional()
+    .default("auto"),
+  relatedProductIds: z.array(z.string().trim().max(80)).max(30).optional().default([]),
+};
+
 export const createProductSchema = z.object({
   name: z
     .string({ error: "Product name is required." })
@@ -40,6 +75,7 @@ export const createProductSchema = z.object({
     )
     .optional()
     .default([]),
+  ...seoProductFields,
 });
 
 export function validateCreateProduct(payload) {
