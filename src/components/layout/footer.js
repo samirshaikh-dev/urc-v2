@@ -236,7 +236,7 @@ export function Footer({ currentYear }) {
         </div>
 
         {/* 3. LEGAL & BOTTOM BAR */}
-        <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-6 pb-16 md:pb-0 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <p>
               &copy; {year} {SITE_CONFIG.name}. All rights reserved.

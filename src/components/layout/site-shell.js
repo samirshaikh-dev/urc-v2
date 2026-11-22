@@ -1,6 +1,7 @@
 import { cacheLife } from "next/cache";
 import { Navbar } from "./navbar";
 import { Footer } from "./footer";
+import { MobileActionBar } from "./mobile-action-bar";
 
 // Cache Components disallows `new Date()` during prerendering, so the footer
 // year is cached instead of evaluated on every render.
@@ -36,6 +37,7 @@ export async function SiteShell({ children }) {
         {children}
       </main>
       <Footer currentYear={currentYear} />
+      <MobileActionBar />
     </>
   );
 }
