@@ -1,4 +1,4 @@
-CREATE TABLE "blogs" (
+CREATE TABLE IF NOT EXISTS "blogs" (
 	"id" text PRIMARY KEY NOT NULL,
 	"slug" text NOT NULL,
 	"title" text NOT NULL,
@@ -15,4 +15,4 @@ CREATE TABLE "blogs" (
 	CONSTRAINT "blogs_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE INDEX "blogs_published_created_at_idx" ON "blogs" USING btree ("published","created_at");
+CREATE INDEX IF NOT EXISTS "blogs_published_created_at_idx" ON "blogs" USING btree ("published","created_at");
