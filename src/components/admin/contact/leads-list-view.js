@@ -27,9 +27,10 @@ export function LeadsListView({ initialLeads = [] }) {
     if (!q) return leads;
     return leads.filter((lead) => {
       return (
-        lead.name.toLowerCase().includes(q) ||
+        lead.id?.toLowerCase().includes(q) ||
+        lead.name?.toLowerCase().includes(q) ||
         lead.company?.toLowerCase().includes(q) ||
-        lead.email.toLowerCase().includes(q) ||
+        lead.email?.toLowerCase().includes(q) ||
         lead.phone?.toLowerCase().includes(q) ||
         lead.product?.toLowerCase().includes(q) ||
         lead.message?.toLowerCase().includes(q)
@@ -79,12 +80,12 @@ export function LeadsListView({ initialLeads = [] }) {
         </div>
 
         {/* Live Search Field */}
-        <div className="relative w-full sm:w-72">
+        <div className="relative w-full sm:w-80">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search leads by buyer, company, product..."
+            placeholder="Search by ID, name , company..."
             className="w-full rounded-lg border border-[#D9DCD1] bg-[#F1F2EA]/60 px-3 py-1.5 pl-8 text-xs text-[#111111] placeholder:text-[#687080] focus:border-[#111111] focus:bg-white focus:outline-none transition-colors"
           />
           <Search className="absolute left-2.5 top-2 size-3.5 text-[#687080]" />
@@ -145,13 +146,20 @@ export function LeadsListView({ initialLeads = [] }) {
                     {/* Buyer & Company */}
                     <td className="py-3.5 px-4 sm:px-6">
                       <div className="space-y-0.5">
-                        <button
-                          type="button"
-                          onClick={() => setSelectedLead(lead)}
-                          className="text-left font-semibold text-xs sm:text-sm text-[#111111] hover:text-[#650510] hover:underline cursor-pointer block truncate max-w-xs sm:max-w-sm"
-                        >
-                          {lead.name}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedLead(lead)}
+                            className="text-left font-semibold text-xs sm:text-sm text-[#111111] hover:text-[#650510] hover:underline cursor-pointer block truncate max-w-xs sm:max-w-sm"
+                          >
+                            {lead.name}
+                          </button>
+                          {lead.id && (
+                            <span className="font-mono text-[10px] text-[#650510] font-semibold bg-[#650510]/5 px-1.5 py-0.2 rounded border border-[#650510]/15">
+                              {lead.id}
+                            </span>
+                          )}
+                        </div>
                         <span className="flex items-center gap-1.5 text-[11px] text-[#687080] truncate max-w-xs">
                           <Building className="size-3 shrink-0" />
                           <span>{lead.company || "Direct Individual"}</span>
