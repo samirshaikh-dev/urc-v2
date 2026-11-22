@@ -1,4 +1,4 @@
-CREATE TABLE "enquiries" (
+CREATE TABLE IF NOT EXISTS "enquiries" (
 	"id" text PRIMARY KEY NOT NULL,
 	"full_name" text NOT NULL,
 	"company_name" text NOT NULL,
@@ -19,6 +19,6 @@ CREATE TABLE "enquiries" (
 	CONSTRAINT "enquiries_lead_status_check" CHECK ("enquiries"."lead_status" in ('new', 'review', 'quoted', 'converted', 'archived'))
 );
 --> statement-breakpoint
-CREATE INDEX "enquiries_business_email_idx" ON "enquiries" USING btree ("business_email");--> statement-breakpoint
-CREATE INDEX "enquiries_created_at_idx" ON "enquiries" USING btree ("created_at");--> statement-breakpoint
-CREATE INDEX "enquiries_lead_status_idx" ON "enquiries" USING btree ("lead_status");
+CREATE INDEX IF NOT EXISTS "enquiries_business_email_idx" ON "enquiries" USING btree ("business_email");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "enquiries_created_at_idx" ON "enquiries" USING btree ("created_at");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "enquiries_lead_status_idx" ON "enquiries" USING btree ("lead_status");

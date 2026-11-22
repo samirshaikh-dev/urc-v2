@@ -1,22 +1,52 @@
-ALTER TABLE "products" ADD COLUMN "seo_title" text;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "seo_description" text;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "seo_image_url" text;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "image_alt" text;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "introduction" text;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "features" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "applications" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "benefits" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "related_product_ids" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "sku" text;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "mpn" text;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "visibility" text DEFAULT 'public' NOT NULL;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "lifecycle_status" text DEFAULT 'active' NOT NULL;--> statement-breakpoint
-ALTER TABLE "products" ADD COLUMN "indexing_status" text DEFAULT 'auto' NOT NULL;--> statement-breakpoint
-CREATE INDEX "products_visibility_idx" ON "products" USING btree ("visibility");--> statement-breakpoint
-CREATE INDEX "products_visibility_lifecycle_idx" ON "products" USING btree ("visibility","lifecycle_status");--> statement-breakpoint
-ALTER TABLE "products" ADD CONSTRAINT "products_visibility_check" CHECK ("products"."visibility" in ('public', 'private', 'draft'));--> statement-breakpoint
-ALTER TABLE "products" ADD CONSTRAINT "products_lifecycle_status_check" CHECK ("products"."lifecycle_status" in ('active', 'out_of_stock', 'discontinued'));--> statement-breakpoint
-ALTER TABLE "products" ADD CONSTRAINT "products_indexing_status_check" CHECK ("products"."indexing_status" in ('auto', 'index', 'noindex'));--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "seo_title" text;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "seo_description" text;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "seo_image_url" text;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "image_alt" text;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "introduction" text;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "features" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "applications" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "benefits" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "related_product_ids" jsonb DEFAULT '[]'::jsonb NOT NULL;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "sku" text;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "mpn" text;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "visibility" text DEFAULT 'public' NOT NULL;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "lifecycle_status" text DEFAULT 'active' NOT NULL;--> statement-breakpoint
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "indexing_status" text DEFAULT 'auto' NOT NULL;--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "products_visibility_idx" ON "products" USING btree ("visibility");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "products_visibility_lifecycle_idx" ON "products" USING btree ("visibility","lifecycle_status");--> statement-breakpoint
+DO $$
+BEGIN
+	IF NOT EXISTS (
+		SELECT 1 FROM pg_constraint
+		WHERE conname = 'products_visibility_check'
+		  AND conrelid = 'public.products'::regclass
+	) THEN
+		ALTER TABLE "products" ADD CONSTRAINT "products_visibility_check" CHECK ("products"."visibility" in ('public', 'private', 'draft'));
+	END IF;
+END
+$$;--> statement-breakpoint
+DO $$
+BEGIN
+	IF NOT EXISTS (
+		SELECT 1 FROM pg_constraint
+		WHERE conname = 'products_lifecycle_status_check'
+		  AND conrelid = 'public.products'::regclass
+	) THEN
+		ALTER TABLE "products" ADD CONSTRAINT "products_lifecycle_status_check" CHECK ("products"."lifecycle_status" in ('active', 'out_of_stock', 'discontinued'));
+	END IF;
+END
+$$;--> statement-breakpoint
+DO $$
+BEGIN
+	IF NOT EXISTS (
+		SELECT 1 FROM pg_constraint
+		WHERE conname = 'products_indexing_status_check'
+		  AND conrelid = 'public.products'::regclass
+	) THEN
+		ALTER TABLE "products" ADD CONSTRAINT "products_indexing_status_check" CHECK ("products"."indexing_status" in ('auto', 'index', 'noindex'));
+	END IF;
+END
+$$;--> statement-breakpoint
 -- Backfill optional SEO/content fields from the existing static catalog.
 -- This uses verified product copy only; no offers, prices, or availability are inferred.
 UPDATE "products"
