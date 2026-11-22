@@ -4,7 +4,8 @@ import { Pool, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-serverless";
 import { eq } from "drizzle-orm";
 import ws from "ws";
-import { productFaqs, productSpecifications, products } from "../src/db/schema.js";
+import { blogs, productFaqs, productSpecifications, products } from "../src/db/schema.js";
+import { INITIAL_BLOGS } from "../src/data/blogs.js";
 import { PRODUCTS } from "../src/data/products.js";
 
 neonConfig.webSocketConstructor = ws;
@@ -294,6 +295,22 @@ async function main() {
       });
 
       console.log("Seeded product: " + product.name + " (" + product.slug + ")");
+    }
+
+    // Baseline engineering articles only. Existing rows are left untouched so
+    // editorial changes made in the admin area are not overwritten by a seed.
+    for (const article of INITIAL_BLOGS) {
+      const [saved] = await db
+        .insert(blogs)
+        .values(article)
+        .onConflictDoNothing()
+        .returning({ id: blogs.id });
+
+      console.log(
+        saved
+          ? "Seeded blog: " + article.title + " (" + article.slug + ")"
+          : "Blog already present: " + article.slug
+      );
     }
 
     console.log("Database seeding completed successfully!");

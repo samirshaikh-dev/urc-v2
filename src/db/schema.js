@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   check,
   index,
   integer,
@@ -92,6 +93,31 @@ export const productSpecifications = pgTable(
     productSortIndex: index("product_specifications_product_sort_idx").on(
       table.productId,
       table.sortOrder
+    ),
+  })
+);
+
+export const blogs = pgTable(
+  "blogs",
+  {
+    id: text("id").primaryKey(),
+    slug: text("slug").notNull().unique(),
+    title: text("title").notNull(),
+    excerpt: text("excerpt").notNull().default(""),
+    previewText: text("preview_text").notNull().default(""),
+    content: text("content").notNull(),
+    tags: text("tags").notNull().default(""),
+    author: text("author").notNull().default("URC Engineering Team"),
+    readTime: text("read_time").notNull().default("4 min read"),
+    imageUrl: text("image_url"),
+    published: boolean("published").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => ({
+    publishedCreatedAtIndex: index("blogs_published_created_at_idx").on(
+      table.published,
+      table.createdAt
     ),
   })
 );

@@ -42,6 +42,7 @@ export async function createLeadAction(payload) {
     emailFailed = true;
   }
 
+  revalidatePath("/admin/leads");
   revalidatePath("/admin/contact");
 
   return {
@@ -81,6 +82,7 @@ export async function createWhatsAppEnquiryAction(payload) {
       submissionMethod: "whatsapp",
     });
     enquiryId = enquiry.id;
+    revalidatePath("/admin/leads");
     revalidatePath("/admin/contact");
   } catch (err) {
     dbFailed = true;

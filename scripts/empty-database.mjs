@@ -16,8 +16,8 @@ if (!url) {
 }
 
 // Tables to clear. Tables that do not exist are skipped. Leads submitted
-// through the contact form are stored in `enquiries`; `blogs` is included for
-// databases that persist it.
+// through the contact form are stored in `enquiries`; articles are stored in
+// `blogs`.
 const targets = [
   "product_faqs",
   "product_specifications",
@@ -83,7 +83,5 @@ try {
 if (toTruncate.includes("blogs")) {
   console.log("Blog rows were cleared too.");
 } else {
-  console.log(
-    "No blogs table was found; blogs held in the app's in-memory store are not cleared by this script."
-  );
+  console.log("No blogs table was found; run npm run db:migrate to create it.");
 }

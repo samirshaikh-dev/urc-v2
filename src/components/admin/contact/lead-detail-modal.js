@@ -71,6 +71,20 @@ export function LeadDetailModal({ lead, onClose, onUpdate }) {
               <span className="text-xs text-[#687080]">
                 ID: {lead.id}
               </span>
+              {lead.submissionMethod && (
+                <>
+                  <span className="text-[#D9DCD1]">•</span>
+                  <span
+                    className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full ${
+                      lead.submissionMethod === "whatsapp"
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        : "bg-orange-50 text-orange-700 border border-orange-200"
+                    }`}
+                  >
+                    via {lead.submissionMethod === "whatsapp" ? "WhatsApp" : "Email"}
+                  </span>
+                </>
+              )}
             </div>
             <h2 className="text-lg font-bold text-[#111111] mt-0.5">
               {lead.name}

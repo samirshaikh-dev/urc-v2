@@ -1,7 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { getAdminSession } from "@/lib/auth";
+import { getBlogByIdAdmin } from "@/services/blogs/admin/get-blog";
 import {
   toggleBlogPublishService,
   updateBlogService,
@@ -20,7 +21,18 @@ export async function updateBlogAction(id, payload) {
   }
 
   try {
+    const existing = await getBlogByIdAdmin(id);
     const updated = await updateBlogService(id, validation.data);
+
+    updateTag("blogs");
+    if (updated?.slug) {
+      updateTag(`blog-${updated.slug}`);
+    }
+    if (existing?.slug && existing.slug !== updated?.slug) {
+      updateTag(`blog-${existing.slug}`);
+      revalidatePath(`/blog/${existing.slug}`);
+    }
+
     revalidatePath("/admin/blogs");
     revalidatePath(`/admin/blogs/${id}/edit`);
     revalidatePath("/blog");
@@ -46,11 +58,13 @@ export async function toggleBlogPublishAction(id) {
 
   try {
     const updated = await toggleBlogPublishService(id);
-    revalidatePath("/admin/blogs");
-    revalidatePath("/blog");
+    updateTag("blogs");
     if (updated?.slug) {
+      updateTag(`blog-${updated.slug}`);
       revalidatePath(`/blog/${updated.slug}`);
     }
+    revalidatePath("/admin/blogs");
+    revalidatePath("/blog");
     return { success: true, published: updated.published };
   } catch (err) {
     return { success: false, error: err.message || "Failed to toggle publish state." };

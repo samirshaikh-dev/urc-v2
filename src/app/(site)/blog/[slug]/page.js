@@ -28,6 +28,14 @@ import {
 
 export async function generateStaticParams() {
   const blogs = await fetchPublishedBlogs();
+
+  // Cache Components require at least one param at build time. An empty blog
+  // table is valid before the first seed, so use a placeholder that resolves
+  // to notFound() until a real article exists.
+  if (blogs.length === 0) {
+    return [{ slug: "__placeholder__" }];
+  }
+
   return blogs.map((b) => ({
     slug: b.slug,
   }));

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { getAdminSession } from "@/lib/auth";
 import { createBlogService } from "@/services/blogs/admin/create-blog";
 import { validateCreateBlog } from "@/validation/blogs";
@@ -18,6 +18,10 @@ export async function createBlogAction(payload) {
 
   try {
     const blog = await createBlogService(validation.data);
+    updateTag("blogs");
+    if (blog?.slug) {
+      updateTag(`blog-${blog.slug}`);
+    }
     revalidatePath("/admin/blogs");
     revalidatePath("/blog");
     if (blog?.slug) {

@@ -152,9 +152,14 @@ export function LeadsListView({ initialLeads = [] }) {
                         >
                           {lead.name}
                         </button>
-                        <span className="flex items-center gap-1 text-[11px] text-[#687080] truncate max-w-xs">
+                        <span className="flex items-center gap-1.5 text-[11px] text-[#687080] truncate max-w-xs">
                           <Building className="size-3 shrink-0" />
                           <span>{lead.company || "Direct Individual"}</span>
+                          {lead.submissionMethod === "whatsapp" && (
+                            <span className="text-[9px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                              WhatsApp
+                            </span>
+                          )}
                         </span>
                       </div>
                     </td>

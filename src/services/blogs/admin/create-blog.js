@@ -1,8 +1,11 @@
+import { randomUUID } from "node:crypto";
+import { blogs } from "@/db/schema";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { slugify } from "@/lib/utils";
-import { blogsStore, setBlogsStore } from "../store.js";
+import { getBlogDb, mapBlog, resolveUniqueBlogSlug } from "../helpers";
 
 export async function createBlogService(payload) {
+  const db = getBlogDb();
+
   const {
     title,
     excerpt,
@@ -20,28 +23,34 @@ export async function createBlogService(payload) {
       const uploadResult = await uploadToCloudinary(imageFileUri, "urc-v2/blogs");
       if (uploadResult.success) {
         finalImageUrl = uploadResult.secureUrl;
+      } else {
+        console.warn("[blogs] Image upload failed:", uploadResult.error);
       }
     } else {
       finalImageUrl = imageFileUri;
     }
   }
 
-  const newBlog = {
-    id: `blog-${Date.now()}`,
-    slug: slugify(title),
-    title: title.trim(),
-    excerpt: excerpt?.trim() || "",
-    content: content.trim(),
-    tags: tags?.trim() || "",
-    author: author?.trim() || "URC Engineering Team",
-    readTime: readTime?.trim() || "4 min read",
-    imageUrl: finalImageUrl,
-    published: published !== false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  const slug = await resolveUniqueBlogSlug(db, title);
+  const now = new Date();
 
-  setBlogsStore([newBlog, ...blogsStore]);
-  return newBlog;
+  const [row] = await db
+    .insert(blogs)
+    .values({
+      id: randomUUID(),
+      slug,
+      title: title.trim(),
+      excerpt: excerpt?.trim() || "",
+      content: content.trim(),
+      tags: tags?.trim() || "",
+      author: author?.trim() || "URC Engineering Team",
+      readTime: readTime?.trim() || "4 min read",
+      imageUrl: finalImageUrl,
+      published: published !== false,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .returning();
+
+  return mapBlog(row);
 }
-

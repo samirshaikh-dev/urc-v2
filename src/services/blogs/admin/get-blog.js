@@ -1,15 +1,20 @@
-import { blogsStore } from "../store.js";
+import { desc, eq } from "drizzle-orm";
+import { blogs } from "@/db/schema";
+import { getBlogDb, mapBlog } from "../helpers";
 
 export async function getAllBlogsAdmin() {
-  return [...blogsStore].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const db = getBlogDb();
+  const rows = await db.select().from(blogs).orderBy(desc(blogs.createdAt));
+  return rows.map(mapBlog);
 }
 
 export async function getBlogByIdAdmin(id) {
-  return blogsStore.find((b) => b.id === id) || null;
+  const db = getBlogDb();
+  const [row] = await db.select().from(blogs).where(eq(blogs.id, id)).limit(1);
+  return mapBlog(row);
 }
 
 export {
   getAllBlogsAdmin as getAllBlogs,
   getBlogByIdAdmin as getBlogById,
 };
-

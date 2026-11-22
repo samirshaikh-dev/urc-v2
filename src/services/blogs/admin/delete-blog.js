@@ -1,8 +1,13 @@
-import { blogsStore, setBlogsStore } from "../store.js";
+import { eq } from "drizzle-orm";
+import { blogs } from "@/db/schema";
+import { getBlogDb } from "../helpers";
 
 export async function deleteBlogService(id) {
-  const prevLen = blogsStore.length;
-  setBlogsStore(blogsStore.filter((b) => b.id !== id));
-  return blogsStore.length < prevLen;
-}
+  const db = getBlogDb();
+  const deleted = await db
+    .delete(blogs)
+    .where(eq(blogs.id, id))
+    .returning({ id: blogs.id });
 
+  return deleted.length > 0;
+}

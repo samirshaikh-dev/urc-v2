@@ -29,6 +29,13 @@
       "when": 1795326398270,
       "tag": "0003_wet_pestilence",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795328128469,
+      "tag": "0004_magenta_firedrake",
+      "breakpoints": true
     }
   ]
 }

@@ -1,14 +1,16 @@
+import { eq } from "drizzle-orm";
+import { blogs } from "@/db/schema";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { slugify } from "@/lib/utils";
-import { blogsStore } from "../store.js";
+import { getBlogDb, mapBlog, resolveUniqueBlogSlug } from "../helpers";
 
 export async function updateBlogService(id, payload) {
-  const index = blogsStore.findIndex((b) => b.id === id);
-  if (index === -1) {
+  const db = getBlogDb();
+
+  const [existing] = await db.select().from(blogs).where(eq(blogs.id, id)).limit(1);
+  if (!existing) {
     throw new Error("Blog not found.");
   }
 
-  const existing = blogsStore[index];
   const {
     title,
     excerpt,
@@ -23,43 +25,67 @@ export async function updateBlogService(id, payload) {
   let finalImageUrl = existing.imageUrl;
   if (imageFileUri === null || imageFileUri === "") {
     finalImageUrl = null;
-  } else if (imageFileUri && imageFileUri.startsWith("data:image/")) {
+  } else if (typeof imageFileUri === "string" && imageFileUri.startsWith("data:image/")) {
     const uploadResult = await uploadToCloudinary(imageFileUri, "urc-v2/blogs");
     if (uploadResult.success) {
       finalImageUrl = uploadResult.secureUrl;
+    } else {
+      console.warn("[blogs] Image upload failed:", uploadResult.error);
     }
   } else if (imageFileUri) {
     finalImageUrl = imageFileUri;
   }
 
-  blogsStore[index] = {
-    ...existing,
-    ...(title ? { title: title.trim(), slug: slugify(title) } : {}),
-    ...(excerpt !== undefined ? { excerpt: excerpt.trim() } : {}),
-    ...(content ? { content: content.trim() } : {}),
-    ...(tags !== undefined ? { tags: tags.trim() } : {}),
-    ...(author ? { author: author.trim() } : {}),
-    ...(readTime ? { readTime: readTime.trim() } : {}),
+  const values = {
     imageUrl: finalImageUrl,
-    ...(published !== undefined ? { published } : {}),
     updatedAt: new Date(),
   };
 
-  return blogsStore[index];
+  if (title) {
+    values.title = title.trim();
+    values.slug = await resolveUniqueBlogSlug(db, title, id);
+  }
+  if (excerpt !== undefined) {
+    values.excerpt = excerpt?.trim() || "";
+  }
+  if (content) {
+    values.content = content.trim();
+  }
+  if (tags !== undefined) {
+    values.tags = tags?.trim() || "";
+  }
+  if (author) {
+    values.author = author.trim();
+  }
+  if (readTime) {
+    values.readTime = readTime.trim();
+  }
+  if (published !== undefined) {
+    values.published = published;
+  }
+
+  const [row] = await db
+    .update(blogs)
+    .set(values)
+    .where(eq(blogs.id, id))
+    .returning();
+
+  return mapBlog(row);
 }
 
 export async function toggleBlogPublishService(id) {
-  const index = blogsStore.findIndex((b) => b.id === id);
-  if (index === -1) {
+  const db = getBlogDb();
+
+  const [existing] = await db.select().from(blogs).where(eq(blogs.id, id)).limit(1);
+  if (!existing) {
     throw new Error("Article not found.");
   }
 
-  blogsStore[index] = {
-    ...blogsStore[index],
-    published: !blogsStore[index].published,
-    updatedAt: new Date(),
-  };
+  const [row] = await db
+    .update(blogs)
+    .set({ published: !existing.published, updatedAt: new Date() })
+    .where(eq(blogs.id, id))
+    .returning();
 
-  return blogsStore[index];
+  return mapBlog(row);
 }
-
