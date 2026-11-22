@@ -2,10 +2,11 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, Check, Loader2, MessageCircle, X } from "lucide-react";
+import { ArrowRight, Check, Copy, Loader2, MessageCircle } from "lucide-react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { createLeadAction, createWhatsAppEnquiryAction } from "@/api/contacts/public/create-lead";
+import { COMPANY_INFO } from "@/data/company";
 import { toast } from "sonner";
 
 const INITIAL_VALUES = {
@@ -67,6 +68,7 @@ function validate(values) {
 
 function SuccessModal({ data, viaWhatsApp, waDbFailed, emailFailed, onClose, onReset }) {
   const [mounted, setMounted] = useState(false);
+  const [copied, setCopied] = useState(false);
   const headingRef = useRef(null);
 
   useEffect(() => {
@@ -88,12 +90,31 @@ function SuccessModal({ data, viaWhatsApp, waDbFailed, emailFailed, onClose, onR
 
   if (!mounted) return null;
 
+  const firstName = data.name?.trim().split(/\s+/)[0] || data.name || "there";
+  const whatsappNumber = (COMPANY_INFO.whatsapp || "919924304617").replace(/[^0-9]/g, "");
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    `Hello United Rubber Cork, following up on Enquiry Ref: ${data.id || "N/A"}.\nCompany: ${data.company || "-"}\nI would like to share our technical drawing / specification.`
+  )}`;
+
+  const handleCopy = async () => {
+    if (!data.id) return;
+    try {
+      await navigator.clipboard.writeText(data.id);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   const modalContent = (
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="success-modal-heading"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
     >
       {/* Backdrop */}
       <div
@@ -103,107 +124,128 @@ function SuccessModal({ data, viaWhatsApp, waDbFailed, emailFailed, onClose, onR
       />
 
       {/* Modal Surface */}
-      <div className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border border-line bg-white p-6 sm:p-8 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-        {/* Close icon */}
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close dialog"
-          className="absolute right-4 top-4 rounded-full p-2 text-muted hover:bg-page hover:text-ink transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon"
-        >
-          <X className="size-5" aria-hidden="true" />
-        </button>
-
-        {/* Header with icon */}
-        <div className="flex items-start gap-4">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-maroon/20 bg-maroon/5 text-maroon shadow-2xs">
-            <Check className="size-6 text-maroon" aria-hidden="true" />
-          </span>
-          <div className="pr-6">
-            <span className="text-xs font-bold uppercase tracking-wider text-orange-ink">
-              Enquiry Received
-            </span>
-            <h3
-              id="success-modal-heading"
-              ref={headingRef}
-              tabIndex={-1}
-              className="mt-1 text-xl font-bold tracking-tight text-ink sm:text-2xl focus:outline-none"
-            >
-              Thank you, {data.name}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              {viaWhatsApp ? (
-                <>
-                  {waDbFailed ? (
-                    <>
-                      WhatsApp has been opened with your enquiry details. Please ensure you send the
-                      prefilled WhatsApp message so our technical team in Vapi receives your requirements.
-                    </>
-                  ) : (
-                    <>
-                      Your enquiry for{" "}
-                      <strong className="text-ink">{data.company}</strong> has been saved. WhatsApp
-                      has been opened — please review and send the prefilled message to complete your enquiry.
-                    </>
-                  )}
-                </>
-              ) : emailFailed ? (
-                <>
-                  Your enquiry for <strong className="text-ink">{data.company}</strong> has been saved in our system.
-                  We could not deliver a confirmation email to <strong className="text-ink">{data.email}</strong>,
-                  but our technical team will review your requirements.
-                </>
-              ) : (
-                <>
-                  Your enquiry for <strong className="text-ink">{data.company}</strong> has been saved and a confirmation
-                  email has been dispatched to <strong className="text-ink">{data.email}</strong>.
-                </>
-              )}
-            </p>
-          </div>
+      <div className="relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-line bg-white p-7 sm:p-9 shadow-2xl animate-in fade-in zoom-in-95 duration-200 text-center">
+        {/* Animated Solid Maroon Circle with White Tick */}
+        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-maroon text-white shadow-md animate-in zoom-in-50 duration-400 ease-out">
+          <Check className="size-6 text-white stroke-[2.5]" aria-hidden="true" />
         </div>
 
-        {/* Structured details card */}
-        <div className="mt-6 rounded-xl border border-line bg-page/50 p-5 text-xs sm:text-sm space-y-2.5">
+        {/* Heading */}
+        <h3
+          id="success-modal-heading"
+          ref={headingRef}
+          tabIndex={-1}
+          className="mt-4 text-xl font-bold tracking-tight text-ink sm:text-2xl focus:outline-none"
+        >
+          Thank you, {firstName}
+        </h3>
+
+        {/* Shorter, Warmer Message (No yellow highlight) */}
+        <p className="mt-2 text-sm leading-relaxed text-muted">
+          {viaWhatsApp ? (
+            waDbFailed ? (
+              <>WhatsApp has been opened with your enquiry. Please make sure to send the prefilled message so our team receives your requirements.</>
+            ) : (
+              <>We&apos;ve received your enquiry for <strong className="font-semibold text-ink">{data.company}</strong>. WhatsApp has been opened with your details.</>
+            )
+          ) : emailFailed ? (
+            <>We&apos;ve received your enquiry for <strong className="font-semibold text-ink">{data.company}</strong>. Our engineering desk has your requirements safe.</>
+          ) : (
+            <>We&apos;ve received your enquiry for <strong className="font-semibold text-ink">{data.company}</strong>. A confirmation is on its way to <strong className="font-semibold text-ink">{data.email}</strong>.</>
+          )}
+        </p>
+
+        {/* Promise as clear subheading */}
+        <p className="mt-1.5 text-xs sm:text-sm font-semibold text-orange-ink">
+          Our engineers will reply within 24 business hours.
+        </p>
+
+        {/* Borderless 2-Line Summary Block */}
+        <div className="mt-5 rounded-xl bg-page/70 p-3.5 sm:p-4 text-left text-xs sm:text-sm space-y-2">
           {data.id && (
-            <div className="flex justify-between items-center border-b border-line/60 pb-2">
-              <span className="text-muted">Enquiry Reference:</span>
-              <span className="font-mono font-bold text-maroon text-sm">{data.id}</span>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-muted">Reference</span>
+              <div className="flex items-center gap-1.5">
+                <span className="font-mono font-bold text-maroon text-xs sm:text-sm">{data.id}</span>
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  title="Copy reference number"
+                  aria-label="Copy reference number"
+                  className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium text-muted hover:bg-white hover:text-ink transition-colors cursor-pointer"
+                >
+                  {copied ? (
+                    <span className="text-xs font-semibold text-emerald-600">Copied!</span>
+                  ) : (
+                    <Copy className="size-3.5" aria-hidden="true" />
+                  )}
+                </button>
+              </div>
             </div>
           )}
-          <div className="flex justify-between items-center border-b border-line/60 pb-2">
-            <span className="text-muted">Product / Requirement:</span>
-            <span className="font-semibold text-ink text-right max-w-[60%] truncate">{data.product}</span>
-          </div>
-          <div className="flex justify-between items-center border-b border-line/60 pb-2">
-            <span className="text-muted">Company:</span>
-            <span className="font-semibold text-ink text-right max-w-[60%] truncate">{data.company}</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-muted">Expected Response:</span>
-            <span className="font-medium text-orange-ink">Within 24 business hours</span>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-muted">Requirement</span>
+            <span className="font-medium text-ink text-right max-w-[65%] truncate">
+              {data.product || "General Inquiry / Other"}
+            </span>
           </div>
         </div>
 
-        {/* Modal Actions */}
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        {/* What Happens Next: Mini Timeline */}
+        <div className="my-6">
+          <div className="flex items-center justify-between text-[11px] sm:text-xs">
+            <div className="flex items-center gap-1.5 font-medium text-ink">
+              <span className="size-2 rounded-full bg-maroon ring-2 ring-maroon/20" />
+              <span>Review</span>
+            </div>
+            <div className="h-px flex-1 bg-line mx-2" />
+            <div className="flex items-center gap-1.5 font-medium text-muted">
+              <span className="size-2 rounded-full bg-line-strong" />
+              <span>Reply / quote</span>
+            </div>
+            <div className="h-px flex-1 bg-line mx-2" />
+            <div className="flex items-center gap-1.5 font-medium text-muted">
+              <span className="size-2 rounded-full bg-line-strong" />
+              <span>Samples &amp; dispatch</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Hierarchy */}
+        <div className="space-y-3">
+          {/* Primary: Done */}
           <Button
             type="button"
             size="md"
-            className="rounded-full px-6"
-            onClick={onReset}
-          >
-            Submit another enquiry
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            size="md"
-            className="rounded-full px-6"
+            className="w-full max-w-xs mx-auto rounded-full py-2.5 font-semibold shadow-sm"
             onClick={onClose}
           >
-            Close
+            Done
           </Button>
+
+          {/* Secondary: WhatsApp drawing link for faster reply */}
+          <div>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-1 text-xs font-medium text-ink hover:text-maroon transition-colors"
+            >
+              <MessageCircle className="size-3.5 text-orange-ink" aria-hidden="true" />
+              <span>Prefer a faster reply? <strong className="font-semibold text-maroon hover:underline">WhatsApp us your drawing &rarr;</strong></span>
+            </a>
+          </div>
+
+          {/* Tertiary: Submit another enquiry as small text link */}
+          <div>
+            <button
+              type="button"
+              onClick={onReset}
+              className="text-xs text-muted hover:text-ink underline-offset-4 hover:underline transition-colors cursor-pointer"
+            >
+              Submit another enquiry
+            </button>
+          </div>
         </div>
       </div>
     </div>
