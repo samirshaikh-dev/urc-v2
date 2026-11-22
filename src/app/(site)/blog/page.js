@@ -88,14 +88,17 @@ export default async function BlogListingPage() {
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Button
                   href="/contact"
-                  className="rounded-full bg-white px-5 py-2 text-xs font-semibold text-maroon hover:bg-yellow hover:text-ink transition-colors"
+                  variant="inverse"
+                  size="sm"
+                  className="rounded-full px-5 text-xs font-semibold shadow-xs"
                 >
                   Request Technical Guidance
                 </Button>
                 <Button
                   href="/products"
-                  variant="outline"
-                  className="rounded-full border-white/40 bg-transparent px-5 py-2 text-xs font-semibold text-white hover:bg-white/10"
+                  variant="secondary"
+                  size="sm"
+                  className="rounded-full border-white/60 bg-transparent text-white hover:border-white hover:bg-white/10 px-5 text-xs font-semibold"
                 >
                   Explore Product Range
                 </Button>
