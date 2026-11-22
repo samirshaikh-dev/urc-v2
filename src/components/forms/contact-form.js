@@ -190,11 +190,15 @@ function ContactFormInner() {
       });
 
       if (res.success && res.whatsappUrl) {
-        // DB save confirmed — now open WhatsApp
-        toast.success("Enquiry saved. Opening WhatsApp…");
+        // DB save confirmed (or degraded gracefully) — open WhatsApp
+        if (res.dbFailed) {
+          toast.warning("Could not save enquiry to our system — please mention your details in the WhatsApp message.");
+        } else {
+          toast.success("Enquiry saved. Opening WhatsApp…");
+        }
         window.open(res.whatsappUrl, "_blank", "noopener,noreferrer");
         setIsSubmitted(true);
-        setSubmittedData({ ...res.lead, _via: "whatsapp" });
+        setSubmittedData({ ...res.lead, _via: "whatsapp", _dbFailed: res.dbFailed });
         setEmailFailed(false);
       } else {
         setSubmitError(res.error || "Failed to save your enquiry. Please try again.");
@@ -218,6 +222,7 @@ function ContactFormInner() {
 
   if (isSubmitted && submittedData) {
     const viaWhatsApp = submittedData._via === "whatsapp";
+    const waDbFailed = submittedData._dbFailed === true;
 
     return (
       <div className="rounded-2xl border border-line bg-page/50 p-6 sm:p-8 animate-in fade-in duration-200">
@@ -239,10 +244,20 @@ function ContactFormInner() {
             <p className="mt-2 text-sm leading-relaxed text-muted">
               {viaWhatsApp ? (
                 <>
-                  Your enquiry for{" "}
-                  <strong className="text-ink">{submittedData.company}</strong> has been saved.
-                  WhatsApp has been opened — please review and send the prefilled message to
-                  complete your enquiry.
+                  {waDbFailed ? (
+                    <>
+                      WhatsApp has been opened with your enquiry details. Note: we were unable to
+                      save your enquiry to our system — please ensure you send the WhatsApp message
+                      so our team receives your requirement.
+                    </>
+                  ) : (
+                    <>
+                      Your enquiry for{" "}
+                      <strong className="text-ink">{submittedData.company}</strong> has been saved.
+                      WhatsApp has been opened — please review and send the prefilled message to
+                      complete your enquiry.
+                    </>
+                  )}
                 </>
               ) : emailFailed ? (
                 <>
@@ -265,10 +280,12 @@ function ContactFormInner() {
         </div>
 
         <div className="mt-6 rounded-xl border border-line bg-white p-5 text-xs sm:text-sm space-y-2.5">
-          <div className="flex justify-between border-b border-line/60 pb-2">
-            <span className="text-muted">Enquiry Reference:</span>
-            <span className="font-mono font-semibold text-maroon">{submittedData.id}</span>
-          </div>
+          {submittedData.id && (
+            <div className="flex justify-between border-b border-line/60 pb-2">
+              <span className="text-muted">Enquiry Reference:</span>
+              <span className="font-mono font-semibold text-maroon">{submittedData.id}</span>
+            </div>
+          )}
           <div className="flex justify-between border-b border-line/60 pb-2">
             <span className="text-muted">Product / Requirement:</span>
             <span className="font-semibold text-ink">{submittedData.product}</span>
