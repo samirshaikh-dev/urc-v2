@@ -57,6 +57,7 @@ if (!process.argv.includes("--yes")) {
 
 const client = new Client({ connectionString: url });
 let toTruncate = [];
+let deletedBlogRows = null;
 
 try {
   await client.connect();
@@ -67,6 +68,14 @@ try {
   );
   const existing = new Set(rows.map((row) => row.table_name));
   toTruncate = targets.filter((table) => existing.has(table));
+  const hasBlogs = toTruncate.includes("blogs");
+
+  if (hasBlogs) {
+    const { rows: blogRows } = await client.query(
+      'SELECT count(*)::int AS count FROM "blogs"'
+    );
+    deletedBlogRows = blogRows[0]?.count ?? 0;
+  }
 
   if (!toTruncate.length) {
     console.log("No target tables found.");
@@ -76,12 +85,25 @@ try {
     );
     console.log(`Emptied: ${toTruncate.join(", ")}.`);
   }
+
+  if (hasBlogs) {
+    const { rows: blogRows } = await client.query(
+      'SELECT count(*)::int AS count FROM "blogs"'
+    );
+    const remaining = blogRows[0]?.count ?? 0;
+    if (remaining !== 0) {
+      throw new Error(`Blogs were not fully cleared; ${remaining} row(s) remain.`);
+    }
+  }
 } finally {
   await client.end();
 }
 
-if (toTruncate.includes("blogs")) {
-  console.log("Blog rows were cleared too.");
+if (deletedBlogRows !== null) {
+  console.log(`Deleted ${deletedBlogRows} blog row(s) from the database.`);
+  console.log(
+    "Note: cached blog pages may still show old content until the Next.js cache expires or the app is rebuilt."
+  );
 } else {
   console.log("No blogs table was found; run npm run db:migrate to create it.");
 }
