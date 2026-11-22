@@ -2,11 +2,10 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, Check, MessageCircle } from "lucide-react";
+import { ArrowRight, Check, Loader2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { createLeadAction } from "@/api/contacts/public/create-lead";
+import { createLeadAction, createWhatsAppEnquiryAction } from "@/api/contacts/public/create-lead";
 import { toast } from "sonner";
-import { COMPANY_INFO } from "@/data/company";
 
 const INITIAL_VALUES = {
   name: "",
@@ -83,9 +82,10 @@ function ContactFormInner() {
     product: queryProduct || "",
   }));
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(null); // null | 'email' | 'whatsapp'
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
+  const [emailFailed, setEmailFailed] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const successHeadingRef = useRef(null);
 
@@ -102,11 +102,11 @@ function ContactFormInner() {
     }
   }, [isSubmitted]);
 
+  const isAnySubmitting = submitting !== null;
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     setValues((current) => ({ ...current, [name]: value }));
-
     if (errors[name]) {
       setErrors((current) => {
         const next = { ...current };
@@ -116,13 +116,9 @@ function ContactFormInner() {
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  function runValidation() {
     // Honeypot spam detection
-    if (values._hp) {
-      return;
-    }
+    if (values._hp) return false;
 
     const nextErrors = validate(values);
     setErrors(nextErrors);
@@ -130,10 +126,17 @@ function ContactFormInner() {
     const firstInvalid = FIELD_ORDER.find((key) => nextErrors[key]);
     if (firstInvalid) {
       document.getElementById(FIELD_IDS[firstInvalid])?.focus();
-      return;
+      return false;
     }
+    return true;
+  }
 
-    setIsSubmitting(true);
+  const handleEmailSubmit = async (event) => {
+    event.preventDefault();
+    if (isAnySubmitting) return;
+    if (!runValidation()) return;
+
+    setSubmitting("email");
     setSubmitError("");
 
     try {
@@ -146,10 +149,15 @@ function ContactFormInner() {
         message: values.message,
       });
 
-      if (res.success && res.lead) {
+      if (res.success) {
         setIsSubmitted(true);
         setSubmittedData(res.lead);
-        toast.success("Enquiry submitted successfully! A confirmation email has been sent.");
+        setEmailFailed(!!res.emailFailed);
+        if (res.emailFailed) {
+          toast.success("Enquiry received. Email confirmation could not be delivered.");
+        } else {
+          toast.success("Enquiry submitted! A confirmation email has been sent.");
+        }
       } else {
         setSubmitError(res.error || "Failed to submit enquiry. Please try again.");
         toast.error(res.error || "Failed to submit enquiry.");
@@ -159,17 +167,58 @@ function ContactFormInner() {
       setSubmitError("An unexpected error occurred. Please try again or email us directly.");
       toast.error("An unexpected error occurred. Please try again.");
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(null);
+    }
+  };
+
+  const handleWhatsAppSubmit = async (event) => {
+    event.preventDefault();
+    if (isAnySubmitting) return;
+    if (!runValidation()) return;
+
+    setSubmitting("whatsapp");
+    setSubmitError("");
+
+    try {
+      const res = await createWhatsAppEnquiryAction({
+        name: values.name,
+        company: values.company,
+        email: values.email,
+        phone: values.phone,
+        product: values.product?.trim() || "General Inquiry / Other",
+        message: values.message,
+      });
+
+      if (res.success && res.whatsappUrl) {
+        // DB save confirmed — now open WhatsApp
+        toast.success("Enquiry saved. Opening WhatsApp…");
+        window.open(res.whatsappUrl, "_blank", "noopener,noreferrer");
+        setIsSubmitted(true);
+        setSubmittedData({ ...res.lead, _via: "whatsapp" });
+        setEmailFailed(false);
+      } else {
+        setSubmitError(res.error || "Failed to save your enquiry. Please try again.");
+        toast.error(res.error || "Failed to save enquiry. WhatsApp was not opened.");
+      }
+    } catch (err) {
+      console.error("WhatsApp submission error:", err);
+      setSubmitError("An unexpected error occurred. Please try again or contact us directly.");
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setSubmitting(null);
     }
   };
 
   const handleReset = () => {
     setIsSubmitted(false);
     setSubmittedData(null);
+    setEmailFailed(false);
     setValues(INITIAL_VALUES);
   };
 
   if (isSubmitted && submittedData) {
+    const viaWhatsApp = submittedData._via === "whatsapp";
+
     return (
       <div className="rounded-2xl border border-line bg-page/50 p-6 sm:p-8 animate-in fade-in duration-200">
         <div className="flex items-start gap-4">
@@ -188,12 +237,38 @@ function ContactFormInner() {
               Thank you, {submittedData.name}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Your inquiry for <strong className="text-ink">{submittedData.company}</strong> has been saved in our system and routed to our technical sales team in GIDC Vapi. A confirmation email has been dispatched to <strong className="text-ink">{submittedData.email}</strong>.
+              {viaWhatsApp ? (
+                <>
+                  Your enquiry for{" "}
+                  <strong className="text-ink">{submittedData.company}</strong> has been saved.
+                  WhatsApp has been opened — please review and send the prefilled message to
+                  complete your enquiry.
+                </>
+              ) : emailFailed ? (
+                <>
+                  Your enquiry for{" "}
+                  <strong className="text-ink">{submittedData.company}</strong> has been received
+                  and saved. We were unable to send a confirmation email to{" "}
+                  <strong className="text-ink">{submittedData.email}</strong>, but your enquiry is
+                  safe and our team will follow up.
+                </>
+              ) : (
+                <>
+                  Your enquiry for{" "}
+                  <strong className="text-ink">{submittedData.company}</strong> has been saved and
+                  a confirmation email has been dispatched to{" "}
+                  <strong className="text-ink">{submittedData.email}</strong>.
+                </>
+              )}
             </p>
           </div>
         </div>
 
         <div className="mt-6 rounded-xl border border-line bg-white p-5 text-xs sm:text-sm space-y-2.5">
+          <div className="flex justify-between border-b border-line/60 pb-2">
+            <span className="text-muted">Enquiry Reference:</span>
+            <span className="font-mono font-semibold text-maroon">{submittedData.id}</span>
+          </div>
           <div className="flex justify-between border-b border-line/60 pb-2">
             <span className="text-muted">Product / Requirement:</span>
             <span className="font-semibold text-ink">{submittedData.product}</span>
@@ -221,7 +296,7 @@ function ContactFormInner() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-5">
+    <form onSubmit={handleEmailSubmit} noValidate className="space-y-5">
       {/* Honeypot Spam Protection Field */}
       <div className="hidden" aria-hidden="true">
         <label htmlFor="contact-hp">Do not fill this field</label>
@@ -257,7 +332,7 @@ function ContactFormInner() {
             className={`${fieldClasses} ${errors.name ? "border-maroon" : "border-line"}`}
           />
           {errors.name && (
-            <p id={`${FIELD_IDS.name}-error`} className="mt-1 text-xs text-maroon">
+            <p id={`${FIELD_IDS.name}-error`} className="mt-1 text-xs text-maroon" role="alert">
               {errors.name}
             </p>
           )}
@@ -282,7 +357,7 @@ function ContactFormInner() {
             className={`${fieldClasses} ${errors.company ? "border-maroon" : "border-line"}`}
           />
           {errors.company && (
-            <p id={`${FIELD_IDS.company}-error`} className="mt-1 text-xs text-maroon">
+            <p id={`${FIELD_IDS.company}-error`} className="mt-1 text-xs text-maroon" role="alert">
               {errors.company}
             </p>
           )}
@@ -311,7 +386,7 @@ function ContactFormInner() {
             className={`${fieldClasses} ${errors.email ? "border-maroon" : "border-line"}`}
           />
           {errors.email && (
-            <p id={`${FIELD_IDS.email}-error`} className="mt-1 text-xs text-maroon">
+            <p id={`${FIELD_IDS.email}-error`} className="mt-1 text-xs text-maroon" role="alert">
               {errors.email}
             </p>
           )}
@@ -320,7 +395,8 @@ function ContactFormInner() {
         {/* Phone Number */}
         <div>
           <label htmlFor={FIELD_IDS.phone} className={labelClasses}>
-            Phone number <RequiredMark />
+            Phone number{" "}
+            <span className="text-muted font-normal normal-case tracking-normal">(optional)</span>
           </label>
           <input
             id={FIELD_IDS.phone}
@@ -336,17 +412,18 @@ function ContactFormInner() {
             className={`${fieldClasses} ${errors.phone ? "border-maroon" : "border-line"}`}
           />
           {errors.phone && (
-            <p id={`${FIELD_IDS.phone}-error`} className="mt-1 text-xs text-maroon">
+            <p id={`${FIELD_IDS.phone}-error`} className="mt-1 text-xs text-maroon" role="alert">
               {errors.phone}
             </p>
           )}
         </div>
       </div>
 
-      {/* Product / Material Interested In (Open Text Input) */}
+      {/* Product / Material Interested In */}
       <div>
         <label htmlFor={FIELD_IDS.product} className={labelClasses}>
-          Product / material interested in
+          Product / material interested in{" "}
+          <span className="text-muted font-normal normal-case tracking-normal">(optional)</span>
         </label>
         <input
           type="text"
@@ -378,40 +455,67 @@ function ContactFormInner() {
           className={`${fieldClasses} ${errors.message ? "border-maroon" : "border-line"}`}
         />
         {errors.message && (
-          <p id={`${FIELD_IDS.message}-error`} className="mt-1 text-xs text-maroon">
+          <p id={`${FIELD_IDS.message}-error`} className="mt-1 text-xs text-maroon" role="alert">
             {errors.message}
           </p>
         )}
       </div>
 
-      {/* Error Message if server failure */}
+      {/* Server error */}
       {submitError && (
-        <div className="rounded-xl border border-maroon/20 bg-maroon/5 p-3.5 text-xs text-maroon">
+        <div
+          role="alert"
+          className="rounded-xl border border-maroon/20 bg-maroon/5 p-3.5 text-xs text-maroon"
+        >
           {submitError}
         </div>
       )}
 
-      {/* Submit Button */}
+      {/* Submit Buttons */}
       <div className="pt-2 flex flex-col sm:flex-row gap-3">
+        {/* Primary: Submit Enquiry (email flow) */}
         <Button
           type="submit"
           size="md"
-          disabled={isSubmitting}
+          disabled={isAnySubmitting}
           className="w-full sm:w-auto rounded-full px-8 shadow-sm group disabled:opacity-60"
         >
-          <span>{isSubmitting ? "Submitting Enquiry..." : "Submit Enquiry"}</span>
-          <ArrowRight className="size-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+          {submitting === "email" ? (
+            <>
+              <Loader2 className="size-4 mr-1.5 animate-spin" aria-hidden="true" />
+              <span>Submitting…</span>
+            </>
+          ) : (
+            <>
+              <span>Submit Enquiry</span>
+              <ArrowRight
+                className="size-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+            </>
+          )}
         </Button>
+
+        {/* Secondary: Submit via WhatsApp (db-first then open WA) */}
         <Button
-          href={`https://wa.me/${COMPANY_INFO.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-            `Hello, I'd like to enquire about your products.\n\nName: ${values.name || "-"}\nCompany: ${values.company || "-"}\nEmail: ${values.email || "-"}\nPhone: ${values.phone || "-"}\nProduct: ${values.product || "General Inquiry"}\n\nRequirement:\n${values.message || "-"}`
-          )}`}
+          type="button"
           size="md"
           variant="secondary"
-          className="w-full sm:w-auto rounded-full px-8"
+          disabled={isAnySubmitting}
+          onClick={handleWhatsAppSubmit}
+          className="w-full sm:w-auto rounded-full px-8 disabled:opacity-60"
         >
-          <MessageCircle className="size-4 mr-1.5" />
-          <span>Submit via WhatsApp</span>
+          {submitting === "whatsapp" ? (
+            <>
+              <Loader2 className="size-4 mr-1.5 animate-spin" aria-hidden="true" />
+              <span>Saving…</span>
+            </>
+          ) : (
+            <>
+              <MessageCircle className="size-4 mr-1.5" aria-hidden="true" />
+              <span>Submit via WhatsApp</span>
+            </>
+          )}
         </Button>
       </div>
     </form>

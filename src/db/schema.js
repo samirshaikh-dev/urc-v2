@@ -95,3 +95,53 @@ export const productSpecifications = pgTable(
     ),
   })
 );
+
+// Enquiry status values
+// submissionMethod: 'email' | 'whatsapp'
+// emailStatus:     'pending' | 'sent' | 'failed' | 'not_applicable'
+// whatsappStatus:  'initiated' | 'not_sent' | 'sent'
+// leadStatus:      'new' | 'review' | 'quoted' | 'converted' | 'archived'
+export const enquiries = pgTable(
+  "enquiries",
+  {
+    id: text("id").primaryKey(),
+    // Customer fields
+    fullName: text("full_name").notNull(),
+    companyName: text("company_name").notNull(),
+    businessEmail: text("business_email").notNull(),
+    phoneNumber: text("phone_number").notNull().default(""),
+    productInterestedIn: text("product_interested_in").notNull().default("General Inquiry / Other"),
+    requirementDetails: text("requirement_details").notNull(),
+    // Workflow tracking
+    submissionMethod: text("submission_method").notNull().default("email"),
+    emailStatus: text("email_status").notNull().default("pending"),
+    whatsappStatus: text("whatsapp_status").notNull().default("not_sent"),
+    // CRM status
+    leadStatus: text("lead_status").notNull().default("new"),
+    notes: jsonb("notes").notNull().default([]),
+    // Timestamps
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => ({
+    emailIndex: index("enquiries_business_email_idx").on(table.businessEmail),
+    createdAtIndex: index("enquiries_created_at_idx").on(table.createdAt),
+    leadStatusIndex: index("enquiries_lead_status_idx").on(table.leadStatus),
+    submissionMethodCheck: check(
+      "enquiries_submission_method_check",
+      sql`${table.submissionMethod} in ('email', 'whatsapp')`
+    ),
+    emailStatusCheck: check(
+      "enquiries_email_status_check",
+      sql`${table.emailStatus} in ('pending', 'sent', 'failed', 'not_applicable')`
+    ),
+    whatsappStatusCheck: check(
+      "enquiries_whatsapp_status_check",
+      sql`${table.whatsappStatus} in ('initiated', 'not_sent', 'sent')`
+    ),
+    leadStatusCheck: check(
+      "enquiries_lead_status_check",
+      sql`${table.leadStatus} in ('new', 'review', 'quoted', 'converted', 'archived')`
+    ),
+  })
+);

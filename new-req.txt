@@ -1,0 +1,361 @@
+Your new Contact Us requirement should follow a **database-first enquiry workflow**. The most important rule is that neither email nor WhatsApp communication should happen before the enquiry is successfully saved in the database.
+
+I recommend implementing two separate submission flows using the same backend enquiry API.
+
+## **1. Workflow architecture**
+
+**Option A — Submit Enquiry**
+
+1. Customer fills in the contact form.
+2. Frontend sends form data to backend API.
+3. Backend validates and saves enquiry in database.
+4. Backend sends a confirmation email to the customer.
+5. Display successful submission message.
+
+**Option B — Submit via WhatsApp**
+
+1. Customer fills in the same contact form.
+2. Frontend sends form data to backend API.
+3. Backend validates and saves enquiry in database.
+4. Backend returns the saved enquiry ID and WhatsApp message details.
+5. Frontend opens WhatsApp with a prefilled enquiry message.
+6. Customer reviews and manually sends the WhatsApp message.
+
+**Important:** Opening WhatsApp with a prefilled message is not the same as automatically sending a WhatsApp message. Automatic sending requires the WhatsApp Business Platform / Cloud API.
+
+## **2. Suggested database structure**
+
+Create an `enquiries` table/collection.
+
+| Field               | Purpose                                       |
+| ------------------- | --------------------------------------------- |
+| id                  | Unique enquiry ID                             |
+| fullName            | Customer name                                 |
+| companyName         | Company name                                  |
+| businessEmail       | Email address                                 |
+| phoneNumber         | Optional phone                                |
+| productInterestedIn | Selected product                              |
+| requirementDetails  | Customer requirements                         |
+| submissionMethod    | `email` or `whatsapp`                         |
+| emailStatus         | `pending`, `sent`, `failed`, `not_applicable` |
+| whatsappStatus      | `initiated`, `not_sent`, `sent`               |
+| createdAt           | Submission timestamp                          |
+
+Keep the enquiry record even if email delivery fails. A communication failure must never erase a successfully saved enquiry.
+
+## **3. Implementation prompt for your AI coding agent**
+
+Here is a prompt you can give your coding agent:
+
+# Implement Database-First Contact Enquiry Workflow
+
+Act as a senior full-stack developer. Implement the new Contact Us page enquiry workflow using the existing project's architecture, coding conventions, database, and backend infrastructure.
+
+## 1. Main Requirement
+
+Every enquiry must be successfully saved in the database BEFORE attempting any email or WhatsApp communication.
+
+There are two submission methods:
+
+- Submit Enquiry
+- Submit via WhatsApp
+
+Both methods must use the same backend validation and enquiry persistence logic.
+
+## 2. Contact Form Fields
+
+Use the existing Contact Us form design and preserve its visual appearance.
+
+Fields:
+
+- Full Name (required)
+- Company Name (required)
+- Business Email (required)
+- Phone Number (optional)
+- Product / Material Interested In (optional dropdown)
+- Requirement Details (required)
+
+Preserve the existing responsive layout, styling, validation feedback, and button designs.
+
+## 3. Backend Implementation
+
+Create a dedicated enquiry API endpoint following existing project conventions.
+
+Suggested endpoint:
+
+POST /api/v1/enquiries
+
+Responsibilities:
+
+1. Validate incoming request data on the backend.
+2. Sanitize and normalize input.
+3. Validate email format and required fields.
+4. Save the enquiry to the database.
+5. Generate a unique enquiry reference.
+6. Return the saved enquiry ID and appropriate response.
+
+Suggested database fields:
+
+- id
+- fullName
+- companyName
+- businessEmail
+- phoneNumber
+- productInterestedIn
+- requirementDetails
+- submissionMethod
+- emailStatus
+- whatsappStatus
+- createdAt
+- updatedAt
+
+Use the existing database and ORM/ODM. Do not introduce another database or unnecessary dependencies.
+
+## 4. Submit Enquiry Workflow
+
+When the user clicks Submit Enquiry:
+
+1. Validate all required fields.
+2. Disable the submit button and show a loading state.
+3. Send the enquiry to the backend.
+4. Save the enquiry in the database.
+5. Only after successful database persistence, trigger the confirmation email.
+6. Show a success message to the customer.
+
+Email requirements:
+
+- Send a professional HTML confirmation email.
+- Address the customer by their name.
+- Confirm that their enquiry has been received.
+- Include the enquiry reference ID.
+- Include the submitted product/material and relevant requirement summary.
+- Use the existing email service/configuration.
+
+If email delivery fails:
+
+- Keep the enquiry saved.
+- Log the email failure.
+- Update emailStatus to failed.
+- Do not tell the customer that the enquiry was lost.
+- Show a message confirming receipt while explaining that email confirmation could not be delivered.
+
+## 5. Submit via WhatsApp Workflow
+
+When the user clicks Submit via WhatsApp:
+
+1. Validate the form.
+2. Show a loading state.
+3. Send the enquiry to the same backend API with submissionMethod = whatsapp.
+4. Save the enquiry in the database.
+5. Only after successful persistence, return a WhatsApp-ready message.
+6. Open WhatsApp using the official click-to-chat URL with a properly URL-encoded message.
+
+Suggested message:
+
+Hello, I would like to enquire about your products.
+
+Enquiry Reference: [REFERENCE_ID]
+
+Name: [FULL_NAME]\
+Company: [COMPANY_NAME]\
+Email: [BUSINESS_EMAIL]\
+Phone: [PHONE_NUMBER]\
+Product / Material: [PRODUCT]\
+Requirements: [REQUIREMENT_DETAILS]
+
+Please review my requirements and get back to me.
+
+Important:
+
+- Do not open WhatsApp before the backend confirms successful database persistence.
+- Do not claim that a WhatsApp message was sent automatically.
+- The customer must manually press Send in WhatsApp.
+- Record the enquiry as saved, not as a successfully sent WhatsApp message.
+- If database persistence fails, do not redirect to WhatsApp.
+
+## 6. Frontend UX
+
+Implement:
+
+- Required field validation.
+- Email format validation.
+- Clear error messages.
+- Loading states on both buttons.
+- Prevent duplicate submissions.
+- Disable both buttons while a submission is in progress.
+- Success and error feedback.
+- Preserve all entered values when a request fails.
+- Prevent accidental repeated submissions.
+
+## 7. Security and Reliability
+
+- Validate all data server-side.
+- Add rate limiting to prevent spam.
+- Protect against duplicate requests using idempotency where appropriate.
+- Never expose email credentials or API secrets to the frontend.
+- Do not trust frontend-provided submission statuses.
+- Use environment variables for email and WhatsApp configuration.
+- Avoid logging sensitive customer information unnecessarily.
+- Handle database and email failures independently.
+- Consider a retryable email delivery mechanism so failed confirmation emails can be retried without creating duplicate enquiries.
+
+## 8. Important Implementation Rules
+
+Before writing code:
+
+1. Inspect the existing frontend form and its components.
+2. Inspect the backend architecture and API conventions.
+3. Identify the existing database models and email service.
+4. Reuse existing utilities and dependencies.
+5. Avoid unnecessary architectural changes.
+
+Then implement the complete feature.
+
+## 9. Testing Requirements
+
+Test these scenarios:
+
+- Valid enquiry submitted successfully.
+- Required fields missing.
+- Invalid email.
+- Database failure.
+- Email delivery failure after successful database save.
+- WhatsApp redirect after successful database save.
+- WhatsApp flow when database save fails.
+- Duplicate button clicks.
+- Mobile browser WhatsApp behavior.
+
+Do not consider the implementation complete until both workflows have been tested.
+
+At the end, provide a summary of modified files, API endpoints, database changes, environment variables, and test results.
+
+## **4. One additional recommendation**
+
+For a business enquiry system, I'd also recommend a simple admin enquiry management view in the future.
+
+You could track:
+
+- New enquiries
+- Contacted
+- Quotation sent
+- Converted
+- Rejected
+
+This turns your Contact Us form into a basic lead management system rather than just a form that collects emails.
+
+**My recommendation:** Implement the database-first API and both submission flows now. Keep email delivery and WhatsApp communication independent so a failure in either communication channel never results in losing a customer's enquiry.
+
+
+note 
+
+## 10. UI/UX Design Requirements — Minimal & Customer-Friendly
+
+The Contact Us form and all related states (loading, success, error, and email confirmation) must follow a minimal, modern, customer-friendly design approach.
+
+### Design Philosophy
+
+- Keep the interface clean, simple, and professional.
+- Prioritize readability and ease of use over decorative elements.
+- Make the enquiry process feel approachable and effortless.
+- Maintain consistency with the existing website's design system and brand identity.
+- Avoid unnecessary visual complexity.
+
+### Form Design
+
+- Preserve the existing form layout and visual hierarchy.
+- Use clear, readable field labels.
+- Use helpful placeholder examples instead of technical instructions.
+- Clearly indicate required and optional fields.
+- Maintain comfortable spacing between fields.
+- Use subtle borders, rounded corners, and light neutral backgrounds.
+- Provide visible focus states when users interact with inputs.
+- Make validation messages short, friendly, and positioned near the relevant field.
+- Ensure dropdowns and textareas are easy to interact with on mobile.
+
+### Button Design
+
+**Submit Enquiry**
+- Use the primary brand color.
+- Include a simple directional arrow icon.
+- Show a clear loading state while processing.
+
+**Submit via WhatsApp**
+- Use a secondary outlined button.
+- Include a WhatsApp icon.
+- Make its purpose immediately understandable.
+- Show a loading state while saving the enquiry.
+
+Both buttons should have consistent dimensions, spacing, and accessible touch targets.
+
+### Success State
+
+After successful database persistence, display a friendly confirmation message.
+
+Suggested content:
+
+**Thank you! Your enquiry has been received.**
+
+We've received your requirements and our team will review them shortly. We'll get back to you as soon as possible.
+
+Use a subtle success icon and a clean confirmation layout. Avoid intrusive popups or unnecessary animations.
+
+If the confirmation email fails, show a reassuring message that the enquiry was received but email confirmation could not be delivered.
+
+### WhatsApp Experience
+
+After the enquiry is saved successfully, open WhatsApp with a prefilled, well-formatted message.
+
+Keep the message:
+- Short and readable.
+- Professionally structured.
+- Easy for the customer to review before sending.
+- Inclusive of the enquiry reference number.
+
+Do not automatically claim that the WhatsApp message has been sent.
+
+### Email Template Design
+
+Create a minimal, responsive HTML email template consistent with the website's branding.
+
+Customer confirmation email should include:
+
+1. Brand logo or company name.
+2. Friendly greeting.
+3. Clear enquiry received confirmation.
+4. Enquiry reference number.
+5. Brief summary of submitted requirements.
+6. Expected next step.
+7. Company contact information.
+
+Design guidelines:
+- White background.
+- Clean typography.
+- Subtle dividers.
+- Comfortable padding.
+- Mobile-friendly layout.
+- Minimal use of brand colors.
+- No unnecessary graphics, gradients, or promotional banners.
+
+### Responsive Design
+
+- Mobile-first implementation.
+- Single-column form layout on smaller screens.
+- Full-width buttons where appropriate.
+- Adequate spacing between interactive elements.
+- Prevent horizontal scrolling.
+- Ensure WhatsApp redirection works correctly on mobile and desktop.
+
+### Accessibility
+
+- Proper form labels and semantic HTML.
+- Keyboard-accessible controls.
+- Sufficient color contrast.
+- Accessible error and success announcements.
+- Visible keyboard focus indicators.
+- Do not communicate validation or success through color alone.
+
+### Final Design Principle
+
+The customer should be able to understand the form immediately, fill it in without confusion, and confidently submit their requirements.
+
+Do not redesign the entire website. Focus only on improving the Contact Us enquiry experience while respecting the existing brand identity.
