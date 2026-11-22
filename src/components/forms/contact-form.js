@@ -2,10 +2,11 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createLeadAction } from "@/api/contacts/public/create-lead";
 import { toast } from "sonner";
+import { COMPANY_INFO } from "@/data/company";
 
 const BASE_PRODUCT_OPTIONS = [
   "Select product or material...",
@@ -420,7 +421,7 @@ function ContactFormInner() {
       )}
 
       {/* Submit Button */}
-      <div className="pt-2">
+      <div className="pt-2 flex flex-col sm:flex-row gap-3">
         <Button
           type="submit"
           size="md"
@@ -429,6 +430,17 @@ function ContactFormInner() {
         >
           <span>{isSubmitting ? "Submitting Enquiry..." : "Submit Enquiry"}</span>
           <ArrowRight className="size-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+        </Button>
+        <Button
+          href={`https://wa.me/${COMPANY_INFO.whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+            `Hello, I'd like to enquire about your products.\n\nName: ${values.name || "-"}\nCompany: ${values.company || "-"}\nEmail: ${values.email || "-"}\nPhone: ${values.phone || "-"}\nProduct: ${values.product || "General Inquiry"}\n\nRequirement:\n${values.message || "-"}`
+          )}`}
+          size="md"
+          variant="secondary"
+          className="w-full sm:w-auto rounded-full px-8"
+        >
+          <MessageCircle className="size-4 mr-1.5" />
+          <span>Submit via WhatsApp</span>
         </Button>
       </div>
     </form>

@@ -14,7 +14,7 @@ import {
 export const metadata = constructMetadata({
   title: "Rubberised Cork Manufacturer in Vapi, Gujarat | United Rubber Cork",
   description:
-    "Leading manufacturer of IS: 4253 & ASTM certified rubberised cork sheets, transformer gaskets, clutch wads, foundation slabs, and acoustic cork in GIDC Vapi, Gujarat.",
+    "Manufacturer of rubberised cork sheets conforming to IS: 4253 and ASTM standards, plus transformer gaskets, clutch wads, foundation slabs, and acoustic cork in GIDC Vapi, Gujarat.",
   path: "",
 });
 

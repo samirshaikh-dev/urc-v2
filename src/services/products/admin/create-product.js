@@ -5,6 +5,7 @@ import { getDbClient } from "@/lib/db";
 import { productFaqs, productSpecifications, products } from "@/db/schema";
 import { slugify } from "@/lib/utils";
 import {
+  assertUniqueProductSeo,
   cleanFaqs,
   cleanSpecifications,
   createRelatedRows,
@@ -54,6 +55,8 @@ export async function createProductService(payload) {
     slug = `${baseSlug}-${suffix}`;
     suffix++;
   }
+
+  await assertUniqueProductSeo(db, payload);
 
   const productId = randomUUID();
   const faqRows = createRelatedRows(cleanFaqs(faqs), productId, ["question", "answer"]);

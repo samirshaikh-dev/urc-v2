@@ -21,11 +21,15 @@ export async function updateBlogService(id, payload) {
   } = payload;
 
   let finalImageUrl = existing.imageUrl;
-  if (imageFileUri && imageFileUri.startsWith("data:image/")) {
+  if (imageFileUri === null || imageFileUri === "") {
+    finalImageUrl = null;
+  } else if (imageFileUri && imageFileUri.startsWith("data:image/")) {
     const uploadResult = await uploadToCloudinary(imageFileUri, "urc-v2/blogs");
     if (uploadResult.success) {
       finalImageUrl = uploadResult.secureUrl;
     }
+  } else if (imageFileUri) {
+    finalImageUrl = imageFileUri;
   }
 
   blogsStore[index] = {
@@ -36,7 +40,7 @@ export async function updateBlogService(id, payload) {
     ...(tags !== undefined ? { tags: tags.trim() } : {}),
     ...(author ? { author: author.trim() } : {}),
     ...(readTime ? { readTime: readTime.trim() } : {}),
-    ...(finalImageUrl ? { imageUrl: finalImageUrl } : {}),
+    imageUrl: finalImageUrl,
     ...(published !== undefined ? { published } : {}),
     updatedAt: new Date(),
   };

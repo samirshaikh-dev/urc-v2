@@ -98,7 +98,7 @@ async function getVisibleCategoryProducts(category) {
     return [];
   }
 
-  return products.filter((product) => getProductIndexability(product).visible);
+  return products.filter((product) => getProductIndexability(product).indexable);
 }
 
 async function CategoryStructuredData({ category }) {

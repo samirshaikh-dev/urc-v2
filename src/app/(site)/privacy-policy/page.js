@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { LegalPageHeader } from "@/components/legal/legal-page-header";
 import { LegalSidebar } from "@/components/legal/legal-sidebar";
 import { PrivacyPolicyContent, PRIVACY_TOC } from "@/components/legal/privacy-policy-content";
-import { constructMetadata, getJsonLdScriptProps } from "@/lib/seo";
+import { constructMetadata, getJsonLdScriptProps, getSiteUrl } from "@/lib/seo";
 import { SITE_CONFIG } from "@/lib/constants";
 import { COMPANY_INFO } from "@/data/company";
 
@@ -14,17 +14,18 @@ export const metadata = constructMetadata({
 });
 
 export default function PrivacyPolicyPage() {
+  const siteUrl = getSiteUrl();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Privacy Policy | United Rubber Cork",
     description:
       "Privacy Policy and data protection guidelines for United Rubber Cork manufacturing and commercial supply.",
-    url: `${SITE_CONFIG.url}/privacy-policy`,
+    url: `${siteUrl}/privacy-policy`,
     publisher: {
       "@type": "Organization",
       name: SITE_CONFIG.name,
-      url: SITE_CONFIG.url,
+      url: siteUrl,
       email: COMPANY_INFO.email,
       telephone: COMPANY_INFO.phone,
       address: {

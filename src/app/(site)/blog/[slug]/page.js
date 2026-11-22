@@ -23,6 +23,7 @@ import {
   constructMetadata,
   getBlogArticleJsonLd,
   getBreadcrumbJsonLd,
+  getJsonLdScriptProps,
 } from "@/lib/seo";
 
 export async function generateStaticParams() {
@@ -95,12 +96,7 @@ export default async function BlogArticleDetailPage({ params }) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([blogArticleJsonLd, breadcrumbJsonLd]),
-        }}
-      />
+      <script {...getJsonLdScriptProps([blogArticleJsonLd, breadcrumbJsonLd])} />
 
       <article className="min-h-screen bg-page/40 pb-20">
         {/* 01. BREADCRUMBS & ARTICLE HEADER */}
@@ -194,8 +190,8 @@ export default async function BlogArticleDetailPage({ params }) {
           </Container>
         </header>
 
-        {/* 02. FEATURED IMAGE */}
-        {blog.imageUrl && (
+        {/* 02. FEATURED IMAGE (OPTIONAL) */}
+        {Boolean(blog.imageUrl?.trim()) && (
           <Container className="max-w-4xl pt-8 sm:pt-10">
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-line bg-field shadow-sm">
               <Image
@@ -211,7 +207,7 @@ export default async function BlogArticleDetailPage({ params }) {
         )}
 
         {/* 03. MAIN ARTICLE BODY */}
-        <Container className="max-w-3xl pt-10 sm:pt-12">
+        <Container className="max-w-3xl pt-8 sm:pt-10">
           {/* Executive Summary / Key Takeaways Box */}
           <div className="mb-10 rounded-2xl border border-maroon/20 bg-maroon/5 p-6 sm:p-7">
             <div className="flex items-center gap-2 text-maroon font-semibold text-sm">

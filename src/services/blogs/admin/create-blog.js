@@ -14,7 +14,7 @@ export async function createBlogService(payload) {
     published,
   } = payload;
 
-  let finalImageUrl = "/images/placeholder-product.jpg";
+  let finalImageUrl = null;
   if (imageFileUri) {
     if (imageFileUri.startsWith("data:image/")) {
       const uploadResult = await uploadToCloudinary(imageFileUri, "urc-v2/blogs");

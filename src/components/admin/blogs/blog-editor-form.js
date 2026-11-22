@@ -78,7 +78,9 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
         excerpt: excerpt.trim(),
         tags: tags.trim(),
         content: content.trim(),
-        imageFileUri: newImageSelected ? imagePreview : (isEdit ? null : imagePreview),
+        imageFileUri: newImageSelected
+          ? imagePreview
+          : (imagePreview ? imagePreview : null),
         published,
       };
 
@@ -203,10 +205,10 @@ export function BlogEditorForm({ initialData = null, isEdit = false }) {
           />
         </div>
 
-        {/* Row 4: Cover Image (Choose from Library button from reference) */}
+        {/* Row 4: Cover Image (Optional) */}
         <div className="space-y-2.5">
           <label className="block text-xs sm:text-sm font-medium text-[#374151]">
-            Cover Image
+            Cover Image <span className="text-xs font-normal text-[#687080]">(Optional)</span>
           </label>
 
           {imagePreview ? (

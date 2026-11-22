@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, isNull, ne, or, sql } from "drizzle-orm";
 import { getDbClient } from "@/lib/db";
 import { products } from "@/db/schema";
 
@@ -26,7 +26,15 @@ export async function GET(request) {
       );
     }
 
-    const conditions = [];
+    const conditions = [
+      eq(products.visibility, "public"),
+      or(isNull(products.indexingStatus), ne(products.indexingStatus, "noindex")),
+      or(
+        isNull(products.lifecycleStatus),
+        ne(products.lifecycleStatus, "discontinued"),
+        eq(products.indexingStatus, "index")
+      ),
+    ];
     if (categoryParam && categoryParam !== "all") {
       conditions.push(eq(products.categorySlug, categoryParam));
     }

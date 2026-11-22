@@ -3,6 +3,7 @@ import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 import { getDbClient } from "@/lib/db";
 import { productFaqs, productSpecifications, products } from "@/db/schema";
 import {
+  assertUniqueProductSeo,
   cleanFaqs,
   cleanSpecifications,
   createRelatedRows,
@@ -33,6 +34,8 @@ export async function updateProductService(productId, payload) {
   if (!existing) {
     throw new Error("Product not found.");
   }
+
+  await assertUniqueProductSeo(db, payload, productId);
 
   let imageUrl = existing.imageUrl;
   let imagePublicId = existing.imagePublicId;

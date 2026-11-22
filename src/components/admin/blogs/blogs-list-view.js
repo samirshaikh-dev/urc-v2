@@ -183,17 +183,21 @@ export function BlogsListView({ initialBlogs = [] }) {
                     {/* Title & Thumbnail */}
                     <td className="py-3.5 px-4 sm:px-6">
                       <div className="flex items-center gap-3">
-                        <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-[#D9DCD1] bg-white">
-                          <Image
-                            src={
-                              optimizeCloudinaryUrl(blog.imageUrl, { width: 160 }) ||
-                              "/images/placeholder-product.jpg"
-                            }
-                            alt={blog.title}
-                            fill
-                            className="object-cover"
-                            sizes="48px"
-                          />
+                        <div className="relative size-12 shrink-0 overflow-hidden rounded-lg border border-[#D9DCD1] bg-white flex items-center justify-center">
+                          {blog.imageUrl ? (
+                            <Image
+                              src={
+                                optimizeCloudinaryUrl(blog.imageUrl, { width: 160 }) ||
+                                blog.imageUrl
+                              }
+                              alt={blog.title}
+                              fill
+                              className="object-cover"
+                              sizes="48px"
+                            />
+                          ) : (
+                            <FileText className="size-5 text-[#687080]/60" aria-hidden="true" />
+                          )}
                         </div>
                         <div className="min-w-0">
                           <span

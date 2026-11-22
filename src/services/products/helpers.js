@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { asc, inArray } from "drizzle-orm";
-import { productFaqs, productSpecifications } from "@/db/schema";
+import { and, asc, inArray, ne, or, sql } from "drizzle-orm";
+import { productFaqs, productSpecifications, products } from "@/db/schema";
 import { getDbClient } from "@/lib/db";
 
 export const USER_FRIENDLY_DB_ERROR =
@@ -92,6 +92,51 @@ export function getProductSeoValues(payload = {}) {
       payload[field],
     ])
   );
+}
+
+function normalizeSeoTextForComparison(value) {
+  if (typeof value !== "string") return "";
+  return value.trim().replace(/\s+/g, " ").toLocaleLowerCase();
+}
+
+/**
+ * Prevent duplicate SEO titles/descriptions at the application boundary.
+ * Titles and descriptions are derived into canonical URLs and metadata, so a
+ * duplicate would create competing pages with the same search snippet.
+ */
+export async function assertUniqueProductSeo(db, payload = {}, excludeId) {
+  const seoTitle = normalizeSeoTextForComparison(payload.seoTitle);
+  const seoDescription = normalizeSeoTextForComparison(payload.seoDescription);
+
+  const comparisons = [];
+  if (seoTitle) {
+    comparisons.push(
+      sql`lower(trim(regexp_replace(coalesce(${products.seoTitle}, ''), '[[:space:]]+', ' ', 'g'))) = ${seoTitle}`
+    );
+  }
+  if (seoDescription) {
+    comparisons.push(
+      sql`lower(trim(regexp_replace(coalesce(${products.seoDescription}, ''), '[[:space:]]+', ' ', 'g'))) = ${seoDescription}`
+    );
+  }
+
+  if (!comparisons.length) return;
+
+  const where = excludeId
+    ? and(ne(products.id, excludeId), or(...comparisons))
+    : or(...comparisons);
+
+  const [conflict] = await db
+    .select({ id: products.id })
+    .from(products)
+    .where(where)
+    .limit(1);
+
+  if (conflict) {
+    throw new Error(
+      "Another product already uses this SEO title or description. Please use unique values."
+    );
+  }
 }
 
 export async function loadRelatedRows(db, rows, { faqs = false, specifications = false } = {}) {

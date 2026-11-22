@@ -8,6 +8,7 @@ import {
   constructMetadata,
   getBlogListJsonLd,
   getBreadcrumbJsonLd,
+  getJsonLdScriptProps,
 } from "@/lib/seo";
 
 export const metadata = constructMetadata({
@@ -36,12 +37,7 @@ export default async function BlogListingPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([blogListJsonLd, breadcrumbJsonLd]),
-        }}
-      />
+      <script {...getJsonLdScriptProps([blogListJsonLd, breadcrumbJsonLd])} />
 
       {/* 01. EDITORIAL HERO SECTION */}
       <section className="relative overflow-hidden border-b border-line bg-gradient-to-b from-field/60 to-page py-14 sm:py-20">

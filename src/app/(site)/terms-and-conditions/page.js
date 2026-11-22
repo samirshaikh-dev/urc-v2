@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/container";
 import { LegalPageHeader } from "@/components/legal/legal-page-header";
 import { LegalSidebar } from "@/components/legal/legal-sidebar";
 import { TermsContent, TERMS_TOC } from "@/components/legal/terms-content";
-import { constructMetadata, getJsonLdScriptProps } from "@/lib/seo";
+import { constructMetadata, getJsonLdScriptProps, getSiteUrl } from "@/lib/seo";
 import { SITE_CONFIG } from "@/lib/constants";
 import { COMPANY_INFO } from "@/data/company";
 
@@ -14,17 +14,18 @@ export const metadata = constructMetadata({
 });
 
 export default function TermsAndConditionsPage() {
+  const siteUrl = getSiteUrl();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Terms & Conditions | United Rubber Cork",
     description:
       "Standard terms and conditions of supply, website use, and commercial quotation for United Rubber Cork.",
-    url: `${SITE_CONFIG.url}/terms-and-conditions`,
+    url: `${siteUrl}/terms-and-conditions`,
     publisher: {
       "@type": "Organization",
       name: SITE_CONFIG.name,
-      url: SITE_CONFIG.url,
+      url: siteUrl,
       email: COMPANY_INFO.email,
       telephone: COMPANY_INFO.phone,
       address: {

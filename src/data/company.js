@@ -4,11 +4,11 @@
  */
 export const COMPANY_INFO = {
   name: "United Rubber Cork",
-  email: "admin@amcorkindia.com",
-  secondaryEmail: "amcorkindustries@gmail.com",
+  email: "unitedrubcork@gmail.com",
+  secondaryEmail: "sales.unitedrubcork@gmail.com",
   emails: [
-    "admin@amcorkindia.com",
-    "amcorkindustries@gmail.com",
+    "unitedrubcork@gmail.com",
+    "sales.unitedrubcork@gmail.com",
   ],
   phone: "+91 9924304617",
   phones: [
@@ -49,4 +49,3 @@ export const HERITAGE_DATA = {
     "Custom precision-cut industrial gaskets, strips, and fabricated components",
   ],
 };
-
