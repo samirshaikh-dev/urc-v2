@@ -9,6 +9,7 @@ export const INITIAL_BLOGS = [
     slug: "rubber-cork-transformer-gaskets-selection-guide-is-4253",
     title: "How to Select the Right Rubberised Cork Gasket for Electrical Transformers (IS 4253 & Oil Compatibility)",
     excerpt: "An engineering guide for electrical OEMs and substation maintenance teams on choosing between Grade RC70-C and RC80-C rubberised cork gaskets, evaluating hot transformer mineral oil resistance, and ensuring long-term hermetic sealing.",
+    previewText: "In oil-filled power transformers, gasket failure risks atmospheric moisture ingress, catastrophic dielectric breakdown, and costly outages. NBR-compounded cork provides zero-lateral-spread sealing under continuous 110°C thermal cycles.",
     content: `
       <p class="lead">In electrical power and distribution transformers, gasket performance is critical to preventing insulation degradation. A gasket failure does not merely cause an unsightly oil weep—it allows atmospheric moisture to penetrate transformer tank oil, dramatically lowering its dielectric breakdown voltage and risking catastrophic transformer failure.</p>
 
@@ -95,6 +96,7 @@ export const INITIAL_BLOGS = [
     slug: "is-4253-standards-rubberised-cork-sheets-specification-breakdown",
     title: "IS 4253 Part 1 & Part 2 Explained: Grades, Recovery & Tensile Standards for Rubber Cork Sheets",
     excerpt: "A comprehensive breakdown of Indian Standard specifications IS 4253, detailing compressibility percentage, recovery tolerances, tensile strength, and oil immersion test standards for industrial procurement heads.",
+    previewText: "Compressibility percentage alone does not define gasket quality. IS 4253 mandates minimum 75% elastic recovery and strict limits on ASTM oil immersion swell to guarantee flange joints never relax under vibration.",
     content: `
       <p class="lead">Procurement managers and quality assurance engineers frequently encounter reference specifications such as 'IS 4253 Part 2 Grade A' or 'IS 4253 Part 1 Type C' in technical tenders. Understanding what these standards dictate is critical for verifying incoming material quality and avoiding costly line stoppages.</p>
 
@@ -143,6 +145,7 @@ export const INITIAL_BLOGS = [
     slug: "vibration-isolation-cork-foundation-slabs-generator-compressor-damping",
     title: "Vibration Isolation and Foundation Damping: Why Cork Foundation Slabs Outperform Pure Elastomers",
     excerpt: "Discover how closed-cell natural cork cellular structure combined with synthetic elastomers provides superior damping coefficients, preventing resonant vibration in diesel generators, heavy presses, and HVAC chillers.",
+    previewText: "With 40 million airtight cells per cubic centimeter, cork compresses vertically with near-zero Poisson's lateral expansion—absorbing transient shock spikes without the fatigue bulge that plagues solid rubber.",
     content: `
       <p class="lead">Heavy rotating and reciprocating industrial equipment—including diesel generator sets, heavy mechanical presses, rotary compressors, and chiller plants—generates continuous structural vibrations. Left unmitigated, these vibrations degrade machine alignment, crack civil foundations, and transmit unacceptable low-frequency noise throughout industrial premises.</p>
 
@@ -212,7 +215,7 @@ export const INITIAL_BLOGS = [
     tags: "Vibration Damping, Foundation Slabs, Heavy Machinery, Civil Engineering",
     author: "URC Engineering Team",
     readTime: "7 min read",
-    imageUrl: "/images/industries-serve-images/railway-cork-vibration-damping-pads-supplier-india.jpg",
+    imageUrl: "/images/carousel-images/custom-molded-cork-components-manufacturing-vapi-gujarat-02.jpg",
     published: true,
     createdAt: new Date("2026-04-10T11:00:00.000Z"),
     updatedAt: new Date("2026-04-10T11:00:00.000Z"),
@@ -222,6 +225,7 @@ export const INITIAL_BLOGS = [
     slug: "natural-agglomerated-cork-vs-rubberised-cork-sheets-comparison",
     title: "Agglomerated Natural Cork vs. Rubberised Cork Sheets: An Industrial Material Comparison",
     excerpt: "When to specify pure agglomerated cork versus nitrile- or neoprene-bonded rubber cork. Compare temperature limits, fluid immersion resistance, elasticity, and acoustic transmission coefficients.",
+    previewText: "Specifying the wrong cork composition can cause immediate joint blowout. If fluid pressure from fuel, coolant, or oil is present, only continuous vulcanized elastomeric rubber cork provides a hermetic seal.",
     content: `
       <p class="lead">Engineers often request 'cork sheets' without specifying whether their application requires pure agglomerated natural cork or an elastomer-bonded rubberised cork composite. Choosing the wrong category can lead to gasket blowouts, fluid leaks, or premature degradation.</p>
 
@@ -298,7 +302,7 @@ export const INITIAL_BLOGS = [
     tags: "Material Selection, Natural Cork, Rubber Cork, Industrial Manufacturing",
     author: "URC Materials Engineering",
     readTime: "5 min read",
-    imageUrl: "/images/cork-category-images/cork-products.png",
+    imageUrl: null,
     published: true,
     createdAt: new Date("2026-04-22T08:15:00.000Z"),
     updatedAt: new Date("2026-04-22T08:15:00.000Z"),
