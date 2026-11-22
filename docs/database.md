@@ -38,6 +38,15 @@ products whose slugs match the seed data, it also replaces their FAQ and
 specification rows. It is not a Supabase data-transfer command and should only
 be run when that behavior is intended.
 
+`npm run db:empty` deletes all rows from `products`, `product_faqs`,
+`product_specifications`, and `enquiries`, plus `blogs` if that table exists in
+the target database. It asks for confirmation before truncating; in
+non-interactive use, pass `--yes` (`npm run db:empty -- --yes`). Only run it
+against a database you intend to clear, then restore product content with
+`npm run db:seed`. The configured database currently has no `blogs` table;
+blogs are held in the in-memory application store and are not cleared by this
+script.
+
 ## Moving existing data
 
 Changing the connection strings does not copy data from Supabase. Back up the
