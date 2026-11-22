@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FOOTER_NAV } from "@/data/navigation";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -94,6 +95,27 @@ export function Footer({ currentYear }) {
             <p className="mt-3.5 max-w-sm text-xs leading-relaxed text-white/75 sm:text-sm">
               Specialized Indian manufacturer and bulk supplier of engineered rubberised cork sheets, precision transformer gaskets, and resilient elastomer composites.
             </p>
+
+            {/* ISO Certification Seal & Badge */}
+            <div className="mt-5 flex items-center gap-3">
+              <div className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-white p-1 shadow-sm">
+                <Image
+                  src="/images/footer/ISO_9001-297x300.png"
+                  alt="ISO 9001:2015 Company"
+                  width={56}
+                  height={56}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <div className="leading-tight">
+                <span className="inline-block rounded-full border border-yellow/30 bg-yellow/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-yellow">
+                  Certified Quality
+                </span>
+                <span className="mt-1 block text-xs font-semibold text-white">
+                  ISO 9001:2015 Company
+                </span>
+              </div>
+            </div>
 
             {/* Social Icons Row */}
             <div className="mt-6 flex items-center gap-2.5">
