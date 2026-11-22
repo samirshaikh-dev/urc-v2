@@ -5,6 +5,7 @@ import { drizzle } from "drizzle-orm/neon-serverless";
 import { eq } from "drizzle-orm";
 import ws from "ws";
 import { productFaqs, productSpecifications, products } from "../src/db/schema.js";
+import { PRODUCTS } from "../src/data/products.js";
 
 neonConfig.webSocketConstructor = ws;
 
@@ -116,21 +117,21 @@ const INITIAL_PRODUCTS = [
     badge: "Architectural & Interior Design",
     imageUrl: "/images/industries-serve-images/cork-expansion-joints-construction-insulation-vapi-gujarat.jpeg",
     seoDescription:
-      "Textured natural cork tiles providing superior acoustic absorption, reverberation reduction, and organic warmth for modern interiors.",
+      "Sound-dampening natural cork wall tiles with tactile texture, biophilic elegance, and acoustic reverberation control for offices, boardrooms, and studios.",
     imageAlt: "Acoustic Decorative Cork Wall Tiles from United Rubber Cork",
     introduction:
-      "Textured natural cork tiles providing superior acoustic absorption, reverberation reduction, and organic warmth for modern interiors.",
+      "Sound-dampening natural cork wall tiles with tactile texture, biophilic elegance, and acoustic reverberation control for offices, boardrooms, and studios.",
     features: [
-      "Significantly reduces ambient conversational reverberation and room echo",
-      "Natural warm texture introduces biophilic design into corporate and residential spaces",
-      "Modular square and rectangular formats allow creative tessellation and layout designs",
-      "Simple surface installation using water-based contact adhesives directly on drywall",
+      "Effective acoustic absorption (NRC 0.25 to 0.45) dampening voice reverberation",
+      "Self-healing fine-grain texture closes naturally after pin removal",
+      "Hypoallergenic, anti-static surface that naturally repels airborne dust",
+      "Available in natural sanded, bevelled, and geometric embossed textures",
     ],
     applications: [
-      "Corporate Conference Rooms & Collaborative Workspaces",
-      "Recording Studios, Podcast Rooms & Home Theaters",
-      "Hotel Lobbies, Executive Suites & Restaurant Dining Areas",
-      "Educational Classrooms & Library Quiet Zones",
+      "Corporate Boardrooms & Conference Rooms",
+      "Listening Studios & Home Theaters",
+      "Hotel Lobbies & Executive Suites",
+      "Educational Classrooms & Libraries",
     ],
     description:
       "<p>Transform commercial and residential spaces with tactile, sound-dampening natural cork tiles. Harvested sustainably from Quercus suber cork bark, these wall coverings bring organic warmth, biophilic elegance, and noticeable acoustic reverberation control to offices, boardrooms, and listening studios.</p><ul><li>Effective acoustic absorption (NRC 0.25 to 0.45) dampening voice reverberation</li><li>Self-healing fine-grain texture closes naturally after pin removal</li><li>Hypoallergenic, anti-static surface that naturally repels airborne dust</li><li>Available in natural sanded, bevelled, and geometric embossed textures</li></ul>",
@@ -197,6 +198,38 @@ const INITIAL_PRODUCTS = [
   },
 ];
 
+// Seed the rest of the static catalog so every existing product has a DB row
+// and therefore its own crawlable URL. No FAQs are invented for these entries.
+const explicitlySeededSlugs = new Set(INITIAL_PRODUCTS.map((item) => item.slug));
+const catalogSeedProducts = PRODUCTS.filter(
+  (product) => !explicitlySeededSlugs.has(product.slug)
+).map((product) => ({
+  slug: product.slug,
+  name: product.name,
+  categorySlug: product.category,
+  badge: product.badge || "",
+  imageUrl: product.image,
+  seoTitle: product.name,
+  seoDescription: product.shortDescription,
+  imageAlt: `${product.name} from United Rubber Cork`,
+  introduction: product.shortDescription,
+  features: product.features || [],
+  applications: product.applications || [],
+  benefits: [],
+  relatedProductIds: [],
+  visibility: "public",
+  lifecycleStatus: "active",
+  indexingStatus: "auto",
+  description: product.fullDescription,
+  faqs: [],
+  specifications: (product.specifications || []).map((specification, sortOrder) => ({
+    ...specification,
+    sortOrder,
+  })),
+}));
+
+const SEED_PRODUCTS = [...INITIAL_PRODUCTS, ...catalogSeedProducts];
+
 async function main() {
   const connectionString =
     process.env.DATABASE_URL_POOLED?.trim() || process.env.DATABASE_URL?.trim();
@@ -212,7 +245,7 @@ async function main() {
   try {
     console.log("Starting database seeding...");
 
-    for (const item of INITIAL_PRODUCTS) {
+    for (const item of SEED_PRODUCTS) {
       const { faqs, specifications, ...productData } = item;
       const [existing] = await db
         .select({ id: products.id })
