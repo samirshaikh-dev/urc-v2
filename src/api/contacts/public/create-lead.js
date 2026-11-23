@@ -31,6 +31,7 @@ export async function createLeadAction(payload) {
   let emailFailed = false;
   try {
     const emailResult = await sendContactInquiryEmails(enquiry);
+    console.log("[createLeadAction] Email dispatch results:", emailResult);
     const sent = emailResult?.customerEmailSent;
     await updateEnquiryEmailStatus(enquiry.id, sent ? "sent" : "failed").catch((e) => {
       console.error("[createLeadAction] Failed to update emailStatus:", e);
