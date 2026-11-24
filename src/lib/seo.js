@@ -44,8 +44,7 @@ export function cleanVerificationCode(raw) {
 
 export function getGoogleVerificationCode() {
   return cleanVerificationCode(
-    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
-      process.env.GOOGLE_SITE_VERIFICATION
+    process.env.GOOGLE_SITE_VERIFICATION
   );
 }
 
