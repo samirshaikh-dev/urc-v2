@@ -23,6 +23,59 @@ function titleIncludesBrand(title) {
 }
 
 /**
+ * Sanitize search engine verification tokens.
+ * Handles plain strings, quoted tokens, or full pasted <meta ... content="..." /> snippets.
+ */
+export function cleanVerificationCode(raw) {
+  if (!raw || typeof raw !== "string") return "";
+  let val = raw.trim();
+  if (
+    (val.startsWith('"') && val.endsWith('"')) ||
+    (val.startsWith("'") && val.endsWith("'"))
+  ) {
+    val = val.slice(1, -1).trim();
+  }
+  const contentMatch = val.match(/content=["']([^"']+)["']/i);
+  if (contentMatch) {
+    return contentMatch[1].trim();
+  }
+  return val;
+}
+
+export function getGoogleVerificationCode() {
+  return cleanVerificationCode(
+    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+      process.env.GOOGLE_SITE_VERIFICATION
+  );
+}
+
+export function getBingVerificationCode() {
+  return cleanVerificationCode(
+    process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ||
+      process.env.BING_SITE_VERIFICATION ||
+      process.env.NEXT_PUBLIC_MSVALIDATE_01 ||
+      process.env.MSVALIDATE_01
+  );
+}
+
+export function getVerificationConfig() {
+  const google = getGoogleVerificationCode();
+  const bing = getBingVerificationCode();
+
+  const verification = {};
+  if (google) {
+    verification.google = google;
+  }
+  if (bing) {
+    verification.other = {
+      "msvalidate.01": bing,
+    };
+  }
+
+  return Object.keys(verification).length > 0 ? verification : undefined;
+}
+
+/**
  * Standard Root Metadata for Next.js App Router (RootLayout).
  * Uses only verified site-level facts from SITE_CONFIG.
  */
@@ -79,6 +132,7 @@ export const rootMetadata = {
   alternates: {
     canonical: getSiteUrl(),
   },
+  verification: getVerificationConfig(),
 };
 
 /**
@@ -181,6 +235,7 @@ export function constructMetadata({
         "max-snippet": -1,
       },
     },
+    ...(getVerificationConfig() ? { verification: getVerificationConfig() } : {}),
   };
 }
 
