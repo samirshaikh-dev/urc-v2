@@ -155,7 +155,7 @@ export function PrivacyPolicyContent() {
             <span>Industrial Non-Disclosure Guarantee</span>
           </div>
           <p className="text-xs leading-relaxed text-muted sm:text-sm">
-            We understand that CAD files, transformer cover blueprints, and custom automotive gasket designs represent critical intellectual property. When you upload or email engineering drawings to United Rubber Cork:
+            We understand that CAD files, transformer cover blueprints, and custom automotive gasket designs represent critical intellectual property. When you upload or email engineering drawings to United RubCork:
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-xs text-muted sm:text-sm">
             <li>Your drawings are accessed solely by authorized manufacturing engineers and estimating staff directly involved in tooling and price quotation.</li>

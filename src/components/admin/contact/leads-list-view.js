@@ -135,7 +135,7 @@ export function LeadsListView({ initialLeads = [] }) {
               filteredLeads.map((lead) => {
                 const isDeleting = deletingId === lead.id;
                 const mailtoHref = `mailto:${lead.email}?subject=${encodeURIComponent(
-                  `Quotation Response — ${lead.product || "United Rubber Cork"}`
+                  `Quotation Response — ${lead.product || "United RubCork"}`
                 )}`;
 
                 return (

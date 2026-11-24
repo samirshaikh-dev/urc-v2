@@ -1,7 +1,7 @@
 import { escapeHtml } from "./utils.js";
 
 /**
- * Customer confirmation email — United Rubber Cork.
+ * Customer confirmation email — United RubCork.
  *
  * Design: minimal, white background, clean typography, mobile-friendly.
  * Brand: Deep Maroon (#650510), Orange (#F58634), Yellow (#FCC813).
@@ -17,7 +17,7 @@ export function generateCustomerConfirmationEmail(lead) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Enquiry Received — United Rubber Cork</title>
+  <title>Enquiry Received — United RubCork</title>
   <!--[if mso]>
   <noscript>
     <xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
@@ -37,7 +37,7 @@ export function generateCustomerConfirmationEmail(lead) {
           <!-- ── Header ── -->
           <tr>
             <td style="background-color: #650510; padding: 28px 32px;">
-              <p style="margin: 0 0 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FCC813;">United Rubber Cork</p>
+              <p style="margin: 0 0 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #FCC813;">United RubCork</p>
               <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.75); letter-spacing: 0.2px;">GIDC Vapi · Gujarat, India</p>
             </td>
           </tr>
@@ -127,7 +127,7 @@ export function generateCustomerConfirmationEmail(lead) {
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
                   <td>
-                    <p style="margin: 0 0 2px; font-size: 13px; font-weight: 700; color: #111111;">United Rubber Cork</p>
+                    <p style="margin: 0 0 2px; font-size: 13px; font-weight: 700; color: #111111;">United RubCork</p>
                     <p style="margin: 0 0 10px; font-size: 12px; color: #6B7280;">No. 5, Balaji Complex, 2nd Phase GIDC, Vapi — 396195, Gujarat, India</p>
                     <p style="margin: 0; font-size: 12px; color: #9CA3AF; line-height: 1.6;">
                       Rubberised Cork Sheets &amp; Rolls &nbsp;·&nbsp; Transformer Gaskets &nbsp;·&nbsp;
@@ -144,7 +144,7 @@ export function generateCustomerConfirmationEmail(lead) {
 
         <!-- Legal note -->
         <p style="margin: 20px 0 0; font-size: 11px; color: #9CA3AF; text-align: center; line-height: 1.6;">
-          You are receiving this email because you submitted an enquiry on unitedrubbercork.com.<br>
+          You are receiving this email because you submitted an enquiry on unitedrubcork.com.<br>
           If this was not you, please disregard this message.
         </p>
 

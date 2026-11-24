@@ -4,7 +4,7 @@ Here’s a more professional, detailed, and implementation-focused prompt. It in
 
 Act as a **Senior Technical SEO Specialist, Local SEO Strategist, AEO/GEO Expert, and AI Search Optimization Consultant**.
 
-Your task is to implement a comprehensive SEO, AEO (Answer Engine Optimization), GEO (Generative Engine Optimization), and AIO (AI Optimization) strategy for the **New United Rubber Cork (URC)** website.
+Your task is to implement a comprehensive SEO, AEO (Answer Engine Optimization), GEO (Generative Engine Optimization), and AIO (AI Optimization) strategy for the **New United RubCork (URC)** website.
 
 The primary objective is to establish the company as a trusted manufacturer and supplier of rubberised cork products, starting with its actual manufacturing location and progressively expanding its search visibility across India.
 
@@ -305,7 +305,7 @@ Complete the following:
 
 ### Final Objective
 
-Build New United Rubber Cork's digital presence progressively:
+Build New United RubCork's digital presence progressively:
 
 **GIDC Vapi → Gujarat + Daman + Dadra and Nagar Haveli → All India**
 

@@ -19,7 +19,7 @@ const INITIAL_PRODUCTS = [
     imageUrl: "/images/carousel-images/industrial-cork-granules-processing-manufacturer-vapi-gujarat-01.jpg",
     seoDescription:
       "Pure natural agglomerated cork sheets and continuous rolls engineered for thermal barriers, acoustic underlayment, and foundation expansion joints.",
-    imageAlt: "Plain Natural Cork Sheets & Rolls from United Rubber Cork",
+    imageAlt: "Plain Natural Cork Sheets & Rolls from United RubCork",
     introduction:
       "Pure natural agglomerated cork sheets and continuous rolls engineered for thermal barriers, acoustic underlayment, and foundation expansion joints.",
     features: [
@@ -69,7 +69,7 @@ const INITIAL_PRODUCTS = [
     imageUrl: "/images/carousel-images/custom-molded-cork-components-manufacturing-vapi-gujarat-02.jpg",
     seoDescription:
       "NBR, Neoprene, and SBR bonded composite sheets engineered for hot oil sealing, power transformer covers, and automotive flange gaskets.",
-    imageAlt: "Rubberised Cork Sheets (RC Sheets) from United Rubber Cork",
+    imageAlt: "Rubberised Cork Sheets (RC Sheets) from United RubCork",
     introduction:
       "NBR, Neoprene, and SBR bonded composite sheets engineered for hot oil sealing, power transformer covers, and automotive flange gaskets.",
     features: [
@@ -119,7 +119,7 @@ const INITIAL_PRODUCTS = [
     imageUrl: "/images/industries-serve-images/cork-expansion-joints-construction-insulation-vapi-gujarat.jpeg",
     seoDescription:
       "Sound-dampening natural cork wall tiles with tactile texture, biophilic elegance, and acoustic reverberation control for offices, boardrooms, and studios.",
-    imageAlt: "Acoustic Decorative Cork Wall Tiles from United Rubber Cork",
+    imageAlt: "Acoustic Decorative Cork Wall Tiles from United RubCork",
     introduction:
       "Sound-dampening natural cork wall tiles with tactile texture, biophilic elegance, and acoustic reverberation control for offices, boardrooms, and studios.",
     features: [
@@ -162,7 +162,7 @@ const INITIAL_PRODUCTS = [
     imageUrl: "/images/industries-serve-images/orthopedic-cork-shoe-soles-footwear-manufacturer-vapi-gujarat.jpeg",
     seoDescription:
       "Sustainable desk pads, mousepads, pen holders, and docking trays crafted from fine-grain natural cork.",
-    imageAlt: "Custom Cork Desk Mats & Office Accessories from United Rubber Cork",
+    imageAlt: "Custom Cork Desk Mats & Office Accessories from United RubCork",
     introduction:
       "Sustainable desk pads, mousepads, pen holders, and docking trays crafted from fine-grain natural cork.",
     features: [
@@ -212,7 +212,7 @@ const catalogSeedProducts = PRODUCTS.filter(
   imageUrl: product.image,
   seoTitle: product.name,
   seoDescription: product.shortDescription,
-  imageAlt: `${product.name} from United Rubber Cork`,
+  imageAlt: `${product.name} from United RubCork`,
   introduction: product.shortDescription,
   features: product.features || [],
   applications: product.applications || [],

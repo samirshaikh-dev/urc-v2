@@ -9,7 +9,7 @@ import { COMPANY_INFO } from "@/data/company";
 export const metadata = constructMetadata({
   title: "Terms & Conditions",
   description:
-    "Terms and Conditions for United Rubber Cork. Read our official terms governing website usage, commercial quotations, custom gasket tolerances, freight terms, and supply contracts.",
+    "Terms and Conditions for United RubCork. Read our official terms governing website usage, commercial quotations, custom gasket tolerances, freight terms, and supply contracts.",
   path: "/terms-and-conditions",
 });
 
@@ -18,9 +18,9 @@ export default function TermsAndConditionsPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Terms & Conditions | United Rubber Cork",
+    name: "Terms & Conditions | United RubCork",
     description:
-      "Standard terms and conditions of supply, website use, and commercial quotation for United Rubber Cork.",
+      "Standard terms and conditions of supply, website use, and commercial quotation for United RubCork.",
     url: `${siteUrl}/terms-and-conditions`,
     publisher: {
       "@type": "Organization",

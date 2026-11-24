@@ -60,7 +60,7 @@ export function QuoteForm() {
         </span>
         <h3 className="mt-4 text-xl font-semibold text-maroon">Enquiry successfully submitted</h3>
         <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted">
-          Thank you for contacting United Rubber Cork. Our technical team is reviewing your specifications and will respond within 24 working hours.
+          Thank you for contacting United RubCork. Our technical team is reviewing your specifications and will respond within 24 working hours.
         </p>
         <button
           type="button"

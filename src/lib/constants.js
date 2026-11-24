@@ -8,7 +8,7 @@
 const SITE_URL = process.env.SITE_URL?.trim();
 
 export const SITE_CONFIG = {
-  name: "United Rubber Cork",
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "United RubCork",
   shortName: "URC",
   tagline: "Engineered Cork Solutions for Industry",
   description:

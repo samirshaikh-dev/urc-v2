@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export const alt = "United Rubber Cork — Engineered Cork Solutions for Industry";
+export const alt = "United RubCork — Engineered Cork Solutions for Industry";
 
 export const size = {
   width: 1200,
@@ -69,7 +69,7 @@ export default async function OpenGraphImage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logoBase64}
-            alt="United Rubber Cork"
+            alt="United RubCork"
             width={500}
             height={250}
             style={{

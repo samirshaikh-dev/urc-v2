@@ -24,7 +24,7 @@ export function AboutWhoWeAre() {
 
             <div className="mt-6 space-y-4 text-base leading-relaxed text-muted">
               <p>
-                United Rubber Cork has been actively involved in the Indian cork industry for the past 13 years. Founded on an unwavering commitment to quality, customer satisfaction, and service, United Rubber Cork has established itself as a leading manufacturer of cork and rubberised cork products in India.
+                United RubCork has been actively involved in the Indian cork industry for the past 13 years. Founded on an unwavering commitment to quality, customer satisfaction, and service, United RubCork has established itself as a leading manufacturer of cork and rubberised cork products in India.
               </p>
               <p>
                 Operating from our manufacturing facility in GIDC Vapi, Gujarat, we bridge technical elastomer compounding with high-grade natural cork grains. We partner closely with engineering teams, procurement managers, and industrial OEMs to supply materials that satisfy stringent operating criteria across electrical power systems, automotive assemblies, and heavy industrial machinery.
@@ -48,7 +48,7 @@ export function AboutWhoWeAre() {
               <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-field sm:aspect-5/4">
                 <Image
                   src="/united-rubber-cork-logo.png"
-                  alt="United Rubber Cork – Industrial Cork and Rubberised Cork Manufacturer"
+                  alt="United RubCork – Industrial Cork and Rubberised Cork Manufacturer"
                   fill
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   className="object-contain p-6 transition-transform duration-500 group-hover:scale-105"

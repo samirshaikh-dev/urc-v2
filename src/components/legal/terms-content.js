@@ -42,7 +42,7 @@ export function TermsContent() {
             These Terms &amp; Conditions (&ldquo;Terms&rdquo;) govern your access to and use of the website located at <code>amcorkindia.com</code> and all subdomains, as well as any commercial inquiries, sample requests, Request for Quotations (RFQs), or purchase contracts entered into with <strong>{SITE_CONFIG.name}</strong> (&ldquo;we,&rdquo; &ldquo;us,&rdquo; &ldquo;our,&rdquo; or &ldquo;URC&rdquo;).
           </p>
           <p>
-            By accessing or browsing this website, downloading technical material specifications, submitting RFQ forms, or issuing a purchase order to United Rubber Cork, you acknowledge that you have read, understood, and agree to be legally bound by these Terms. If you do not agree to these Terms, please discontinue use of this website and our quoting facilities immediately.
+            By accessing or browsing this website, downloading technical material specifications, submitting RFQ forms, or issuing a purchase order to United RubCork, you acknowledge that you have read, understood, and agree to be legally bound by these Terms. If you do not agree to these Terms, please discontinue use of this website and our quoting facilities immediately.
           </p>
         </div>
       </section>
@@ -76,10 +76,10 @@ export function TermsContent() {
         </h2>
         <div className="space-y-3.5 text-sm leading-relaxed text-muted sm:text-base">
           <p>
-            All content published on this website—including but not limited to brand names, wordmarks, logos, product photographs, technical specifications, comparison tables, test matrices, engineering diagrams, copy, and layout code—is the exclusive intellectual property of United Rubber Cork or its authorized licensors and is protected under Indian Copyright and Trademark laws.
+            All content published on this website—including but not limited to brand names, wordmarks, logos, product photographs, technical specifications, comparison tables, test matrices, engineering diagrams, copy, and layout code—is the exclusive intellectual property of United RubCork or its authorized licensors and is protected under Indian Copyright and Trademark laws.
           </p>
           <p>
-            You may download or print technical data sheets or specification previews solely for internal commercial evaluation and procurement review. Any commercial reproduction, public republishing, modification, distribution, or licensing of our proprietary content without express prior written permission from United Rubber Cork is strictly prohibited.
+            You may download or print technical data sheets or specification previews solely for internal commercial evaluation and procurement review. Any commercial reproduction, public republishing, modification, distribution, or licensing of our proprietary content without express prior written permission from United RubCork is strictly prohibited.
           </p>
         </div>
       </section>
@@ -127,7 +127,7 @@ export function TermsContent() {
               <strong>Validity of Quotations:</strong> Unless stated otherwise on the official quote, commercial quotations remain valid for thirty (30) calendar days from the date of issuance, subject to market fluctuations in virgin cork granules and synthetic elastomeric binders.
             </li>
             <li>
-              <strong>Order Confirmation:</strong> A binding contract is formed only when United Rubber Cork formally acknowledges and accepts a customer&apos;s written Purchase Order (PO) via an official Order Confirmation or Proforma Invoice.
+              <strong>Order Confirmation:</strong> A binding contract is formed only when United RubCork formally acknowledges and accepts a customer&apos;s written Purchase Order (PO) via an official Order Confirmation or Proforma Invoice.
             </li>
           </ul>
         </div>
@@ -145,7 +145,7 @@ export function TermsContent() {
           <ul className="list-disc pl-5 space-y-1.5 text-xs text-muted sm:text-sm">
             <li><strong>Accuracy of Drawings:</strong> The customer bears sole responsibility for the dimensional accuracy, tolerance specifications, and engineering adequacy of submitted blueprints.</li>
             <li><strong>Tooling &amp; Setup:</strong> Tooling formulation (steel-rule dies, CNC knife programming, or compression molds) is initiated following formal drawing sign-off. Any post-approval revisions requested by the customer may incur additional setup costs and production lead-time adjustments.</li>
-            <li><strong>Third-Party IP Warranty:</strong> The customer warrants that blueprints, patterns, and specifications provided to United Rubber Cork do not infringe on any third-party patent, registered design, or proprietary rights.</li>
+            <li><strong>Third-Party IP Warranty:</strong> The customer warrants that blueprints, patterns, and specifications provided to United RubCork do not infringe on any third-party patent, registered design, or proprietary rights.</li>
           </ul>
         </div>
       </section>
@@ -177,9 +177,9 @@ export function TermsContent() {
             Upon receipt of any consignment of cork sheets, rolls, or finished gaskets, the purchaser must promptly inspect the goods for quantity, physical transit condition, and dimensional conformity:
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-xs text-muted sm:text-sm">
-            <li><strong>Notice Period:</strong> Any claim regarding shortage, transit damage, or deviation from agreed technical specifications must be notified in writing to United Rubber Cork within <strong>seven (7) business days</strong> of delivery.</li>
+            <li><strong>Notice Period:</strong> Any claim regarding shortage, transit damage, or deviation from agreed technical specifications must be notified in writing to United RubCork within <strong>seven (7) business days</strong> of delivery.</li>
             <li><strong>Supporting Documentation:</strong> Claims must include the invoice number, batch identifier, photographic documentation of packaging and defects, and representative samples if requested.</li>
-            <li><strong>Remedy:</strong> If a defect is verified and attributable to manufacturing deviation, United Rubber Cork will, at its sole discretion, replace the non-conforming batch or issue a credit note for the invoice value of the affected material.</li>
+            <li><strong>Remedy:</strong> If a defect is verified and attributable to manufacturing deviation, United RubCork will, at its sole discretion, replace the non-conforming batch or issue a credit note for the invoice value of the affected material.</li>
           </ul>
         </div>
       </section>
@@ -198,8 +198,8 @@ export function TermsContent() {
               To the maximum extent permitted by applicable Indian law:
             </p>
             <ul className="list-disc pl-5 space-y-1.5">
-              <li>United Rubber Cork&apos;s cumulative liability for any claim arising out of the sale, delivery, or use of our products shall not exceed the total net invoice price paid by the customer for the specific batch of goods giving rise to the claim.</li>
-              <li>Under no circumstances shall United Rubber Cork, its partners, or employees be liable for indirect, incidental, special, punitive, or consequential damages—including loss of profits, downtime, equipment damage, plant shutdowns, or third-party fluid contamination.</li>
+              <li>United RubCork&apos;s cumulative liability for any claim arising out of the sale, delivery, or use of our products shall not exceed the total net invoice price paid by the customer for the specific batch of goods giving rise to the claim.</li>
+              <li>Under no circumstances shall United RubCork, its partners, or employees be liable for indirect, incidental, special, punitive, or consequential damages—including loss of profits, downtime, equipment damage, plant shutdowns, or third-party fluid contamination.</li>
             </ul>
           </div>
         </div>
@@ -222,7 +222,7 @@ export function TermsContent() {
         </h2>
         <div className="space-y-3.5 text-sm leading-relaxed text-muted sm:text-base">
           <p>
-            These Terms &amp; Conditions and all commercial supply contracts entered into with United Rubber Cork shall be governed by, interpreted, and construed in accordance with the <strong>laws of India</strong>.
+            These Terms &amp; Conditions and all commercial supply contracts entered into with United RubCork shall be governed by, interpreted, and construed in accordance with the <strong>laws of India</strong>.
           </p>
           <p>
             In the event of any legal dispute, controversy, or claim arising out of or in connection with website use or material supply, the parties agree that the competent courts having jurisdiction over <strong>Vapi / Valsad district, Gujarat, India</strong> shall have exclusive jurisdiction.
@@ -246,7 +246,7 @@ export function TermsContent() {
           13. Contact Information
         </h2>
         <p className="text-sm leading-relaxed text-muted sm:text-base">
-          For commercial terms inquiries, formal quotation validation, or legal notices, please contact United Rubber Cork:
+          For commercial terms inquiries, formal quotation validation, or legal notices, please contact United RubCork:
         </p>
 
         <div className="rounded-2xl border border-line bg-page/70 p-6 space-y-4">

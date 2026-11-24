@@ -10,9 +10,9 @@ import {
 } from "@/lib/seo";
 
 export const metadata = constructMetadata({
-  title: "Contact Us & Request a Quote | United Rubber Cork — GIDC Vapi",
+  title: "Contact Us & Request a Quote | United RubCork — GIDC Vapi",
   description:
-    "Get in touch with United Rubber Cork in GIDC Vapi, Gujarat. Request quotations or engineering guidance for transformer gaskets, clutch plate wads, foundation slabs, and rubberised cork sheets.",
+    "Get in touch with United RubCork in GIDC Vapi, Gujarat. Request quotations or engineering guidance for transformer gaskets, clutch plate wads, foundation slabs, and rubberised cork sheets.",
   path: "/contact",
 });
 

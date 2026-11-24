@@ -1,6 +1,6 @@
-# Design System & Visual Architecture — United Rubber Cork
+# Design System & Visual Architecture — United RubCork
 
-> **Brand:** United Rubber Cork (URC)  
+> **Brand:** United RubCork (URC)  
 > **Project Codebase:** `urc-v2`  
 > **Status:** Active Reference & Single Source of Truth for Visual Design  
 > **Governing Standards:** Strict adherence to `AVOID.md` (Anti-AI Slop), `psychology.md` (B2B Buyer Confidence), and `docs/color-theme.md`.
@@ -10,7 +10,7 @@
 ## 1. Design Vision & Philosophy
 
 ### 1.1 The Premise: Familiar Brand, Completely Modern Experience
-United Rubber Cork is an established Indian manufacturer and bulk supplier of engineered industrial cork and rubberised-cork components. The redesign bridges the visual sophistication of contemporary digital craft (inspired by Craftly Studio) with industrial manufacturing precision.
+United RubCork is an established Indian manufacturer and bulk supplier of engineered industrial cork and rubberised-cork components. The redesign bridges the visual sophistication of contemporary digital craft (inspired by Craftly Studio) with industrial manufacturing precision.
 
 The design is **not** a generic SaaS landing page. It is an authoritative, conversion-focused B2B engineering interface that sells confidence, technical competence, and material suitability to procurement managers, transformer engineers, and automotive OEMs.
 
@@ -78,7 +78,7 @@ The system relies on clean, modern sans-serif typography with strict hierarchy a
 ### 4.1 Modern Floating Elevated Header
 - **Layout:** Floating pill centered at the top of the viewport (`max-w-6xl mx-auto my-3 px-5 py-2.5 rounded-full border border-line bg-white/80 backdrop-blur-md shadow-xs`).
 - **Scroll Behavior:** Smoothly transitions to `bg-white/95 shadow-sm` when scrolled beyond 20px.
-- **Wordmark:** Typographic brand mark *"United Rubber Cork"* accompanied by a live orange indicator dot.
+- **Wordmark:** Typographic brand mark *"United RubCork"* accompanied by a live orange indicator dot.
 - **Navigation:** Subtle pill hover targets (`hover:bg-field hover:text-maroon`), with active route indicated by `bg-maroon/5 text-maroon font-semibold`.
 - **Mobile Experience:** Slide-over sheet with full keyboard focus trap and accessible Escape key dismissal.
 
@@ -161,7 +161,7 @@ Visual 4-step workflow that eliminates buyer uncertainty:
 ## 7. Quality Assurance & Maintenance Guidelines
 
 When modifying or adding new pages and components:
-- **Verify Brand Name:** Always use **United Rubber Cork** (`URC`).
+- **Verify Brand Name:** Always use **United RubCork** (`URC`).
 - **Verify Design Tokens:** Always consume Tailwind tokens (`bg-maroon`, `text-orange-ink`, `bg-page`, `border-line`) rather than hardcoded hex values.
 - **Preserve Asset Authenticity:** Use verified assets located in `public/images/`. Never present generic stock imagery as company facilities.
 - **Maintain Accessibility:** Ensure form fields retain proper `aria-labelledby`, buttons retain clear accessible names, and focus rings remain visible.

@@ -3,7 +3,7 @@
  * Source: Official company records & verified details
  */
 export const COMPANY_INFO = {
-  name: "United Rubber Cork",
+  name: "United RubCork",
   email: "unitedrubcork@gmail.com",
   secondaryEmail: "sales.unitedrubcork@gmail.com",
   emails: [
@@ -40,7 +40,7 @@ export const HERITAGE_DATA = {
   yearsInIndustry: 13,
   tagline: "Engineered Materials. Reliable Performance.",
   statement:
-    "United Rubber Cork has been actively involved in the Indian Cork Industry for over 13 years. Dedicated to quality, customer satisfaction, and service, we have grown into a leading manufacturer of cork and rubberised cork products in India.",
+    "United RubCork has been actively involved in the Indian Cork Industry for over 13 years. Dedicated to quality, customer satisfaction, and service, we have grown into a leading manufacturer of cork and rubberised cork products in India.",
   coreGrades: [
     "PP Cap wads & bottle caps for sealing and packaging closures",
     "High-friction clutch plates and automotive gaskets, strips, and components",

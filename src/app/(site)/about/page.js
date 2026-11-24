@@ -11,9 +11,9 @@ import {
 } from "@/lib/seo";
 
 export const metadata = constructMetadata({
-  title: "About Us | United Rubber Cork — Indian Cork & Rubberised Cork Manufacturer",
+  title: "About Us | United RubCork — Indian Cork & Rubberised Cork Manufacturer",
   description:
-    "Over 13 years of manufacturing expertise in GIDC Vapi, Gujarat. United Rubber Cork manufactures specialized cork sheets, transformer gaskets, clutch plate materials, and generator foundation slabs.",
+    "Over 13 years of manufacturing expertise in GIDC Vapi, Gujarat. United RubCork manufactures specialized cork sheets, transformer gaskets, clutch plate materials, and generator foundation slabs.",
   path: "/about",
 });
 
@@ -27,7 +27,7 @@ export default function AboutPage() {
   return (
     <>
       <script {...getJsonLdScriptProps([aboutJsonLd, breadcrumbJsonLd])} />
-      {/* 01. HERO – ABOUT UNITED RUBBER CORK */}
+      {/* 01. HERO – ABOUT UNITED RUBCORK */}
       <AboutHero />
 
       {/* 02. WHO WE ARE (2-COLUMN EDITORIAL + IMAGE) */}

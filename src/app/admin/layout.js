@@ -1,7 +1,7 @@
 import { AdminLayoutWrapper } from "@/components/admin/layout/admin-layout-wrapper";
 
 export const metadata = {
-  title: "Admin Portal | United Rubber Cork",
+  title: "Admin Portal | United RubCork",
   robots: {
     index: false,
     follow: false,

@@ -15,9 +15,9 @@ import {
 import { CATEGORY_DETAILS } from "@/data/products";
 
 export const metadata = constructMetadata({
-  title: "Industrial Cork & Rubberised Cork Products | United Rubber Cork",
+  title: "Industrial Cork & Rubberised Cork Products | United RubCork",
   description:
-    "Explore United Rubber Cork's full range of natural cork sheets, rubberised cork gaskets, transformer frames, acoustic tiles, and eco-friendly cork gifts manufactured in GIDC Vapi. Conforms to IS: 4253 / ASTM F104.",
+    "Explore United RubCork's full range of natural cork sheets, rubberised cork gaskets, transformer frames, acoustic tiles, and eco-friendly cork gifts manufactured in GIDC Vapi. Conforms to IS: 4253 / ASTM F104.",
   path: "/products",
 });
 

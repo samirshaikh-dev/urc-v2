@@ -6,7 +6,7 @@ import { getMailTransporter } from "@/lib/mail";
 
 export async function sendContactInquiryEmails(lead) {
   const transporter = getMailTransporter();
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "United Rubber Cork";
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "United RubCork";
   const fromEmail = process.env.SMTP_EMAIL;
 
   // Use dedicated lead notification email if set; avoid dummy placeholder "admin@urc.com"

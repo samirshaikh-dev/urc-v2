@@ -50,7 +50,7 @@ export function AboutWhatWeDo() {
               Engineered material grades for critical applications
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-              United Rubber Cork offers diverse grades of cork sheets and rubberised cork products, manufactured to exact customer specifications for sealing, damping, and packaging.
+              United RubCork offers diverse grades of cork sheets and rubberised cork products, manufactured to exact customer specifications for sealing, damping, and packaging.
             </p>
           </div>
 

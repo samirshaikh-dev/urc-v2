@@ -20,7 +20,7 @@ export function AboutHero() {
             {/* Category Eyebrow with yellow accent rules */}
             <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-white/80">
               <span className="h-px w-6 bg-yellow" aria-hidden="true" />
-              <span>About United Rubber Cork</span>
+              <span>About United RubCork</span>
               <span className="h-px w-6 bg-yellow" aria-hidden="true" />
             </p>
 
@@ -31,7 +31,7 @@ export function AboutHero() {
 
             {/* Supporting Copy */}
             <p className="mt-5 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base">
-              United Rubber Cork has been an established presence in the Indian cork industry for over 13 years. Dedicated to uncompromising quality, customer satisfaction, and service, we engineer high-grade cork and rubberised cork products for India&apos;s leading manufacturers.
+              United RubCork has been an established presence in the Indian cork industry for over 13 years. Dedicated to uncompromising quality, customer satisfaction, and service, we engineer high-grade cork and rubberised cork products for India&apos;s leading manufacturers.
             </p>
 
             {/* Dual Action Buttons */}

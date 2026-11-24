@@ -57,7 +57,7 @@ export function ContactMap() {
           <div className="lg:col-span-7">
             <div className="relative overflow-hidden rounded-3xl border border-line shadow-xs bg-field aspect-16/10 sm:aspect-16/9 w-full">
               <iframe
-                title="United Rubber Cork Factory Location Map"
+                title="United RubCork Factory Location Map"
                 src="https://maps.google.com/maps?q=Balaji+Complex+Opp+Hansa+Engg+GIDC+Vapi+Gujarat+396195&t=&z=14&ie=UTF8&iwloc=&output=embed"
                 className="h-full w-full border-0"
                 loading="lazy"

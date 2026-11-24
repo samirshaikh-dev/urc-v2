@@ -9,7 +9,7 @@ import { COMPANY_INFO } from "@/data/company";
 export const metadata = constructMetadata({
   title: "Privacy Policy",
   description:
-    "Privacy Policy for United Rubber Cork. Read how we protect commercial inquiries, CAD blueprints, customer contact data, and maintain strict industrial confidentiality.",
+    "Privacy Policy for United RubCork. Read how we protect commercial inquiries, CAD blueprints, customer contact data, and maintain strict industrial confidentiality.",
   path: "/privacy-policy",
 });
 
@@ -18,9 +18,9 @@ export default function PrivacyPolicyPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Privacy Policy | United Rubber Cork",
+    name: "Privacy Policy | United RubCork",
     description:
-      "Privacy Policy and data protection guidelines for United Rubber Cork manufacturing and commercial supply.",
+      "Privacy Policy and data protection guidelines for United RubCork manufacturing and commercial supply.",
     url: `${siteUrl}/privacy-policy`,
     publisher: {
       "@type": "Organization",

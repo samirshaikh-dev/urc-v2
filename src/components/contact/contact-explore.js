@@ -23,7 +23,7 @@ export function ContactExplore() {
           <div className="flex flex-wrap gap-x-6 gap-y-3">
             <TextLink href="/products">Explore products</TextLink>
             <TextLink href="/industries">View industries</TextLink>
-            <TextLink href="/about">About United Rubber Cork</TextLink>
+            <TextLink href="/about">About United RubCork</TextLink>
           </div>
         </div>
       </Container>

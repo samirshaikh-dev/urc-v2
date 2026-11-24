@@ -1,5 +1,5 @@
 /**
- * Baseline Technical & Engineering Articles for United Rubber Cork
+ * Baseline Technical & Engineering Articles for United RubCork
  * Conforms to: AI_RULE.md, psychology.md, seo.txt, keywords.js
  */
 
@@ -67,7 +67,7 @@ export const INITIAL_BLOGS = [
       </div>
 
       <h2>Installation & Gasket Joint Engineering: Dovetails vs Endless Rings</h2>
-      <p>For large power transformer main tank covers (often exceeding 2 to 4 meters), single-piece cut gaskets are impossible from standard 600x900mm or 900x900mm sheet formats. United Rubber Cork manufactures precision CNC-cut interlocking dovetail joints that interlock securely with oil-compatible adhesive, eliminating leak paths across segment joints.</p>
+      <p>For large power transformer main tank covers (often exceeding 2 to 4 meters), single-piece cut gaskets are impossible from standard 600x900mm or 900x900mm sheet formats. United RubCork manufactures precision CNC-cut interlocking dovetail joints that interlock securely with oil-compatible adhesive, eliminating leak paths across segment joints.</p>
 
       <div class="my-6 p-4 rounded-lg bg-stone-50 border-l-4 border-maroon">
         <h4 class="font-semibold text-stone-900 mb-1">Engineering Recommendation:</h4>
@@ -75,7 +75,7 @@ export const INITIAL_BLOGS = [
       </div>
 
       <h2>Summary & Procurement Checklist</h2>
-      <p>When requesting quotations for transformer cork gaskets from United Rubber Cork in GIDC Vapi, prepare the following specifications:</p>
+      <p>When requesting quotations for transformer cork gaskets from United RubCork in GIDC Vapi, prepare the following specifications:</p>
       <ol>
         <li>Operating fluid type (Standard mineral oil vs. silicone fluid vs. synthetic ester)</li>
         <li>Target operating temperature range</li>
@@ -126,11 +126,11 @@ export const INITIAL_BLOGS = [
 
       <div class="my-6 p-4 rounded-lg bg-stone-50 border-l-4 border-orange">
         <h4 class="font-semibold text-stone-900 mb-1">Equivalence with ASTM F104:</h4>
-        <p class="text-stone-700 text-sm">For export orders or multinational OEM drawings, IS 4253 Part 2 Grade RC70-C directly correlates with ASTM F104 identification line callout <code>F226000M4</code> (NBR/Cork composition). United Rubber Cork supplies test certificates certifying dual compliance with both IS and ASTM standards.</p>
+        <p class="text-stone-700 text-sm">For export orders or multinational OEM drawings, IS 4253 Part 2 Grade RC70-C directly correlates with ASTM F104 identification line callout <code>F226000M4</code> (NBR/Cork composition). United RubCork supplies test certificates certifying dual compliance with both IS and ASTM standards.</p>
       </div>
 
       <h2>Quality Verification in GIDC Vapi Facility</h2>
-      <p>At United Rubber Cork's manufacturing plant in GIDC Vapi, incoming virgin cork granules from Portugal and high-grade synthetic elastomers are blended in controlled internal batch mixers. Every batch is stamped with lot numbers, thickness tolerances within &plusmn;0.15mm, and batch test certificates providing full traceability.</p>
+      <p>At United RubCork's manufacturing plant in GIDC Vapi, incoming virgin cork granules from Portugal and high-grade synthetic elastomers are blended in controlled internal batch mixers. Every batch is stamped with lot numbers, thickness tolerances within &plusmn;0.15mm, and batch test certificates providing full traceability.</p>
     `,
     tags: "Standards & Compliance, IS 4253, ASTM F104, Quality Assurance",
     author: "URC Quality Assurance Team",
@@ -207,7 +207,7 @@ export const INITIAL_BLOGS = [
       <p>For optimal vibration attenuation on heavy machinery:</p>
       <ol>
         <li>Pour a smooth, level concrete sub-base floor in the foundation excavation.</li>
-        <li>Lay United Rubber Cork foundation slabs across the floor, ensuring all butt joints fit snugly.</li>
+        <li>Lay United RubCork foundation slabs across the floor, ensuring all butt joints fit snugly.</li>
         <li>Install perimeter vertical cork strips around the excavation walls to isolate foundation sides from adjacent factory flooring.</li>
         <li>Cover the cork layer with heavy-gauge polyethylene sheeting before pouring the reinforced concrete inertia block to prevent wet slurry penetration.</li>
       </ol>
@@ -297,7 +297,7 @@ export const INITIAL_BLOGS = [
       </ul>
 
       <h2>Custom Thicknesses and Fabrication Options</h2>
-      <p>At United Rubber Cork's Vapi facility, we manufacture both product families in standard sheet dimensions (900x600mm, 900x900mm, 1000x1000mm) and continuous roll lengths. We can supply slit strips, die-cut gaskets, or custom CNC machined components directly to your CAD drawing tolerances.</p>
+      <p>At United RubCork's Vapi facility, we manufacture both product families in standard sheet dimensions (900x600mm, 900x900mm, 1000x1000mm) and continuous roll lengths. We can supply slit strips, die-cut gaskets, or custom CNC machined components directly to your CAD drawing tolerances.</p>
     `,
     tags: "Material Selection, Natural Cork, Rubber Cork, Industrial Manufacturing",
     author: "URC Materials Engineering",

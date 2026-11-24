@@ -1,4 +1,4 @@
-# United Rubber Cork (URC) - Simple Product Management Architecture Plan
+# United RubCork (URC) - Simple Product Management Architecture Plan
 
 ## 1. System Understanding & Objective
 
@@ -42,7 +42,7 @@ and indexes used by the catalog queries.
 ## 4. Admin Portal Flow & UX Design
 
 ### Flow 1: Authentication (`/admin/login`)
-- Clean, minimal login screen with United Rubber Cork branding.
+- Clean, minimal login screen with United RubCork branding.
 - **Environment-based credentials** (`ADMIN_EMAIL` and `ADMIN_PASSWORD` stored in `.env`).
 - Secure HTTP-only signed session cookie created on successful login.
 - Protected `/admin` routes with Next.js middleware redirecting unauthenticated visits to `/admin/login`.

@@ -12,7 +12,7 @@ import {
 } from "@/lib/seo";
 
 export const metadata = constructMetadata({
-  title: "Rubberised Cork Manufacturer in Vapi, Gujarat | United Rubber Cork",
+  title: "Rubberised Cork Manufacturer in Vapi, Gujarat | United RubCork",
   description:
     "Manufacturer of rubberised cork sheets conforming to IS: 4253 and ASTM standards, plus transformer gaskets, clutch wads, foundation slabs, and acoustic cork in GIDC Vapi, Gujarat.",
   path: "",

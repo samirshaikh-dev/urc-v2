@@ -59,14 +59,14 @@ export async function generateMetadata({ params }) {
     : [];
 
   return constructMetadata({
-    title: `${blog.title} | United Rubber Cork`,
+    title: `${blog.title} | United RubCork`,
     description: blog.excerpt,
     path: `/blog/${blog.slug}`,
     image: blog.imageUrl || "/og-image.png",
     keywords: [
       ...tagsArray,
       "rubber cork technical guide",
-      "United Rubber Cork Vapi",
+      "United RubCork Vapi",
       "IS 4253 specification",
     ],
   });
@@ -223,7 +223,7 @@ export default async function BlogArticleDetailPage({ params }) {
               <span>Executive Engineering Summary</span>
             </div>
             <p className="mt-2 text-xs leading-relaxed text-stone-700 sm:text-sm">
-              This technical document outlines engineering parameters for selecting and specifying cork composites conforming to Indian Standard IS 4253 and ASTM F104. Prepared by United Rubber Cork manufacturing and quality control in GIDC Vapi, Gujarat.
+              This technical document outlines engineering parameters for selecting and specifying cork composites conforming to Indian Standard IS 4253 and ASTM F104. Prepared by United RubCork manufacturing and quality control in GIDC Vapi, Gujarat.
             </p>
           </div>
 
@@ -264,7 +264,7 @@ export default async function BlogArticleDetailPage({ params }) {
                 URC
               </div>
               <div>
-                <span className="block font-semibold text-ink">United Rubber Cork</span>
+                <span className="block font-semibold text-ink">United RubCork</span>
                 <span className="block text-[11px]">GIDC 2nd Phase, Vapi, Gujarat — 396195</span>
               </div>
             </div>

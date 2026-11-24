@@ -23,7 +23,7 @@ export function IndustriesHero() {
             <p className="mt-5 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base">
               Hot transformer oil, continuous powertrain vibration, saltwater exposure, and
               structural movement each impose different demands on a seal or isolator. Explore the
-              sectors United Rubber Cork supplies and the components fabricated for them.
+              sectors United RubCork supplies and the components fabricated for them.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">

@@ -45,9 +45,9 @@ export function LeadDetailModal({ lead, onClose, onUpdate }) {
   };
 
   const mailtoHref = `mailto:${lead.email}?subject=${encodeURIComponent(
-    `Quotation Response — ${lead.product || "United Rubber Cork"}`
+    `Quotation Response — ${lead.product || "United RubCork"}`
   )}&body=${encodeURIComponent(
-    `Dear ${lead.name},\n\nThank you for reaching out to United Rubber Cork regarding your requirement for ${lead.product || "industrial cork solutions"}.\n\n`
+    `Dear ${lead.name},\n\nThank you for reaching out to United RubCork regarding your requirement for ${lead.product || "industrial cork solutions"}.\n\n`
   )}`;
 
   return (

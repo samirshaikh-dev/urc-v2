@@ -1,4 +1,4 @@
-Since United Rubber Cork has 4 product categories and you're creating dedicated pages for each, I recommend a minimal product architecture rather than putting everything on one long Products page.
+Since United RubCork has 4 product categories and you're creating dedicated pages for each, I recommend a minimal product architecture rather than putting everything on one long Products page.
 
 Your current category navigation is a good starting point. Keep the pill-style navigation, but make each category navigate to its dedicated page.
 
@@ -14,7 +14,7 @@ Purpose: Give visitors a quick overview of all product categories and help them 
 
 Headline: Industrial Materials for Diverse Applications.
 
-Short description about United Rubber Cork's product range.
+Short description about United RubCork's product range.
 
 02\. Category Navigation
 
@@ -42,7 +42,7 @@ Natural cork materials and solutions.
 
 Explore category →
 
-[Rubber Cork Sheets at Best Price in Vapi, Gujarat | United Rubber Cork Industries](https://images.openai.com/static-rsc-4/pqTBBL37QY0D5mc0h-6PBRvJ_iSDr6YsASsZXQVzAFstILwV3JjqDopcOPjZhkYhKKGGZVjBKHzkpahkr82ZKG3JsJHowj59JhcspHCZAldecUzA269xGOlbVwVhskfsEu_m_3l9MXN7hQ1N0TJd4pShfbihP4FtY7RpWeXPma0?purpose=inline)
+[Rubber Cork Sheets at Best Price in Vapi, Gujarat | United RubCork Industries](https://images.openai.com/static-rsc-4/pqTBBL37QY0D5mc0h-6PBRvJ_iSDr6YsASsZXQVzAFstILwV3JjqDopcOPjZhkYhKKGGZVjBKHzkpahkr82ZKG3JsJHowj59JhcspHCZAldecUzA269xGOlbVwVhskfsEu_m_3l9MXN7hQ1N0TJd4pShfbihP4FtY7RpWeXPma0?purpose=inline)
 
 Rubberised Cork
 
@@ -165,4 +165,4 @@ Keep the entire product experience to three levels:
 
 One important SEO recommendation: Give every category its own unique title, meta description, introductory content and product links. Don't duplicate the same category description across pages.
 
-This architecture will keep United Rubber Cork's website minimal while making it scalable as you add more products.
+This architecture will keep United RubCork's website minimal while making it scalable as you add more products.

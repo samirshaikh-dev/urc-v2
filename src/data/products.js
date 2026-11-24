@@ -27,7 +27,7 @@ export const CATEGORY_DETAILS = {
     shortDescription:
       "Pure natural agglomerated cork sheets, continuous rolls, blocks, and graded industrial granules engineered for thermal barrier, acoustic underlayment, and foundation expansion joints.",
     metaDescription:
-      "Explore United Rubber Cork's natural cork sheets, rolls, blocks, and industrial granules. High-density acoustic and thermal insulation manufactured in Vapi, Gujarat.",
+      "Explore United RubCork's natural cork sheets, rolls, blocks, and industrial granules. High-density acoustic and thermal insulation manufactured in Vapi, Gujarat.",
     applications: [
       {
         title: "Structural Expansion Joints",
@@ -82,7 +82,7 @@ export const CATEGORY_DETAILS = {
     shortDescription:
       "High-resilience composite sheets, transformer gasket frames, and precision cut components formulated with Nitrile (NBR), Neoprene, and SBR matrices for hot oil resistance and hermetic sealing.",
     metaDescription:
-      "High-recovery rubberised cork sheets, continuous rolls, and CNC-cut transformer gaskets by United Rubber Cork. Superior hot oil resistance conforming to IS: 4253 (Part II).",
+      "High-recovery rubberised cork sheets, continuous rolls, and CNC-cut transformer gaskets by United RubCork. Superior hot oil resistance conforming to IS: 4253 (Part II).",
     applications: [
       {
         title: "Power & Distribution Transformers",
@@ -137,7 +137,7 @@ export const CATEGORY_DETAILS = {
     shortDescription:
       "Acoustic wall tiles, decorative cork panels, and textured natural cork coverings designed for architectural spaces, corporate offices, recording studios, and residences.",
     metaDescription:
-      "Transform interior spaces with United Rubber Cork decorative cork tiles and acoustic wall panels. Natural sound absorption and organic warmth for modern architecture.",
+      "Transform interior spaces with United RubCork decorative cork tiles and acoustic wall panels. Natural sound absorption and organic warmth for modern architecture.",
     applications: [
       {
         title: "Corporate Offices & Meeting Pods",
@@ -192,7 +192,7 @@ export const CATEGORY_DETAILS = {
     shortDescription:
       "Sustainable promotional corporate gifts, customized lifestyle accessories, desk stationery, and eco-friendly branded cork products crafted from natural cork.",
     metaDescription:
-      "Custom sustainable corporate gifts and desk accessories by United Rubber Cork. Laser engraved, embossed, and tailored for premium OEM corporate gifting programs.",
+      "Custom sustainable corporate gifts and desk accessories by United RubCork. Laser engraved, embossed, and tailored for premium OEM corporate gifting programs.",
     applications: [
       {
         title: "Executive Corporate Gifting",

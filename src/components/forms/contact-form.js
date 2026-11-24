@@ -93,7 +93,7 @@ function SuccessModal({ data, viaWhatsApp, waDbFailed, emailFailed, onClose, onR
   const firstName = data.name?.trim().split(/\s+/)[0] || data.name || "there";
   const whatsappNumber = (COMPANY_INFO.whatsapp || "919924304617").replace(/[^0-9]/g, "");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    `Hello United Rubber Cork, following up on Enquiry Ref: ${data.id || "N/A"}.\nCompany: ${data.company || "-"}\nI would like to share our technical drawing / specification.`
+    `Hello United RubCork, following up on Enquiry Ref: ${data.id || "N/A"}.\nCompany: ${data.company || "-"}\nI would like to share our technical drawing / specification.`
   )}`;
 
   const handleCopy = async () => {

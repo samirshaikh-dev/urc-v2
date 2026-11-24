@@ -1,7 +1,7 @@
-# Psychology & Persuasion Strategy — New United Rubber Cork
+# Psychology & Persuasion Strategy — New United RubCork
 
 > **Companion document to `prompt.md`**  
-> **Brand:** New United Rubber Cork  
+> **Brand:** New United RubCork  
 > **Reference website:** https://amcorkindia.com/index.php  
 > **Purpose:** Define the customer psychology, trust strategy, messaging principles and conversion experience that should guide every page of the redesigned website.
 
@@ -11,7 +11,7 @@
 
 A website should do more than explain what a business makes or sells. It should help the right visitor decide that this is a credible company worth contacting.
 
-For New United Rubber Cork, the goal is not simply to display cork products, list industries or publish a company profile. The website must reduce buyer uncertainty and give visitors reasons to trust the company before the first conversation.
+For New United RubCork, the goal is not simply to display cork products, list industries or publish a company profile. The website must reduce buyer uncertainty and give visitors reasons to trust the company before the first conversation.
 
 A buyer should leave the website thinking:
 
@@ -52,7 +52,7 @@ Organise information around buyer questions and tasks, not only around the compa
 
 A company becomes more memorable when it communicates how it thinks about its work, not just what it offers.
 
-New United Rubber Cork should express a clear, credible point of view about product selection, material requirements, manufacturing and customer needs.
+New United RubCork should express a clear, credible point of view about product selection, material requirements, manufacturing and customer needs.
 
 Potential positioning themes to validate with the company:
 
@@ -68,7 +68,7 @@ These are strategic directions, not claims about existing company processes. Con
 
 **Headline:** The right material starts with the right understanding.
 
-**Supporting copy:** Every application has its own requirements. Tell us what you are working on, and our team can help you explore the relevant cork and rubberised-cork products offered by New United Rubber Cork.
+**Supporting copy:** Every application has its own requirements. Tell us what you are working on, and our team can help you explore the relevant cork and rubberised-cork products offered by New United RubCork.
 
 Use this only if the company can genuinely provide that level of product guidance.
 
@@ -283,7 +283,7 @@ Visuals should do a job. They should not merely decorate the page.
 - Avoid irrelevant lifestyle photography.
 
 ### Image credibility
-Never show a generic cork or factory image in a way that implies it is a photograph of New United Rubber Cork's actual product or facility. Label illustrative imagery appropriately where needed.
+Never show a generic cork or factory image in a way that implies it is a photograph of New United RubCork's actual product or facility. Label illustrative imagery appropriately where needed.
 
 ---
 
@@ -345,7 +345,7 @@ Where prices are not published, make the quotation process clear and explain wha
 ### Homepage
 The homepage should answer, in order:
 
-1. What does New United Rubber Cork offer?
+1. What does New United RubCork offer?
 2. Which products can I explore?
 3. What applications or industries are relevant?
 4. What evidence makes the company credible?
@@ -394,7 +394,7 @@ The brand should sound like a knowledgeable, straightforward industrial business
 ### Example
 
 Instead of:
-“New United Rubber Cork is the number one company providing the best quality products with unmatched excellence.”
+“New United RubCork is the number one company providing the best quality products with unmatched excellence.”
 
 Prefer:
 “Explore our cork and rubberised-cork products, review the available specifications and share your application requirements with our team.”
@@ -443,4 +443,4 @@ Never remove important technical information just to make a page look minimal. N
 
 **Do not design a website that only says, “Here is our company and here are our products.” Design a website that helps the right buyer think, “They understand what I need, they appear credible, and I feel comfortable starting a conversation with them.”**
 
-That is the purpose of the psychology behind the New United Rubber Cork website.
+That is the purpose of the psychology behind the New United RubCork website.

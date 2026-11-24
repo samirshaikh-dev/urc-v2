@@ -9,9 +9,9 @@ import {
 } from "@/lib/seo";
 
 export const metadata = constructMetadata({
-  title: "Technical Blog & Engineering Guides | United Rubber Cork",
+  title: "Technical Blog & Engineering Guides | United RubCork",
   description:
-    "Material selection, IS 4253 and ASTM F104 guidance from the United Rubber Cork engineering team in GIDC Vapi, Gujarat.",
+    "Material selection, IS 4253 and ASTM F104 guidance from the United RubCork engineering team in GIDC Vapi, Gujarat.",
   path: "/blog",
   keywords: [
     "rubber cork engineering blog",

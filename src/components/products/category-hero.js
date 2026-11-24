@@ -84,7 +84,7 @@ export function CategoryHero({ category }) {
             <div className="relative min-h-[300px] w-full bg-field lg:col-span-5 lg:min-h-full">
               <Image
                 src={category.heroImage}
-                alt={`${category.name} - United Rubber Cork manufacturing`}
+                alt={`${category.name} - United RubCork manufacturing`}
                 fill
                 priority
                 sizes="(min-width: 1024px) 45vw, 100vw"

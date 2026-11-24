@@ -196,7 +196,7 @@ export function Footer({ currentYear }) {
                     href={mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="View United Rubber Cork works facility on Google Maps"
+                    title="View United RubCork works facility on Google Maps"
                     className="hover:text-white underline-offset-2 hover:underline transition-colors block"
                   >
                     No. 5, Balaji Complex, 2nd Phase, GIDC, Vapi — 396195

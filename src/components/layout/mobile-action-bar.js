@@ -6,7 +6,7 @@ import { Phone, MessageCircle, FileText } from "lucide-react";
 import { COMPANY_INFO } from "@/data/company";
 
 /**
- * Mobile-only sticky bottom action bar styled with United Rubber Cork brand theme:
+ * Mobile-only sticky bottom action bar styled with United RubCork brand theme:
  * - Container: Deep brand maroon surface (`bg-maroon-deep/95`) with subtle border & blur
  * - Call: Brand Orange (`bg-orange text-white`)
  * - WhatsApp: Direct Green (`bg-[#059669] text-white`)
@@ -42,7 +42,7 @@ export function MobileActionBar() {
         {/* 1. Call Button — Brand Orange */}
         <a
           href={`tel:${cleanPhone}`}
-          aria-label={`Call United Rubber Cork at ${COMPANY_INFO.phone}`}
+          aria-label={`Call United RubCork at ${COMPANY_INFO.phone}`}
           className="flex h-11 min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-orange px-2 text-xs font-semibold text-white shadow-xs transition-all duration-150 hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-white"
         >
           <Phone className="size-4 shrink-0 text-white" aria-hidden="true" />
@@ -54,7 +54,7 @@ export function MobileActionBar() {
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Chat with United Rubber Cork on WhatsApp (opens in new tab)"
+          aria-label="Chat with United RubCork on WhatsApp (opens in new tab)"
           className="flex h-11 min-h-[44px] items-center justify-center gap-1.5 rounded-full bg-[#059669] px-2 text-xs font-semibold text-white shadow-xs transition-all duration-150 hover:brightness-105 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-white"
         >
           <MessageCircle className="size-4 shrink-0 text-white" aria-hidden="true" />

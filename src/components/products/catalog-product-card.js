@@ -24,9 +24,9 @@ function getProductImageAlt(product) {
       ? CATEGORY_LABELS[categoryValue] || categoryValue.replace(/-/g, " ").trim()
       : "";
 
-  if (name && category) return `${name} (${category}) from United Rubber Cork`;
-  if (name) return `${name} from United Rubber Cork`;
-  return "United Rubber Cork product";
+  if (name && category) return `${name} (${category}) from United RubCork`;
+  if (name) return `${name} from United RubCork`;
+  return "United RubCork product";
 }
 
 /**
