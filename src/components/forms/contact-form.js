@@ -91,7 +91,7 @@ function SuccessModal({ data, viaWhatsApp, waDbFailed, emailFailed, onClose, onR
   if (!mounted) return null;
 
   const firstName = data.name?.trim().split(/\s+/)[0] || data.name || "there";
-  const whatsappNumber = (COMPANY_INFO.whatsapp || "919924304617").replace(/[^0-9]/g, "");
+  const whatsappNumber = (COMPANY_INFO.whatsapp || "919998586017").replace(/[^0-9]/g, "");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     `Hello United RubCork, following up on Enquiry Ref: ${data.id || "N/A"}.\nCompany: ${data.company || "-"}\nI would like to share our technical drawing / specification.`
   )}`;

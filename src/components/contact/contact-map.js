@@ -21,7 +21,7 @@ export function ContactMap() {
               Visit our manufacturing facility
             </h2>
             <p className="text-sm leading-relaxed text-muted">
-              Located in the industrial corridor of 2nd Phase GIDC Vapi, Gujarat, our production plant is equipped for raw cork compounding, hot-press vulcanization, and CNC gasket fabrication.
+              Located in the industrial corridor of Phase - 1, GIDC Vapi, Gujarat, our production plant is equipped for raw cork compounding, hot-press vulcanization, and CNC gasket fabrication.
             </p>
 
             <div className="rounded-2xl border border-line bg-page/60 p-5 space-y-3">
@@ -58,7 +58,7 @@ export function ContactMap() {
             <div className="relative overflow-hidden rounded-3xl border border-line shadow-xs bg-field aspect-16/10 sm:aspect-16/9 w-full">
               <iframe
                 title="United RubCork Factory Location Map"
-                src="https://maps.google.com/maps?q=Balaji+Complex+Opp+Hansa+Engg+GIDC+Vapi+Gujarat+396195&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(`${COMPANY_INFO.name}, ${COMPANY_INFO.address.street}, ${COMPANY_INFO.address.city}, ${COMPANY_INFO.address.state} ${COMPANY_INFO.address.pincode}`)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
                 className="h-full w-full border-0"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

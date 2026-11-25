@@ -3,10 +3,12 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 
+import { COMPANY_INFO } from "@/data/company";
+
 const CONTACT_INDEX = [
   { label: "Request a Quotation", href: "#enquiry-form" },
-  { label: "+91 9924304617", href: "tel:+919924304617" },
-  { label: "unitedrubcork@gmail.com", href: "mailto:unitedrubcork@gmail.com" },
+  { label: COMPANY_INFO.phone, href: `tel:${COMPANY_INFO.phone.replace(/\s+/g, "")}` },
+  { label: COMPANY_INFO.email, href: `mailto:${COMPANY_INFO.email}` },
   { label: "GIDC Vapi Plant", href: "#locations" },
 ];
 

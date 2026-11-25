@@ -157,7 +157,7 @@ export function TermsContent() {
         </h2>
         <div className="space-y-3.5 text-sm leading-relaxed text-muted sm:text-base">
           <p>
-            Commercial orders are manufactured and dispatched directly from our works located in <strong>2nd Phase GIDC, Vapi — 396195, Gujarat, India</strong>.
+            Commercial orders are manufactured and dispatched directly from our works located in <strong>Phase - 1, GIDC, Vapi — 396195, Gujarat, India</strong>.
           </p>
           <ul className="list-disc pl-5 space-y-1.5 text-xs text-muted sm:text-sm">
             <li><strong>Delivery Terms:</strong> Unless explicitly agreed otherwise in writing (e.g., CIF, FOB, or door-delivery), commercial supplies are quoted on an Ex-Works (EXW Vapi) basis. Freight, insurance, and transit risk are borne by the purchaser.</li>

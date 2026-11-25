@@ -199,7 +199,7 @@ export function Footer({ currentYear }) {
                     title="View United RubCork works facility on Google Maps"
                     className="hover:text-white underline-offset-2 hover:underline transition-colors block"
                   >
-                    No. 5, Balaji Complex, 2nd Phase, GIDC, Vapi — 396195
+                    {COMPANY_INFO.address.line1}, {COMPANY_INFO.address.area}, {COMPANY_INFO.address.city} — {COMPANY_INFO.address.pincode}
                   </a>
                 </div>
               </li>
@@ -219,12 +219,17 @@ export function Footer({ currentYear }) {
                 <Phone className="size-4 shrink-0 text-yellow mt-0.5" aria-hidden="true" />
                 <div className="leading-snug">
                   <span className="font-semibold text-white block">Phone:</span>
-                  <a
-                    href={`tel:${COMPANY_INFO.phone.replace(/\s+/g, "")}`}
-                    className="hover:text-white underline-offset-2 hover:underline"
-                  >
-                    {COMPANY_INFO.phone}
-                  </a>
+                  <div className="flex flex-col gap-1 mt-0.5">
+                    {COMPANY_INFO.phones.map((phone) => (
+                      <a
+                        key={phone}
+                        href={`tel:${phone.replace(/\s+/g, "")}`}
+                        className="hover:text-white underline-offset-2 hover:underline transition-colors block"
+                      >
+                        {phone}
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </li>
               <li className="flex items-center gap-2.5">

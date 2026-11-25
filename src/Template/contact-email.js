@@ -128,7 +128,7 @@ export function generateCustomerConfirmationEmail(lead) {
                 <tr>
                   <td>
                     <p style="margin: 0 0 2px; font-size: 13px; font-weight: 700; color: #111111;">United RubCork</p>
-                    <p style="margin: 0 0 10px; font-size: 12px; color: #6B7280;">No. 5, Balaji Complex, 2nd Phase GIDC, Vapi — 396195, Gujarat, India</p>
+                    <p style="margin: 0 0 10px; font-size: 12px; color: #6B7280;">Plot No. 57/E, Phase - 1, Beside Best Paper Mill, GIDC, Vapi — 396195, Gujarat, India</p>
                     <p style="margin: 0; font-size: 12px; color: #9CA3AF; line-height: 1.6;">
                       Rubberised Cork Sheets &amp; Rolls &nbsp;·&nbsp; Transformer Gaskets &nbsp;·&nbsp;
                       Vibration Damping Pads &nbsp;·&nbsp; Custom Cork Fabrications

@@ -265,7 +265,7 @@ export default async function BlogArticleDetailPage({ params }) {
               </div>
               <div>
                 <span className="block font-semibold text-ink">United RubCork</span>
-                <span className="block text-[11px]">GIDC 2nd Phase, Vapi, Gujarat — 396195</span>
+                <span className="block text-[11px]">GIDC Phase - 1, Vapi, Gujarat — 396195</span>
               </div>
             </div>
 
