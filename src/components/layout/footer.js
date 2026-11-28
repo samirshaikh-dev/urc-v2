@@ -197,13 +197,9 @@ export function Footer({ currentYear }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title="View United RubCork works facility on Google Maps"
-                    className="hover:text-white underline-offset-2 hover:underline transition-colors block mt-0.5 space-y-0.5"
+                    className="hover:text-white underline-offset-2 hover:underline transition-colors mt-0.5"
                   >
-                    <span className="block">{COMPANY_INFO.address.line1},</span>
-                    <span className="block">{COMPANY_INFO.address.line2}, {COMPANY_INFO.address.area},</span>
-                    <span className="block">
-                      {COMPANY_INFO.address.city} — {COMPANY_INFO.address.pincode} ({COMPANY_INFO.address.state}), {COMPANY_INFO.address.country}
-                    </span>
+                    {COMPANY_INFO.address.street}, {COMPANY_INFO.address.city} — {COMPANY_INFO.address.pincode} ({COMPANY_INFO.address.state}), {COMPANY_INFO.address.country}
                   </a>
                 </div>
               </li>

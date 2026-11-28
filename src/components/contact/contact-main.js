@@ -34,9 +34,7 @@ export function ContactMain() {
                 <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                   Contact details
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  Reach our works and sales offices directly for technical consultations, RFQs, or physical shipments.
-                </p>
+   
               </div>
 
               <div className="space-y-6 divide-y divide-line pt-2">
@@ -88,13 +86,7 @@ export function ContactMain() {
                     <span>Office &amp; Manufacturing Works</span>
                   </div>
                   <address className="mt-2.5 text-sm not-italic leading-relaxed text-muted">
-                    <span className="block font-medium text-ink">{COMPANY_INFO.name}</span>
-                    <span className="block">{COMPANY_INFO.address.line1}</span>
-                    <span className="block">{COMPANY_INFO.address.line2}</span>
-                    <span className="block">{COMPANY_INFO.address.area}</span>
-                    <span className="block">
-                      {COMPANY_INFO.address.city} — {COMPANY_INFO.address.pincode} ({COMPANY_INFO.address.state}), {COMPANY_INFO.address.country}
-                    </span>
+                    <span className="font-medium text-ink">{COMPANY_INFO.name}</span>, {COMPANY_INFO.address.street}, {COMPANY_INFO.address.city} — {COMPANY_INFO.address.pincode} ({COMPANY_INFO.address.state}), {COMPANY_INFO.address.country}
                   </address>
                 </div>
 
