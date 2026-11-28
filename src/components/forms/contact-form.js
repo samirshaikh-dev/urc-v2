@@ -31,7 +31,7 @@ const FIELD_IDS = {
 };
 
 const fieldClasses =
-  "mt-1.5 w-full rounded-xl border bg-field px-3.5 py-2.5 text-sm text-ink placeholder:text-muted transition-colors duration-150 focus:border-maroon focus:bg-white focus:outline-none focus:ring-1 focus:ring-maroon";
+  "mt-1.5 w-full rounded-xl border bg-field px-3.5 py-2.5 text-sm text-ink transition-colors duration-150 focus:border-maroon focus:bg-white focus:outline-none focus:ring-1 focus:ring-maroon";
 
 const labelClasses = "block text-xs font-semibold uppercase tracking-wider text-ink";
 
@@ -418,7 +418,6 @@ function ContactFormInner() {
               type="text"
               required
               autoComplete="name"
-              placeholder="e.g. Rajesh Sharma"
               value={values.name}
               onChange={handleChange}
               aria-invalid={errors.name ? "true" : undefined}
@@ -441,7 +440,6 @@ function ContactFormInner() {
               type="text"
               required
               autoComplete="organization"
-              placeholder="e.g. VoltPower Transformers Pvt Ltd"
               value={values.company}
               onChange={handleChange}
               aria-invalid={errors.company ? "true" : undefined}
@@ -469,7 +467,6 @@ function ContactFormInner() {
               required
               autoComplete="email"
               inputMode="email"
-              placeholder="e.g. rajesh@company.com"
               value={values.email}
               onChange={handleChange}
               aria-invalid={errors.email ? "true" : undefined}
@@ -493,7 +490,6 @@ function ContactFormInner() {
               type="tel"
               autoComplete="tel"
               inputMode="tel"
-              placeholder="+91 98765 43210"
               value={values.phone}
               onChange={handleChange}
               aria-invalid={errors.phone ? "true" : undefined}
@@ -520,7 +516,6 @@ function ContactFormInner() {
             name="product"
             value={values.product}
             onChange={handleChange}
-            placeholder="e.g. Rubberised cork sheets, transformer gaskets, RC70-C..."
             className={`${fieldClasses} border-line`}
           />
         </div>
@@ -540,7 +535,6 @@ function ContactFormInner() {
             onChange={handleChange}
             aria-invalid={errors.message ? "true" : undefined}
             aria-describedby={errors.message ? `${FIELD_IDS.message}-error` : undefined}
-            placeholder="Describe your required dimensions, thickness, contact fluids, operating temperature, or drawing references."
             className={`${fieldClasses} ${errors.message ? "border-maroon" : "border-line"}`}
           />
           {errors.message && (
